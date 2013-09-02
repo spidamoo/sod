@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<character bodies="16">
+    <body animation="pencil man/body.png.xml" x="55" y="101" angle="1.62554e-038" />
+    <body animation="pencil man/gun.png.xml" x="170" y="108" angle="1.62554e-038" />
+    <body animation="pencil man/sword.png.xml" x="58" y="224" angle="0" />
+    <body animation="pencil man/head.png.xml" x="145" y="226" angle="0" />
+    <body animation="pencil man/hip.png.xml" x="85" y="1083" angle="0" />
+    <body animation="pencil man/hip.png.xml" x="152" y="1080" angle="0" />
+    <body animation="pencil man/leg.png.xml" x="63" y="1167" angle="0" />
+    <body animation="pencil man/leg.png.xml" x="145" y="1167" angle="0" />
+    <body animation="pencil man/foot.png.xml" x="51" y="1236" angle="0" />
+    <body animation="pencil man/foot.png.xml" x="135" y="1233" angle="0" />
+    <body animation="pencil man/arm.png.xml" x="98" y="2078" angle="0" />
+    <body animation="pencil man/forearm.png.xml" x="88" y="2140" angle="0" />
+    <body animation="pencil man/hand.png.xml" x="66" y="2182" angle="0" />
+    <body animation="pencil man/arm.png.xml" x="172" y="2083" angle="0" />
+    <body animation="pencil man/forearm.png.xml" x="167" y="2150" angle="0" />
+    <body animation="pencil man/hand.png.xml" x="155" y="2201" angle="0" />
+</character>
+<animations count="2">
+    <animation frames="1">
+        <frame length="0.5">
+            <body x="0" y="-0.21" angle="1.62554e-038" show="1" layer="6" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+            <body x="-0.740426" y="-0.161409" angle="-0.405455" show="1" layer="4" />
+            <body x="-0.0100002" y="-0.91" angle="0" show="1" layer="14" />
+            <body x="-0.19" y="0.48" angle="0" show="1" layer="2" />
+            <body x="0.130555" y="0.480645" angle="-0.615111" show="1" layer="12" />
+            <body x="-0.24" y="0.98" angle="0" show="1" layer="13" />
+            <body x="0.27" y="1.03" angle="0" show="1" layer="0" />
+            <body x="-0.31" y="1.37" angle="0" show="1" layer="1" />
+            <body x="0.2" y="1.39" angle="0" show="1" layer="3" />
+            <body x="0.16" y="-0.4" angle="0" show="1" layer="7" />
+            <body x="0.15" y="-0.02" angle="0" show="1" layer="5" />
+            <body x="-0.47" y="0.35" angle="0" show="1" layer="9" />
+            <body x="-0.158688" y="-0.351073" angle="-6.15888" show="1" layer="10" />
+            <body x="-0.330122" y="0.033885" angle="-0.101671" show="1" layer="11" />
+            <body x="0.0300002" y="0.25" angle="0" show="1" layer="15" />
+        </frame>
+    </animation>
+    <animation frames="4">
+        <frame length="0.3">
+            <body x="0.0300002" y="-0.12" angle="1.62554e-038" show="1" layer="11" />
+            <body x="0" y="0" angle="0" show="0" layer="10" />
+            <body x="-0.892091" y="-0.0276103" angle="-0.704494" show="1" layer="2" />
+            <body x="0.0100002" y="-0.81" angle="0" show="1" layer="12" />
+            <body x="-0.12" y="0.62" angle="0" show="1" layer="4" />
+            <body x="0.219772" y="0.659247" angle="-0.470915" show="1" layer="6" />
+            <body x="-0.18" y="1.14" angle="0" show="1" layer="8" />
+            <body x="0.26" y="1.16" angle="0" show="1" layer="0" />
+            <body x="-0.27" y="1.51" angle="0" show="1" layer="1" />
+            <body x="0.17" y="1.53" angle="0" show="1" layer="3" />
+            <body x="-0.163694" y="-0.288548" angle="0.420749" show="1" layer="5" />
+            <body x="-0.34" y="0.11" angle="0" show="1" layer="7" />
+            <body x="-0.49" y="0.38" angle="0" show="1" layer="9" />
+            <body x="0.24305" y="-0.313007" angle="-0.452983" show="1" layer="13" />
+            <body x="0.387701" y="0.056829" angle="-0.622674" show="1" layer="14" />
+            <body x="0.47" y="0.38" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.3">
+            <body x="0.0500002" y="-0.13" angle="1.62554e-038" show="1" layer="11" />
+            <body x="0" y="0" angle="0" show="0" layer="10" />
+            <body x="-0.862091" y="0.0323896" angle="-0.704494" show="1" layer="2" />
+            <body x="0.02" y="-0.8" angle="0" show="1" layer="12" />
+            <body x="-0.0119057" y="0.637505" angle="-0.42112" show="1" layer="4" />
+            <body x="0.150899" y="0.598306" angle="-0.35147" show="1" layer="6" />
+            <body x="-0.0286055" y="1.17869" angle="-0.0941357" show="1" layer="8" />
+            <body x="0.174946" y="1.17969" angle="0.141897" show="1" layer="0" />
+            <body x="-0.13" y="1.59" angle="0" show="1" layer="1" />
+            <body x="0.0399995" y="1.55" angle="0" show="1" layer="3" />
+            <body x="-0.173694" y="-0.288548" angle="0.420749" show="1" layer="5" />
+            <body x="-0.33" y="0.14" angle="0" show="1" layer="7" />
+            <body x="-0.48" y="0.45" angle="0" show="1" layer="9" />
+            <body x="0.28305" y="-0.343007" angle="-0.452983" show="1" layer="13" />
+            <body x="0.447701" y="0.0368295" angle="-0.622674" show="1" layer="14" />
+            <body x="0.5" y="0.35" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.3">
+            <body x="0.0299997" y="-0.15" angle="1.62554e-038" show="1" layer="11" />
+            <body x="0" y="0" angle="0" show="0" layer="10" />
+            <body x="-0.852091" y="-0.0276103" angle="-0.704494" show="1" layer="2" />
+            <body x="0.00999975" y="-0.81" angle="0" show="1" layer="12" />
+            <body x="0.200289" y="0.586931" angle="-0.622248" show="1" layer="4" />
+            <body x="-0.1052" y="0.58099" angle="-6.34491" show="1" layer="6" />
+            <body x="-0.190081" y="1.07052" angle="0.176411" show="1" layer="8" />
+            <body x="0.441455" y="1.0276" angle="-0.774612" show="1" layer="0" />
+            <body x="0.604645" y="1.32707" angle="-0.785398" show="1" layer="1" />
+            <body x="-0.33" y="1.46" angle="0" show="1" layer="3" />
+            <body x="-0.183694" y="-0.318548" angle="0.420749" show="1" layer="5" />
+            <body x="-0.35" y="0.11" angle="0" show="1" layer="7" />
+            <body x="-0.48" y="0.39" angle="0" show="1" layer="9" />
+            <body x="0.27305" y="-0.373007" angle="-0.452983" show="1" layer="13" />
+            <body x="0.457701" y="-0.0131702" angle="-0.622674" show="1" layer="14" />
+            <body x="0.52" y="0.31" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.3">
+            <body x="0.0199995" y="-0.13" angle="1.62554e-038" show="1" layer="11" />
+            <body x="0" y="0" angle="0" show="0" layer="10" />
+            <body x="-0.832091" y="-0.0476098" angle="-0.704494" show="1" layer="2" />
+            <body x="0.0399995" y="-0.8" angle="0" show="1" layer="12" />
+            <body x="-0.0219059" y="0.567505" angle="-0.42112" show="1" layer="4" />
+            <body x="0.140899" y="0.528306" angle="-0.35147" show="1" layer="6" />
+            <body x="-0.0186057" y="1.05869" angle="-0.0941357" show="1" layer="8" />
+            <body x="0.174946" y="1.06969" angle="0.141897" show="1" layer="0" />
+            <body x="-0.1" y="1.42" angle="0" show="1" layer="1" />
+            <body x="0.0599995" y="1.43" angle="0" show="1" layer="3" />
+            <body x="-0.163694" y="-0.298548" angle="0.420749" show="1" layer="5" />
+            <body x="-0.320001" y="0.0899997" angle="0" show="1" layer="7" />
+            <body x="-0.46" y="0.35" angle="0" show="1" layer="9" />
+            <body x="0.26305" y="-0.343008" angle="-0.452983" show="1" layer="13" />
+            <body x="0.387701" y="0.00682831" angle="-0.622674" show="1" layer="14" />
+            <body x="0.46" y="0.28" angle="0" show="1" layer="15" />
+        </frame>
+    </animation>
+</animations>

@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<body animation="ground_anim.xml" x="0" y="0" angle="0">
+	<shape type="box" hx="10.0" hy="1.0" density="35" friction="1" restitution="0" cx="0" cy="0" angle="0" />
+</body>

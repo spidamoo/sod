@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<animation file="pencil man/gun.png.xml"/>
+<animation file="pencil man/sword.png.xml"/>
+<animation file="pencil man/body.png.xml"/>
+<animation file="pencil man/head.png.xml"/>
+<animation file="pencil man/hip.png.xml"/>
+<animation file="pencil man/leg.png.xml"/>
+<animation file="pencil man/forearm.png.xml"/>
+<animation file="pencil man/arm.png.xml"/>
+<animation file="pencil man/foot.png.xml"/>
+<animation file="pencil man/hand.png.xml"/>

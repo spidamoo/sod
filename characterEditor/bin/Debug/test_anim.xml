@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<frames count="3" bodies="3">
+    <frame>
+        <body x="-0.422" y="-0.00399995" angle="0" />
+        <body x="0.0829999" y="0.383" angle="1.38" />
+        <body x="-0.415" y="-0.135" angle="2.827" />
+    </frame>
+    <frame>
+        <body x="-0.422" y="-0.00399995" angle="0" />
+        <body x="0.0829999" y="0.383" angle="1.38" />
+        <body x="-0.656168" y="-0.39009" angle="1.98943" />
+    </frame>
+    <frame>
+        <body x="-0.422" y="-0.00399995" angle="0" />
+        <body x="0.0829999" y="0.383" angle="1.38" />
+        <body x="-1.2506" y="-0.147452" angle="0.327422" />
+    </frame>
+</frames>

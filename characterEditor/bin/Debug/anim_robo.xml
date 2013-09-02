@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<animation file="anim_robo/core.png.xml"/>
+<animation file="anim_robo/leg.b1.png.xml"/>
+<animation file="anim_robo/foot.b.png.xml"/>
+<animation file="anim_robo/leg.b.png.xml"/>
+<animation file="anim_robo/leg.png.xml"/>

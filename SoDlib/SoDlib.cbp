@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SoDlib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="SoDlib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add directory="include" />
+					<Add directory=".." />
+					<Add directory="../hge181/include" />
+				</Compiler>
+				<Linker>
+					<Add library="..\hge181\lib\gcc\libhge.a" />
+					<Add library="..\Box2D\libBox2D.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="SoDlib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="hgeanim.cpp" />
+		<Unit filename="hgecolor.cpp" />
+		<Unit filename="hgefont.cpp" />
+		<Unit filename="hgegui.cpp" />
+		<Unit filename="hgeguictrls.cpp" />
+		<Unit filename="hgerect.cpp" />
+		<Unit filename="hgesprite.cpp" />
+		<Unit filename="include/Animation.h" />
+		<Unit filename="include/Character.h" />
+		<Unit filename="include/CharacterAction.h" />
+		<Unit filename="include/CharacterActionCause.h" />
+		<Unit filename="include/CharacterActionEffect.h" />
+		<Unit filename="include/CharacterHotSpot.h" />
+		<Unit filename="include/Construction.h" />
+		<Unit filename="include/DebugDraw.h" />
+		<Unit filename="include/Exception.h" />
+		<Unit filename="include/GUIWindow.h" />
+		<Unit filename="include/Game.h" />
+		<Unit filename="include/GroundLine.h" />
+		<Unit filename="include/NonPlayerCharacter.h" />
+		<Unit filename="include/PlayerCharacter.h" />
+		<Unit filename="include/SoDlib.h" />
+		<Unit filename="include/hgeGUIMenuItem.h" />
+		<Unit filename="include/tinystr.h" />
+		<Unit filename="include/tinyxml.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/Animation.cpp" />
+		<Unit filename="src/Character.cpp" />
+		<Unit filename="src/CharacterAction.cpp" />
+		<Unit filename="src/CharacterActionCause.cpp" />
+		<Unit filename="src/CharacterActionEffect.cpp" />
+		<Unit filename="src/CharacterHotSpot.cpp" />
+		<Unit filename="src/Construction.cpp" />
+		<Unit filename="src/DebugDraw.cpp" />
+		<Unit filename="src/Exception.cpp" />
+		<Unit filename="src/GUIWindow.cpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/GroundLine.cpp" />
+		<Unit filename="src/NonPlayerCharacter.cpp" />
+		<Unit filename="src/PlayerCharacter.cpp" />
+		<Unit filename="src/hgeGUIMenuItem.cpp" />
+		<Unit filename="tinystr.cpp" />
+		<Unit filename="tinyxml.cpp" />
+		<Unit filename="tinyxmlerror.cpp" />
+		<Unit filename="tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
