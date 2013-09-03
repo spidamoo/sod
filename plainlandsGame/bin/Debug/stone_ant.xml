@@ -8,7 +8,13 @@
     <body animation="monsters\stone_ant\rfoot.png.xml" x="96" y="242" angle="0" />
     <hotspot shape="box" x="37.5" y="77" angle="0" w="0.19" h="0.2" />
     <hotspot shape="box" x="103" y="86" angle="0" w="0.22" h="0.22" />
-    <animation frames="1">
+    <animation frames="1" angles="0">
+		<body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
         <frame length="0.5">
             <body x="-0.03373" y="-0.123177" angle="0.0816639" show="1" layer="2" />
             <body x="-0.2" y="-0.907501" angle="1.65309e-038" show="1" layer="0" />
@@ -38,7 +44,13 @@
             </action>
         </actions>
     </animation>
-    <animation frames="4">
+    <animation frames="4" angles="0">
+		<body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
         <frame length="0.3">
             <body x="-0.123817" y="-0.173936" angle="-0.454031" show="1" layer="2" />
             <body x="-0.574163" y="-0.644114" angle="0.255058" show="1" layer="4" />

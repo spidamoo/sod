@@ -726,6 +726,7 @@ bool saveCharacter(char* fn)
 	for (int i = 0; i < animationsCount; i++) {
         TiXmlElement* animationElem = new TiXmlElement( "animation" );
 		animationElem->SetAttribute("frames", framesCounts[i]);
+		animationElem->SetAttribute("angles", angleCounts[i]);
 		for (int j = 0; j < bodiesCount; j++) {
 			TiXmlElement* bodyElem = new TiXmlElement( "body" );
 			bodyElem->SetAttribute("rotating", animRotating[i][j] ? 1 : 0);

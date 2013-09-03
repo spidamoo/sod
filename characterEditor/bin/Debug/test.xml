@@ -17,7 +17,7 @@
     <body animation="pencil man/forearm.png.xml" x="167" y="2150" angle="0" />
     <body animation="pencil man/hand.png.xml" x="155" y="2201" angle="0" />
     <hotspot shape="box" x="103.609" y="224.42" angle="-0.679293" w="0.28" h="0.92" />
-    <animation frames="1">
+    <animation frames="1" angles="1">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -100,7 +100,7 @@
             </action>
         </actions>
     </animation>
-    <animation frames="4">
+    <animation frames="4" angles="4">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="1" />
@@ -204,7 +204,7 @@
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
-            <body x="0.234609" y="-1.34598" angle="4.75337" show="1" />
+            <body x="0.234609" y="-1.34598" angle="-1.52982" show="1" />
             <body x="0.715265" y="-1.3604" angle="1.18906" show="1" />
             <body x="1.045" y="-1.3175" angle="0" show="1" />
             <body x="0" y="0" angle="0" show="0" />
@@ -215,7 +215,7 @@
         <angle value="-1.57461">
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
-            <body x="0.0184972" y="-2.97168" angle="6.27616" show="1" />
+            <body x="0.0184972" y="-2.97168" angle="-0.00702554" show="1" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
@@ -223,8 +223,8 @@
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
-            <body x="0.0409191" y="-1.65983" angle="3.26081" show="1" />
-            <body x="0.0282109" y="-2.11406" angle="5.83242" show="1" />
+            <body x="0.0409191" y="-1.65983" angle="-3.02238" show="1" />
+            <body x="0.0282109" y="-2.11406" angle="-0.450765" show="1" />
             <body x="0.0250003" y="-2.4125" angle="0" show="1" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
@@ -234,7 +234,7 @@
         <angle value="-3.1166">
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
-            <body x="-1.49124" y="-1.30296" angle="4.72646" show="1" />
+            <body x="-1.49124" y="-1.30296" angle="-1.55673" show="1" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
@@ -243,7 +243,7 @@
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="-0.214005" y="-1.3496" angle="1.65201" show="1" />
-            <body x="-0.595019" y="-1.2963" angle="4.33659" show="1" />
+            <body x="-0.595019" y="-1.2963" angle="-1.9466" show="1" />
             <body x="-0.945" y="-1.2875" angle="0" show="1" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
@@ -253,7 +253,7 @@
         <angle value="1.56071">
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
-            <body x="-0.0288417" y="0.434819" angle="3.15496" show="1" />
+            <body x="-0.0288417" y="0.434819" angle="-3.12823" show="1" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />
             <body x="0" y="0" angle="0" show="0" />

@@ -75,8 +75,11 @@ class Game
 		void setCamera(b2Vec2 pos);
 		void moveScreen(b2Vec2 diff);
 		b2Vec2 getCameraPos();
+		float getWorldMouseX(), getWorldMouseY();
+
 		b2Vec2 getGravity();
 		float getTimeStep();
+
 	protected:
 		b2World* world;
 		HGE* hge;
@@ -101,6 +104,9 @@ class Game
 		int screenWidth, screenHeight;
 
 		b2Vec2 cameraPos;
+		float mouseX, mouseY;
+		float worldMouseX, worldMouseY;
+		float dt;
 
 		bool schematicDrawMode;
 		DebugDraw* debugDraw;

@@ -89,8 +89,22 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
 	frameHotSpotX = new float**[animationsCount];
 	frameHotSpotY = new float**[animationsCount];
 
+	angleAnimAngle = new float**[animationsCount];
+	angleAnimShow = new bool**[animationsCount];
+	angleAnimX = new float**[animationsCount];
+	angleAnimY = new float**[animationsCount];
+	angleCounts = new int[animationsCount];
+	angles = new float*[animationsCount];
+
+	angleHotSpotAngle = new float**[animationsCount];
+	angleHotSpotShow = new bool**[animationsCount];
+	angleHotSpotX = new float**[animationsCount];
+	angleHotSpotY = new float**[animationsCount];
+
 	actionsCounts = new int[animationsCount];
 	actions = new CharacterAction**[animationsCount];
+
+	animRotating = new bool*[animationsCount];
 	i = 0;
 	while (animationElem) {
 		printf("animation\n");
@@ -107,6 +121,19 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
 		frameHotSpotShow[i] = new bool*[framesCounts[i]];
 		frameHotSpotX[i] = new float*[framesCounts[i]];
 		frameHotSpotY[i] = new float*[framesCounts[i]];
+
+		angleCounts[i] = atoi(animationElem->Attribute("angles"));
+
+		angleAnimAngle[i] = new float*[angleCounts[i]];
+		angleAnimShow[i] = new bool*[angleCounts[i]];
+		angleAnimX[i] = new float*[angleCounts[i]];
+		angleAnimY[i] = new float*[angleCounts[i]];
+		angles[i] = new float[angleCounts[i]];
+
+		angleHotSpotAngle[i] = new float*[angleCounts[i]];
+		angleHotSpotShow[i] = new bool*[angleCounts[i]];
+		angleHotSpotX[i] = new float*[angleCounts[i]];
+		angleHotSpotY[i] = new float*[angleCounts[i]];
 
 		TiXmlElement* frameElem = animationElem->FirstChildElement("frame");
 		int j = 0;
@@ -151,6 +178,57 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
 			frameElem = frameElem->NextSiblingElement("frame");
 		}
 
+		frameElem = animationElem->FirstChildElement("angle");
+		j = 0;
+		while (frameElem) {
+			angleAnimAngle[i][j] = new float[bodiesCount];
+			angleAnimShow[i][j] = new bool[bodiesCount];
+			angleAnimX[i][j] = new float[bodiesCount];
+			angleAnimY[i][j] = new float[bodiesCount];
+
+			angleHotSpotAngle[i][j] = new float[hotSpotsCount];
+			angleHotSpotShow[i][j] = new bool[hotSpotsCount];
+			angleHotSpotX[i][j] = new float[hotSpotsCount];
+			angleHotSpotY[i][j] = new float[hotSpotsCount];
+
+			angles[i][j] = atof(frameElem->Attribute("value"));
+			printf("angle %i is %f\n", j, angles[i][j]);
+
+			TiXmlElement* bodyElem = frameElem->FirstChildElement("body");
+			int k = 0;
+			while (bodyElem) {
+				angleAnimX[i][j][k] = atof(bodyElem->Attribute("x"));
+				angleAnimY[i][j][k] = atof(bodyElem->Attribute("y"));
+				angleAnimAngle[i][j][k] = atof(bodyElem->Attribute("angle"));
+				angleAnimShow[i][j][k] = atoi(bodyElem->Attribute("show"));
+				k++;
+				bodyElem = bodyElem->NextSiblingElement("body");
+			}
+
+			bodyElem = frameElem->FirstChildElement("hotspot");
+			k = 0;
+			while (bodyElem) {
+				angleHotSpotX[i][j][k] = atof(bodyElem->Attribute("x"));
+				angleHotSpotY[i][j][k] = atof(bodyElem->Attribute("y"));
+				angleHotSpotAngle[i][j][k] = atof(bodyElem->Attribute("angle"));
+				angleHotSpotShow[i][j][k] = atoi(bodyElem->Attribute("show"));
+				k++;
+				bodyElem = bodyElem->NextSiblingElement("hotspot");
+			}
+
+			j++;
+			frameElem = frameElem->NextSiblingElement("angle");
+		}
+
+		animRotating[i] = new bool[bodiesCount];
+		TiXmlElement* bodyElem = animationElem->FirstChildElement("body");
+		j = 0;
+		while (bodyElem) {
+			animRotating[i][j] = atoi(bodyElem->Attribute("rotating"));
+			j++;
+			bodyElem = bodyElem->NextSiblingElement("body");
+		}
+
 		TiXmlElement* actionsRoot = animationElem->FirstChildElement("actions");
 		if (actionsRoot) {
 			actionsCounts[i] = atoi(actionsRoot->Attribute("count"));
@@ -193,14 +271,27 @@ void Character::draw(bool schematicMode)
 	int offset = turnedRight ? -1 : 1;
 	for (int index = 0; index < bodiesCount; index++) {
 		int i = frameAnimLayer[currentAnimation][currentFrame][index];
-		if (frameAnimShow[currentAnimation][currentFrame][i]) {
-			animations[i]->RenderEx(
-				game->screenX(position.x + offset * animatedValue(frameAnimX[currentAnimation][currentFrame][i], frameAnimX[currentAnimation][nextFrame][i])),
-				game->screenY(position.y + animatedValue(frameAnimY[currentAnimation][currentFrame][i], frameAnimY[currentAnimation][nextFrame][i])),
-				offset * animatedValue(frameAnimAngle[currentAnimation][currentFrame][i], frameAnimAngle[currentAnimation][nextFrame][i]),
-				game->getScaleFactor(),
-				game->getScaleFactor()
-			);
+		if (!animRotating[currentAnimation][i]) {
+			if (frameAnimShow[currentAnimation][currentFrame][i]) {
+				animations[i]->SetFlip(turnedRight, false, true);
+				animations[i]->RenderEx(
+					game->screenX(position.x + offset * animatedValue(frameAnimX[currentAnimation][currentFrame][i], frameAnimX[currentAnimation][nextFrame][i])),
+					game->screenY(position.y + animatedValue(frameAnimY[currentAnimation][currentFrame][i], frameAnimY[currentAnimation][nextFrame][i])),
+					offset * animatedValue(frameAnimAngle[currentAnimation][currentFrame][i], frameAnimAngle[currentAnimation][nextFrame][i]),
+					game->getScaleFactor(),
+					game->getScaleFactor()
+				);
+			}
+		} else {
+			if (angleAnimShow[currentAnimation][currentFrame][i]) {
+				animations[i]->RenderEx(
+					game->screenX(position.x + midanglePosition(angleAnimX[currentAnimation][prevAngle][i], angleAnimX[currentAnimation][nextAngle][i])),
+					game->screenY(position.y + midanglePosition(angleAnimY[currentAnimation][prevAngle][i], angleAnimY[currentAnimation][nextAngle][i])),
+					midangleAngle(angleAnimAngle[currentAnimation][prevAngle][i], angleAnimAngle[currentAnimation][nextAngle][i]),
+					game->getScaleFactor(),
+					game->getScaleFactor()
+				);
+			}
 		}
 	}
 }
@@ -226,6 +317,31 @@ void Character::update(float dt)
 	if (currentTime > time)
 		currentTime = 0;
 
+	angle = atan2(game->getWorldMouseY() - position.y, game->getWorldMouseX() - position.x);
+	prevAngle = 0; nextAngle = 0;
+	float prevDiff = - M_PI * 2;
+	float nextDiff = M_PI * 2;
+	for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+		float nAngle = angles[currentAnimation][i];
+		float pAngle = angles[currentAnimation][i];
+		printf("%i %i %f\n", currentAnimation, i, pAngle);
+		while (nAngle < angle) {
+			nAngle += M_PI * 2;
+		}
+		while (pAngle > angle) {
+			pAngle -= M_PI * 2;
+		}
+		if (nAngle - angle < nextDiff) {
+			nextDiff = nAngle - angle;
+			nextAngle = i;
+		}
+		if (pAngle - angle > prevDiff) {
+			prevDiff = pAngle - angle;
+			prevAngle = i;
+		}
+	}
+
+	angleProgress = (prevDiff / (prevDiff - nextDiff));
 
 	int offset = turnedRight ? -1 : 1;
 	for (int i = 0; i < hotSpotsCount; i++) {
@@ -270,9 +386,9 @@ void Character::update(float dt)
 void Character::turn()
 {
 	turnedRight = !turnedRight;
-	for (int i = 0; i < bodiesCount; i++) {
-		animations[i]->SetFlip(turnedRight, false, true);
-	}
+//	for (int i = 0; i < bodiesCount; i++) {
+////		animations[i]->SetFlip(turnedRight, false, true);
+//	}
 }
 
 void Character::run(float speed)
@@ -314,6 +430,17 @@ void Character::setAnim(int anim)
 float Character::animatedValue(float prev, float next)
 {
 	return prev + (next - prev) * frameProgress;
+}
+float Character::midanglePosition(float prev, float next)
+{
+	return prev + (next - prev) * angleProgress;
+}
+float Character::midangleAngle(float prev, float next)
+{
+	if (next < prev) {
+		next += 2 * M_PI;
+	}
+	return prev + (next - prev) * angleProgress;
 }
 
 b2Vec2 Character::getPosition()
