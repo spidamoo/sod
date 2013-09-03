@@ -1,15 +1,15 @@
 HGE Started..
 
 HGE version: 1.80
-Date: 03.09.2013, 06:41:42
+Date: 03.09.2013, 12:51:53
 
 Application: SoD character editor
-OS: Windows 5.1.2600
-Memory: 2097151K total, 1302616K free
+OS: Windows 6.2.9200
+Memory: 4158580K total, 1208888K free
 
-D3D Driver: nv4_disp.dll
-Description: NVIDIA GeForce 9600M GS  
-Version: 6.14.12.6658
+D3D Driver: igdumd32.dll
+Description: Набор микросхем Intel(R) G41 Express (корпорация Майкрософт - WDDM 1.1)
+Version: 8.15.10.2702
 Mode: 1600 x 900 x X8R8G8B8
 
 Init done.

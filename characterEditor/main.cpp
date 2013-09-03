@@ -297,8 +297,13 @@ float animAngle(int anim)
 			}
 
 			float progress = (prevDiff / (prevDiff - nextDiff));
-			return angleAnimAngle[currentAnimation][prevAngle][anim]
-				+ (angleAnimAngle[currentAnimation][nextAngle][anim] - angleAnimAngle[currentAnimation][prevAngle][anim]) * progress;
+			float pAngle = angleAnimAngle[currentAnimation][prevAngle][anim];
+			float nAngle = angleAnimAngle[currentAnimation][nextAngle][anim];
+			if (nAngle < pAngle) {
+                nAngle += 2 * M_PI;
+			}
+			return pAngle
+				+ (nAngle - pAngle) * progress;
 		}
 	}
 }
@@ -611,8 +616,6 @@ void setHsShow(int hs, bool show)
 int getPointedBody(float x, float y)
 {
 	int selected = -1;
-	//b2Vec2 point(x, y);
-	printf("%i\n", bodiesCount);
 	for (int index = 0; index < bodiesCount; index++) {
 		int i = animLayer(index);
 		if (animShow(i) && !frameAnimHideLayer[currentAnimation][currentFrame][i]) {
@@ -668,7 +671,6 @@ int getPointedHotSpot(float x, float y)
 			}
 		}
 	}
-	printf("%i\n", selected);
 	return selected;
 }
 
@@ -1023,7 +1025,6 @@ void setFrame(int frame, bool resetTime)
 	if (resetTime)
 		currentTime = time;
 	currentFrame = frame;
-	printf("frame %i\n", frame);
 	for (int i = 0; i < bodiesCount; i++) {
 		//animations[i]->SetZ(1.0f - 0.001 * frameAnimLayer[currentAnimation][currentFrame][i]);
 		//animationX[i] = frameAnimX[currentAnimation][currentFrame][i];
@@ -1637,8 +1638,10 @@ bool RenderFunc()
 		//if (frameAnimShow[currentAnimation][currentFrame][i] && !frameAnimHideLayer[currentAnimation][currentFrame][i]) {
 		if (animShow(i) && !animHideLayer(i)) {
 			DWORD color = 0xFFFFFFFF;
-			if ((editMode == EDIT_MODE_FRAMES && animRotating[currentAnimation][i]) ||
-				(editMode == EDIT_MODE_ANGLES && !animRotating[currentAnimation][i])
+			if (mode != MODE_PLAYING && (
+                    (editMode == EDIT_MODE_FRAMES && animRotating[currentAnimation][i]) ||
+                    (editMode == EDIT_MODE_ANGLES && !animRotating[currentAnimation][i])
+                )
 			) {
 				color = 0xAAAAAAAA;
 			}
@@ -1685,8 +1688,10 @@ bool RenderFunc()
 				b2Rot(hsAngle(i))
 			);
 			DWORD color = 0xFFFF0000; DWORD fillcolor = 0xAAFF0000;
-			if ((editMode == EDIT_MODE_FRAMES && hotSpotRotating[currentAnimation][i]) ||
-				(editMode == EDIT_MODE_ANGLES && !hotSpotRotating[currentAnimation][i])
+			if (mode != MODE_PLAYING && (
+                    (editMode == EDIT_MODE_FRAMES && hotSpotRotating[currentAnimation][i]) ||
+                    (editMode == EDIT_MODE_ANGLES && !hotSpotRotating[currentAnimation][i])
+                )
 			) {
 				color = 0xAAAA0000; fillcolor = 0x55AA0000;
 			}
