@@ -16,8 +16,24 @@
     <body animation="pencil man/arm.png.xml" x="172" y="2083" angle="0" />
     <body animation="pencil man/forearm.png.xml" x="167" y="2150" angle="0" />
     <body animation="pencil man/hand.png.xml" x="155" y="2201" angle="0" />
-    <hotspot shape="box" x="116.609" y="217.42" angle="-0.679293" w="0.28" h="0.92" />
+    <hotspot shape="box" x="103.609" y="224.42" angle="-0.679293" w="0.28" h="0.92" />
     <animation frames="1">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
         <frame length="0.5">
             <body x="0" y="-1.14" angle="1.62554e-038" show="1" layer="6" />
             <body x="0" y="0" angle="0" show="0" layer="8" />
@@ -37,6 +53,25 @@
             <body x="0.0799999" y="-0.5675" angle="0" show="1" layer="15" />
             <hotspot x="-0.70245" y="-1.30311" angle="-0.294135" show="1" />
         </frame>
+        <angle value="0">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
         <actions count="3">
             <action>
                 <on causes="1">
@@ -66,6 +101,22 @@
         </actions>
     </animation>
     <animation frames="4">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="1" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="1" />
+        <body rotating="1" />
+        <body rotating="1" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
         <frame length="0.25">
             <body x="-0.0636951" y="-1.17203" angle="-0.253094" show="1" layer="11" />
             <body x="0" y="0" angle="0" show="0" layer="10" />
@@ -83,7 +134,7 @@
             <body x="-0.155689" y="-1.32155" angle="0.680567" show="1" layer="13" />
             <body x="-0.509021" y="-1.10706" angle="1.14832" show="1" layer="14" />
             <body x="-0.7925" y="-1.08" angle="0" show="1" layer="15" />
-            <hotspot x="-0.88907" y="-1.13688" angle="-0.711018" show="0" />
+            <hotspot x="6.19609" y="1.8242" angle="-0.679293" show="0" />
         </frame>
         <frame length="0.25">
             <body x="-0.0888464" y="-1.08353" angle="-0.288055" show="1" layer="11" />
@@ -142,6 +193,82 @@
             <body x="-0.2575" y="-0.7875" angle="0" show="1" layer="15" />
             <hotspot x="-0.963143" y="-0.166813" angle="-0.722275" show="0" />
         </frame>
+        <angle value="0">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="1.60858" y="-1.32176" angle="1.58861" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0.234609" y="-1.34598" angle="4.75337" show="1" />
+            <body x="0.715265" y="-1.3604" angle="1.18906" show="1" />
+            <body x="1.045" y="-1.3175" angle="0" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <angle value="-1.57461">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0.0184972" y="-2.97168" angle="6.27616" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0.0409191" y="-1.65983" angle="3.26081" show="1" />
+            <body x="0.0282109" y="-2.11406" angle="5.83242" show="1" />
+            <body x="0.0250003" y="-2.4125" angle="0" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <angle value="-3.1166">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="-1.49124" y="-1.30296" angle="4.72646" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="-0.214005" y="-1.3496" angle="1.65201" show="1" />
+            <body x="-0.595019" y="-1.2963" angle="4.33659" show="1" />
+            <body x="-0.945" y="-1.2875" angle="0" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <angle value="1.56071">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="-0.0288417" y="0.434819" angle="3.15496" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="-0.0555978" y="-0.846184" angle="0.0897874" show="1" />
+            <body x="-0.0361962" y="-0.451237" angle="2.73325" show="1" />
+            <body x="-0.0249999" y="-0.1175" angle="0" show="1" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
         <actions count="3">
             <action>
                 <on causes="1">

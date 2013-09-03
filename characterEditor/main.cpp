@@ -142,10 +142,43 @@ float animX(int anim)
 		return frameAnimX[currentAnimation][currentFrame][anim]
 			+ (frameAnimX[currentAnimation][nextFrame][anim] - frameAnimX[currentAnimation][currentFrame][anim]) * frameProgress;
 	} else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleAnimX[currentAnimation][0][anim];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleAnimX[currentAnimation][currentFrame][anim];
+		if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleAnimX[currentAnimation][0][anim];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleAnimX[currentAnimation][currentFrame][anim];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleAnimX[currentAnimation][prevAngle][anim]
+				+ (angleAnimX[currentAnimation][nextAngle][anim] - angleAnimX[currentAnimation][prevAngle][anim]) * progress;
 		}
 	}
 }
@@ -169,10 +202,43 @@ float animY(int anim)
 		return frameAnimY[currentAnimation][currentFrame][anim]
 			+ (frameAnimY[currentAnimation][nextFrame][anim] - frameAnimY[currentAnimation][currentFrame][anim]) * frameProgress;
 	} else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleAnimY[currentAnimation][0][anim];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleAnimY[currentAnimation][currentFrame][anim];
+		if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleAnimY[currentAnimation][0][anim];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleAnimY[currentAnimation][currentFrame][anim];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleAnimY[currentAnimation][prevAngle][anim]
+				+ (angleAnimY[currentAnimation][nextAngle][anim] - angleAnimY[currentAnimation][prevAngle][anim]) * progress;
 		}
 	}
 }
@@ -196,10 +262,43 @@ float animAngle(int anim)
 		return frameAnimAngle[currentAnimation][currentFrame][anim]
 			+ (frameAnimAngle[currentAnimation][nextFrame][anim] - frameAnimAngle[currentAnimation][currentFrame][anim]) * frameProgress;
 	} else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleAnimAngle[currentAnimation][0][anim];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleAnimAngle[currentAnimation][currentFrame][anim];
+		if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleAnimAngle[currentAnimation][0][anim];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleAnimAngle[currentAnimation][currentFrame][anim];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleAnimAngle[currentAnimation][prevAngle][anim]
+				+ (angleAnimAngle[currentAnimation][nextAngle][anim] - angleAnimAngle[currentAnimation][prevAngle][anim]) * progress;
 		}
 	}
 }
@@ -251,10 +350,43 @@ float hsX(int hs)
         return frameHotSpotX[currentAnimation][currentFrame][hs]
             + (frameHotSpotX[currentAnimation][nextFrame][hs] - frameHotSpotX[currentAnimation][currentFrame][hs]) * frameProgress;
     } else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleHotSpotX[currentAnimation][0][hs];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleHotSpotX[currentAnimation][currentFrame][hs];
+    	if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleHotSpotX[currentAnimation][0][hs];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleHotSpotX[currentAnimation][currentFrame][hs];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleHotSpotX[currentAnimation][prevAngle][hs]
+				+ (angleHotSpotX[currentAnimation][nextAngle][hs] - angleHotSpotX[currentAnimation][prevAngle][hs]) * progress;
 		}
 	}
 }
@@ -278,10 +410,43 @@ float hsY(int hs)
         return frameHotSpotY[currentAnimation][currentFrame][hs]
             + (frameHotSpotY[currentAnimation][nextFrame][hs] - frameHotSpotY[currentAnimation][currentFrame][hs]) * frameProgress;
     } else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleHotSpotY[currentAnimation][0][hs];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleHotSpotY[currentAnimation][currentFrame][hs];
+    	if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleHotSpotY[currentAnimation][0][hs];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleHotSpotY[currentAnimation][currentFrame][hs];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleHotSpotY[currentAnimation][prevAngle][hs]
+				+ (angleHotSpotY[currentAnimation][nextAngle][hs] - angleHotSpotY[currentAnimation][prevAngle][hs]) * progress;
 		}
 	}
 }
@@ -305,10 +470,43 @@ float hsAngle(int hs)
         return frameHotSpotAngle[currentAnimation][currentFrame][hs]
             + (frameHotSpotAngle[currentAnimation][nextFrame][hs] - frameHotSpotAngle[currentAnimation][currentFrame][hs]) * frameProgress;
     } else {
-		if (editMode == EDIT_MODE_FRAMES) {
-			return angleHotSpotAngle[currentAnimation][0][hs];
-		} else if (editMode == EDIT_MODE_ANGLES) {
-			return angleHotSpotAngle[currentAnimation][currentFrame][hs];
+    	if (mode != MODE_PLAYING) {
+			if (editMode == EDIT_MODE_FRAMES) {
+				return angleHotSpotAngle[currentAnimation][0][hs];
+			} else if (editMode == EDIT_MODE_ANGLES) {
+				return angleHotSpotAngle[currentAnimation][currentFrame][hs];
+			}
+		} else {
+			float x, y;
+			game->getHge()->Input_GetMousePos(&x, &y);
+			float worldX = game->worldX(x);
+			float worldY = game->worldY(y);
+			float angle = atan2(worldY, worldX);
+			int prevAngle = 0; int nextAngle = 0;
+			float prevDiff = - M_PI * 2;
+			float nextDiff = M_PI * 2;
+			for (int i = 0; i < angleCounts[currentAnimation]; i++) {
+				float nAngle = angles[currentAnimation][i];
+				float pAngle = angles[currentAnimation][i];
+				while (nAngle < angle) {
+					nAngle += M_PI * 2;
+				}
+				while (pAngle > angle) {
+					pAngle -= M_PI * 2;
+				}
+				if (nAngle - angle < nextDiff) {
+					nextDiff = nAngle - angle;
+					nextAngle = i;
+				}
+				if (pAngle - angle > prevDiff) {
+					prevDiff = pAngle - angle;
+					prevAngle = i;
+				}
+			}
+
+			float progress = (prevDiff / (prevDiff - nextDiff));
+			return angleHotSpotAngle[currentAnimation][prevAngle][hs]
+				+ (angleHotSpotAngle[currentAnimation][nextAngle][hs] - angleHotSpotAngle[currentAnimation][prevAngle][hs]) * progress;
 		}
 	}
 }
@@ -529,6 +727,7 @@ bool saveCharacter(char* fn)
 		for (int j = 0; j < bodiesCount; j++) {
 			TiXmlElement* bodyElem = new TiXmlElement( "body" );
 			bodyElem->SetAttribute("rotating", animRotating[i][j] ? 1 : 0);
+			animationElem->LinkEndChild( bodyElem );
 		}
         //animationElem->SetAttribute("animation", animationNames[i]);
         for (int j = 0; j < framesCounts[i]; j++) {
@@ -709,8 +908,15 @@ bool loadCharacter(char* fn)
         TiXmlElement* animationElem = characterElem->FirstChildElement("animation");
         i = 0;
         while (animationElem) {
+			int j = 0;
+			TiXmlElement* bodyElem = animationElem->FirstChildElement("body");
+			while (bodyElem) {
+				animRotating[i][j] = atoi(bodyElem->Attribute("rotating"));
+				j++;
+				bodyElem = bodyElem->NextSiblingElement("body");
+			}
+        	j = 0;
         	TiXmlElement* frameElem = animationElem->FirstChildElement("frame");
-        	int j = 0;
         	while (frameElem) {
         		framesLengths[i][j] = atof(frameElem->Attribute("length"));
         		TiXmlElement* bodyElem = frameElem->FirstChildElement("body");
@@ -740,6 +946,37 @@ bool loadCharacter(char* fn)
 				frameElem = frameElem->NextSiblingElement("frame");
         	}
         	framesCounts[i] = j;
+
+        	j = 0;
+        	frameElem = animationElem->FirstChildElement("angle");
+        	while (frameElem) {
+        		angles[i][j] = atof(frameElem->Attribute("value"));
+        		TiXmlElement* bodyElem = frameElem->FirstChildElement("body");
+				int k = 0;
+				while (bodyElem) {
+					angleAnimX[i][j][k] = atof(bodyElem->Attribute("x"));
+					angleAnimY[i][j][k] = atof(bodyElem->Attribute("y"));
+					angleAnimAngle[i][j][k] = atof(bodyElem->Attribute("angle"));
+					angleAnimShow[i][j][k] = atoi(bodyElem->Attribute("show"));
+					k++;
+					bodyElem = bodyElem->NextSiblingElement("body");
+				}
+
+				bodyElem = frameElem->FirstChildElement("hotspot");
+				k = 0;
+				while (bodyElem) {
+					angleHotSpotX[i][j][k] = atof(bodyElem->Attribute("x"));
+					angleHotSpotY[i][j][k] = atof(bodyElem->Attribute("y"));
+					angleHotSpotAngle[i][j][k] = atof(bodyElem->Attribute("angle"));
+					angleHotSpotShow[i][j][k] = atoi(bodyElem->Attribute("show"));
+					k++;
+					bodyElem = bodyElem->NextSiblingElement("hotspot");
+				}
+
+        		j++;
+				frameElem = frameElem->NextSiblingElement("angle");
+        	}
+        	angleCounts[i] = j;
 
         	TiXmlElement* actionsRoot = animationElem->FirstChildElement("actions");
         	actions[i] = new CharacterAction*[256];
@@ -1307,22 +1544,23 @@ bool FrameFunc()
 				selectedHotSpotX = currentX;
 				selectedHotSpotY = currentY;
 
+				if (selectedHotSpotX < 1300) {
+					setHsX(selectedHotSpot, game->worldX(selectedHotSpotX));
+					setHsY(selectedHotSpot, game->worldY(selectedHotSpotY));
+					setHsAngle(selectedHotSpot, selectedHotSpotAngle);
+					setHsShow(selectedHotSpot, true);
+
+				} else {
+					setHsShow(selectedHotSpot, false);
+					hotSpotX[selectedHotSpot] = selectedHotSpotX - 1300;
+					hotSpotY[selectedHotSpot] = selectedHotSpotY + 1000 * currentTab - 450;
+					hotSpotAngle[selectedHotSpot] = selectedHotSpotAngle;
+					if (hotSpotY[selectedHotSpot] < 1000 * currentTab)
+						hotSpotY[selectedHotSpot] = 1000 * currentTab;
+
+				}
+
 				if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
-					if (selectedHotSpotX < 1300) {
-						setHsX(selectedHotSpot, game->worldX(selectedHotSpotX));
-						setHsY(selectedHotSpot, game->worldY(selectedHotSpotY));
-						setHsAngle(selectedHotSpot, selectedHotSpotAngle);
-						setHsShow(selectedHotSpot, true);
-
-					} else {
-						setHsShow(selectedHotSpot, false);
-						hotSpotX[selectedHotSpot] = selectedHotSpotX - 1300;
-						hotSpotY[selectedHotSpot] = selectedHotSpotY + 1000 * currentTab - 450;
-						hotSpotAngle[selectedHotSpot] = selectedHotSpotAngle;
-						if (hotSpotY[selectedHotSpot] < 1000 * currentTab)
-							hotSpotY[selectedHotSpot] = 1000 * currentTab;
-
-					}
 					resetMode();
 				}
 			}
@@ -1441,7 +1679,7 @@ bool RenderFunc()
 	}
 
 	for (int i = 0; i < hotSpotsCount; i++) {
-		if (hsShow(i) && selectedHotSpot != i) {
+		if (hsShow(i)) {
 			b2Transform trans(
 				b2Vec2(hsX(i), hsY(i)),
 				b2Rot(hsAngle(i))
@@ -1475,18 +1713,6 @@ bool RenderFunc()
 
 	//game->getHge()->Gfx_RenderQuad(&grayQuad);
 
-	for (int i = 0; i < hotSpotsCount; i++) {
-		if (!hsShow(i) && selectedHotSpot != i) {
-			b2Transform trans(b2Vec2_zero, b2Rot(hotSpotAngle[i]));
-			game->drawPoly(
-				(b2PolygonShape*)hotSpots[i]->getShape(),
-				trans,
-				b2Vec2(1300 + hotSpotX[i], 450 - 1000 * currentTab + hotSpotY[i]),
-				game->getPixelsPerMeter(),
-				0xFFFF0000, 0xAAFF0000
-			);
-		}
-	}
 //	if (selectedBody != -1) {
 //		float scale = 1;
 //		if (selectedBodyX < 1300) {
@@ -1500,20 +1726,20 @@ bool RenderFunc()
 //			scale
 //		);
 //	}
-	if (selectedHotSpot != -1) {
-		float scale = game->getPixelsPerMeter();
-		if (selectedHotSpotX < 1300) {
-			scale *= game->getScaleFactor();
-		}
-		b2Transform trans(b2Vec2_zero, b2Rot(selectedHotSpotAngle));
-		game->drawPoly(
-			(b2PolygonShape*)hotSpots[selectedHotSpot]->getShape(),
-			trans,
-			b2Vec2(selectedHotSpotX, selectedHotSpotY),
-			scale,
-			0xFFFF0000, 0xAAFF0000
-		);
-	}
+//	if (selectedHotSpot != -1) {
+//		float scale = game->getPixelsPerMeter();
+//		if (selectedHotSpotX < 1300) {
+//			scale *= game->getScaleFactor();
+//		}
+//		b2Transform trans(b2Vec2_zero, b2Rot(selectedHotSpotAngle));
+//		game->drawPoly(
+//			(b2PolygonShape*)hotSpots[selectedHotSpot]->getShape(),
+//			trans,
+//			b2Vec2(selectedHotSpotX, selectedHotSpotY),
+//			scale,
+//			0xFFFF0000, 0xAAFF0000
+//		);
+//	}
 
 	switch (mode) {
 		case MODE_INSERT_ANIM:
@@ -1674,7 +1900,7 @@ bool RenderFunc()
 	game->drawRect(1300 + currentTab * 30, 420, 1330 + currentTab * 30, 450, 0xFF000000, 0);
 
 	for (int i = 0; i < bodiesCount; i++) {
-		if (frameAnimShow[currentAnimation][currentFrame][i]) {
+		if (animShow(i)) {
 		} else {
 //			if (i != selectedBody) {
 				animations[i]->RenderEx(1300 + animationX[i], 450 - 1000 * currentTab + animationY[i], animationAngle[i], 1, 1);
@@ -1689,6 +1915,19 @@ bool RenderFunc()
 
 				game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, color, 0);
 //			}
+		}
+	}
+
+	for (int i = 0; i < hotSpotsCount; i++) {
+		if (!hsShow(i)) {
+			b2Transform trans(b2Vec2_zero, b2Rot(hotSpotAngle[i]));
+			game->drawPoly(
+				(b2PolygonShape*)hotSpots[i]->getShape(),
+				trans,
+				b2Vec2(1300 + hotSpotX[i], 450 - 1000 * currentTab + hotSpotY[i]),
+				game->getPixelsPerMeter(),
+				0xFFFF0000, 0xAAFF0000
+			);
 		}
 	}
 
