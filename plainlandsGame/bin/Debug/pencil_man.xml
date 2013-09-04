@@ -349,7 +349,7 @@
                     <cause type="201" param="0" />
                 </on>
                 <do effects="1">
-                    <effect type="3" param="9" param2="0" />
+                    <effect type="3" param="0.5" param2="0" />
                 </do>
             </action>
             <action>

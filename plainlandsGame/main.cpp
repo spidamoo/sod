@@ -52,8 +52,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	if (game->preload()) {
 		//game->loadConstruction("ground.xml", b2Vec2(10, 5), b2_staticBody);
 		game->loadPlayerCharacter("pencil_man.xml", b2Vec2(2, 0));
-		game->loadNonPlayerCharacter("stone_ant.xml", b2Vec2(8, 0));
-		game->addGroundLine(new GroundLine(game, -1, 2, 20, 3));
+		//game->loadNonPlayerCharacter("stone_ant.xml", b2Vec2(8, 0));
+		//game->addGroundLine(new GroundLine(game, -1, 2, 20, 3));
+		game->loadMap("map.xml");
 		game->moveCamera(b2Vec2(0, -4.5));
 		game->loop();
 	}

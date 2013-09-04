@@ -59,6 +59,15 @@ float GroundLine::getSinA()
 	return sinA;
 }
 
+int GroundLine::getType()
+{
+    if (angle > M_PI_4 || angle < -M_PI_4) {
+        return GROUND_LINE_TYPE_WALL;
+    } else {
+        return GROUND_LINE_TYPE_FLOOR;
+    }
+}
+
 b2Vec2 GroundLine::getStartPoint()
 {
 	return startPoint;
@@ -68,7 +77,22 @@ b2Vec2 GroundLine::getEndPoint()
 	return endPoint;
 }
 
+void GroundLine::debugDraw(DWORD color)
+{
+	game->drawLine(game->screenPos(startPoint), game->screenPos(endPoint), color);
+}
 void GroundLine::debugDraw()
 {
-	game->drawLine(game->screenPos(startPoint), game->screenPos(endPoint), 0xFFFFFFFF);
+	debugDraw(0xFFFFFFFF);
+}
+
+float GroundLine::horizontalDistanceTo(float x)
+{
+    if (x < startPoint.x) {
+        return startPoint.x - x;
+    }
+    if (x > endPoint.x) {
+        return x - endPoint.x;
+    }
+    return 0;
 }

@@ -10,6 +10,7 @@ class Character;
 class PlayerCharacter;
 class NonPlayerCharacter;
 class GroundLine;
+class MapAnimation;
 class DebugDraw;
 class Game;
 class hgeGUIMenuItem;
@@ -37,6 +38,7 @@ typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 #include <NonPlayerCharacter.h>
 #include <PlayerCharacter.h>
 #include <GroundLine.h>
+#include <MapAnimation.h>
 #include <DebugDraw.h>
 
 #include <GUIWindow.h>

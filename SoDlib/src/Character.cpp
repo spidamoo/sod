@@ -324,7 +324,6 @@ void Character::update(float dt)
 	for (int i = 0; i < angleCounts[currentAnimation]; i++) {
 		float nAngle = angles[currentAnimation][i];
 		float pAngle = angles[currentAnimation][i];
-		printf("%i %i %f\n", currentAnimation, i, pAngle);
 		while (nAngle < angle) {
 			nAngle += M_PI * 2;
 		}
@@ -352,31 +351,39 @@ void Character::update(float dt)
 		}
 	}
 
+    if (onGround == -1) {
+		speed += (dt * game->getGravity());
+		prevPosition = position;
+		position += (dt * speed);
+		float distance = width;
+
+		for (int i = 0; i < game->getGroundLinesCount(); i++) {
+			if (!(game->getGroundLine(i)->characterIntersects(this) == b2Vec2_zero)
+                && (game->getGroundLine(i)->horizontalDistanceTo(position.x) < distance)
+            ) {
+				onGround = i;
+				distance = game->getGroundLine(i)->horizontalDistanceTo(position.x);
+			}
+		}
+		if (onGround != -1) {
+            printf("distance %f %d \n", distance, onGround);
+            position.y = game->getGroundLine(onGround)->yAt(position.x) - halfHeight;
+            speed = b2Vec2_zero;
+		}
+	}
+
 	for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
 		if (actions[currentAnimation][i]->take(game, this)) {
 		}
 	}
 
-	//onGround = false;
-
-	if (onGround > -1) {
+    if (onGround > -1) {
 		if (
-			position.x + halfWidth > game->getGroundLine(onGround)->getEndPoint().x ||
-			position.x - halfWidth < game->getGroundLine(onGround)->getStartPoint().x
+			position.x - halfWidth > game->getGroundLine(onGround)->getEndPoint().x ||
+			position.x + halfWidth < game->getGroundLine(onGround)->getStartPoint().x
 		) {
+		    printf("you no longer on ground\n");
 			onGround = -1;
-		}
-	} else {
-		speed += (dt * game->getGravity());
-		prevPosition = position;
-		position += (dt * speed);
-
-		for (int i = 0; i < game->getGroundLinesCount(); i++) {
-			if (!(game->getGroundLine(i)->characterIntersects(this) == b2Vec2_zero)) {
-				position.y = game->getGroundLine(i)->yAt(position.x) - halfHeight;
-				speed = b2Vec2_zero;
-				onGround = i;
-			}
 		}
 	}
 
@@ -420,7 +427,6 @@ void Character::jump(b2Vec2 speed)
 
 void Character::setAnim(int anim)
 {
-	printf("anim %i\n", anim);
 	currentAnimation = anim;
 	currentFrame = 0;
 	nextFrame = 0;

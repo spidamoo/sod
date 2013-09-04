@@ -60,15 +60,13 @@
 		<Unit filename="include/GUIWindow.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/GroundLine.h" />
+		<Unit filename="include/MapAnimation.h" />
 		<Unit filename="include/NonPlayerCharacter.h" />
 		<Unit filename="include/PlayerCharacter.h" />
 		<Unit filename="include/SoDlib.h" />
 		<Unit filename="include/hgeGUIMenuItem.h" />
 		<Unit filename="include/tinystr.h" />
 		<Unit filename="include/tinyxml.h" />
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/Animation.cpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/CharacterAction.cpp" />
@@ -81,6 +79,7 @@
 		<Unit filename="src/GUIWindow.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GroundLine.cpp" />
+		<Unit filename="src/MapAnimation.cpp" />
 		<Unit filename="src/NonPlayerCharacter.cpp" />
 		<Unit filename="src/PlayerCharacter.cpp" />
 		<Unit filename="src/hgeGUIMenuItem.cpp" />

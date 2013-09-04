@@ -13,8 +13,8 @@ Game::Game(HGE * hge)
 	hge->System_SetState(HGE_SCREENBPP, 32);
 	hge->System_SetState(HGE_FPS, 60);
 
-	groundLines = new GroundLine*[1000];
-	groundLinesCount = 0;
+	groundLines = new GroundLine*[1000]; groundLinesCount = 0;
+	mapAnimations = new MapAnimation*[1000]; mapAnimationsCount = 0;
 	characters = new Character*[100];
 	charactersCount = 0;
 
@@ -31,6 +31,8 @@ Game::Game(HGE * hge)
 	scaleFactor = 1.0f;
 
 	gravity = b2Vec2(0, 20);
+
+	mapWidth = 10; mapHeight = 10;
 
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
@@ -222,6 +224,9 @@ void Game::drawGame()
 {
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->draw(schematicDrawMode);
+	}
+	for (int i = 0; i < mapAnimationsCount; i++) {
+        mapAnimations[i]->draw(schematicDrawMode);
 	}
 	if (schematicDrawMode) {
 		for (int i = 0; i < groundLinesCount; i++) {
@@ -566,6 +571,11 @@ void Game::addGroundLine(GroundLine* newGL)
 	groundLines[groundLinesCount] = newGL;
 	groundLinesCount++;
 }
+void Game::addMapAnimation(MapAnimation* newMA)
+{
+	mapAnimations[mapAnimationsCount] = newMA;
+	mapAnimationsCount++;
+}
 
 int Game::getCharactersCount()
 {
@@ -721,5 +731,65 @@ b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
 	// Return the point of intersection
 	b2Vec2 ret(x, y);
 	return ret;
+}
+
+void Game::loadMap(char* fn)
+{
+	//mapAnimations = new hgeAnimation*[256];
+
+	//animationsCount = 0;
+
+	//animationX = new float[256];
+	//animationY = new float[256];
+	//animationAngle = new float[256];
+	//animationNames = new char*[256];
+
+
+	printf("loading map %s ... \n", fn);
+    TiXmlDocument doc(fn);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("map");
+
+        if (root->Attribute("width")) {
+			mapWidth = atof(root->Attribute("width"));
+		}
+    	if (root->Attribute("height")) {
+			mapHeight = atof(root->Attribute("height"));
+		}
+
+        TiXmlElement* element = root->FirstChildElement("animation");
+        int i = 0;
+        while (element) {
+        	printf("loading animation...\n");
+        	float x = atof(element->Attribute("x"));
+			float y = atof(element->Attribute("y"));
+			float angle = atof(element->Attribute("angle"));
+
+			char* animationName = (char*)element->Attribute("file");
+			hgeAnimation* animation = loadAnimation(animationName);
+			delete animationName;
+
+			addMapAnimation(new MapAnimation(this, animation, x, y, angle));
+
+			i++;
+            element = element->NextSiblingElement("animation");
+        }
+        mapAnimationsCount = i;
+
+        i = 0;
+        element = root->FirstChildElement("ground_line");
+        while (element) {
+        	printf("loading ground line...\n");
+			addGroundLine(new GroundLine(this, atof(element->Attribute("x1")), atof(element->Attribute("y1")), atof(element->Attribute("x2")), atof(element->Attribute("y2"))));
+
+			i++;
+            element = element->NextSiblingElement("ground_line");
+        }
+        groundLinesCount = i;
+    } else {
+        printf("failed\n");
+    }
+
 }
 

@@ -45,7 +45,8 @@ class Game
 		Character* loadPlayerCharacter(char * fn, b2Vec2 origin);
 		Character* loadNonPlayerCharacter(char * fn, b2Vec2 origin);
 		b2Fixture* loadFixture(b2Body* body, TiXmlElement* elem);
-		void addGroundLine(GroundLine* newGL);
+		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA);
+		void loadMap(char* fn);
 
 		int getCharactersCount();
 		Character* getCharacter(int index);
@@ -90,8 +91,8 @@ class Game
 		hgeQuad whiteQuad;
 		hgeTriple whiteTriple;
 
-		GroundLine** groundLines;
-		int groundLinesCount;
+		GroundLine** groundLines; int groundLinesCount;
+		MapAnimation** mapAnimations; int mapAnimationsCount;
 		char** animationNames;
 		int animationsCount;
 		Character** characters;
@@ -102,6 +103,7 @@ class Game
 		int32 positionIterations;
 
 		int screenWidth, screenHeight;
+		float mapWidth, mapHeight;
 
 		b2Vec2 cameraPos;
 		float mouseX, mouseY;

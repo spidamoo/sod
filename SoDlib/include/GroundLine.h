@@ -12,9 +12,11 @@ class GroundLine
 		b2Vec2 characterIntersects(Character* character);
 		float yAt(float x);
 		float getCosA(), getSinA();
+		int getType();
 		b2Vec2 getStartPoint(), getEndPoint();
+		float horizontalDistanceTo(float x);
 
-		void debugDraw();
+		void debugDraw(), debugDraw(DWORD color);
 	protected:
 		b2Vec2 startPoint, endPoint;
 		float k;
@@ -22,5 +24,8 @@ class GroundLine
 		Game* game;
 	private:
 };
+
+const int GROUND_LINE_TYPE_FLOOR = 0;
+const int GROUND_LINE_TYPE_WALL  = 1;
 
 #endif // GROUNDLINE_H

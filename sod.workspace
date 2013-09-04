@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="plainlandsGame/plainlandsGame.cbp" active="1" />
+		<Project filename="plainlandsGame/plainlandsGame.cbp" />
 		<Project filename="SoDlib/SoDlib.cbp" />
 		<Project filename="constructionEditor/constructionEditor.cbp" />
 		<Project filename="characterEditor/characterEditor.cbp">
 			<Depends filename="SoDlib/SoDlib.cbp" />
 		</Project>
+		<Project filename="mapEditor/mapEditor.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
