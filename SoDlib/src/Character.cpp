@@ -298,7 +298,6 @@ void Character::draw(bool schematicMode)
 
 void Character::update(float dt)
 {
-
 	currentTime += dt;
 	float time = 0;
 	int frame = 0;
@@ -351,25 +350,30 @@ void Character::update(float dt)
 		}
 	}
 
-    if (onGround == -1) {
-		speed += (dt * game->getGravity());
-		prevPosition = position;
-		position += (dt * speed);
-		float distance = width;
+	prevPosition = position;
+	//onGround = -1;
 
-		for (int i = 0; i < game->getGroundLinesCount(); i++) {
-			if (!(game->getGroundLine(i)->characterIntersects(this) == b2Vec2_zero)
-                && (game->getGroundLine(i)->horizontalDistanceTo(position.x) < distance)
-            ) {
+	float h = position.y;
+	for (int i = 0; i < game->getGroundLinesCount(); i++) {
+		if (
+			game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR
+			&& !(game->getGroundLine(i)->characterIntersects(this, GROUND_LINE_INTERSECTION_TYPE_FULL) == b2Vec2_zero)
+			&& speed.y >= 0
+		) {
+
+			h = game->getGroundLine(i)->yAt(position.x) - halfHeight;
+			if (h < position.y) {
+				position.y = h;
 				onGround = i;
-				distance = game->getGroundLine(i)->horizontalDistanceTo(position.x);
 			}
 		}
-		if (onGround != -1) {
-            printf("distance %f %d \n", distance, onGround);
-            position.y = game->getGroundLine(onGround)->yAt(position.x) - halfHeight;
-            speed = b2Vec2_zero;
-		}
+	}
+
+	if (onGround != -1) {
+		speed = b2Vec2_zero;
+	} else {
+		speed += (dt * game->getGravity());
+		position += (dt * speed);
 	}
 
 	for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
@@ -379,8 +383,8 @@ void Character::update(float dt)
 
     if (onGround > -1) {
 		if (
-			position.x - halfWidth > game->getGroundLine(onGround)->getEndPoint().x ||
-			position.x + halfWidth < game->getGroundLine(onGround)->getStartPoint().x
+			position.x > game->getGroundLine(onGround)->getEndPoint().x ||
+			position.x < game->getGroundLine(onGround)->getStartPoint().x
 		) {
 		    printf("you no longer on ground\n");
 			onGround = -1;

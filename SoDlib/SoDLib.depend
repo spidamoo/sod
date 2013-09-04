@@ -67,7 +67,7 @@
 1354450463 d:\work\git\sod\sodlib\include\animation.h
 	<SoDlib.h>
 
-1377882470 d:\work\git\sod\sodlib\include\sodlib.h
+1378318649 d:\work\git\sod\sodlib\include\sodlib.h
 	<hge.h>
 	<hgeanim.h>
 	<hgegui.h>
@@ -86,6 +86,7 @@
 	<NonPlayerCharacter.h>
 	<PlayerCharacter.h>
 	<GroundLine.h>
+	<MapAnimation.h>
 	<DebugDraw.h>
 	<GUIWindow.h>
 	<hgeGUIMenuItem.h>
@@ -269,7 +270,7 @@
 	<stdio.h>
 	<string.h>
 
-1378233308 d:\work\git\sod\sodlib\include\game.h
+1378318649 d:\work\git\sod\sodlib\include\game.h
 	<SoDlib.h>
 
 1357404989 d:\work\git\sod\sodlib\include\construction.h
@@ -296,7 +297,7 @@
 1364063810 d:\work\git\sod\sodlib\include\playercharacter.h
 	<SoDlib.h>
 
-1377891472 d:\work\git\sod\sodlib\include\groundline.h
+1378324718 d:\work\git\sod\sodlib\include\groundline.h
 	<SoDlib.h>
 
 1363638071 d:\work\git\sod\sodlib\include\debugdraw.h
@@ -330,10 +331,10 @@
 1341681952 source:d:\work\git\sod\sodlib\src\exception.cpp
 	"Exception.h"
 
-1378233302 source:d:\work\git\sod\sodlib\src\game.cpp
+1378318649 source:d:\work\git\sod\sodlib\src\game.cpp
 	"Game.h"
 
-1377891556 source:d:\work\git\sod\sodlib\src\groundline.cpp
+1378324797 source:d:\work\git\sod\sodlib\src\groundline.cpp
 	"GroundLine.h"
 
 1377939083 source:d:\work\git\sod\sodlib\src\guiwindow.cpp
@@ -351,7 +352,7 @@
 1305386698 source:d:\work\git\sod\sodlib\tinystr.cpp
 	"tinystr.h"
 
-1305386698 source:d:\work\git\sod\sodlib\tinyxml.cpp
+1378318649 source:d:\work\git\sod\sodlib\tinyxml.cpp
 	<ctype.h>
 	<sstream>
 	<iostream>
@@ -742,4 +743,13 @@
 
 1378305920 source:d:\www\git\sod\sodlib\src\mapanimation.cpp
 	"MapAnimation.h"
+
+1378318649 d:\work\git\sod\sodlib\include\mapanimation.h
+	<SoDlib.h>
+
+1378318649 source:d:\work\git\sod\sodlib\src\mapanimation.cpp
+	"MapAnimation.h"
+
+1378324749 source:d:\work\git\sod\sodlib\src\character.cpp
+	"Character.h"
 

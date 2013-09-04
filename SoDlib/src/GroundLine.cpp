@@ -26,23 +26,33 @@ GroundLine::~GroundLine()
 	//dtor
 }
 
-b2Vec2 GroundLine::characterIntersects(Character* character)
+b2Vec2 GroundLine::characterIntersects(Character* character, int type)
 {
-	b2Vec2 intersectPoint = intersection(
-		startPoint,
-		endPoint,
-		b2Vec2(character->getX() - character->getHalfWidth(), character->getY() - character->getHalfHeight()),
-		b2Vec2(character->getX() + character->getHalfWidth(), character->getY() + character->getHalfHeight())
-	);
-	if (intersectPoint == b2Vec2_zero) {
-		intersectPoint = intersection(
+	if (type == GROUND_LINE_INTERSECTION_TYPE_FULL) {
+		b2Vec2 intersectPoint = intersection(
 			startPoint,
 			endPoint,
-			b2Vec2(character->getX() - character->getHalfWidth(), character->getY() + character->getHalfHeight()),
-			b2Vec2(character->getX() + character->getHalfWidth(), character->getY() - character->getHalfHeight())
+			b2Vec2(character->getX() - character->getHalfWidth(), character->getY() - character->getHalfHeight()),
+			b2Vec2(character->getX() + character->getHalfWidth(), character->getY() + character->getHalfHeight())
 		);
+		if (intersectPoint == b2Vec2_zero) {
+			intersectPoint = intersection(
+				startPoint,
+				endPoint,
+				b2Vec2(character->getX() - character->getHalfWidth(), character->getY() + character->getHalfHeight()),
+				b2Vec2(character->getX() + character->getHalfWidth(), character->getY() - character->getHalfHeight())
+			);
+		}
+		return intersectPoint;
+	} else if (type == GROUND_LINE_INTERSECTION_TYPE_MIDDLE) {
+		b2Vec2 intersectPoint = intersection(
+			startPoint,
+			endPoint,
+			b2Vec2(character->getX(), character->getY() - character->getHalfHeight()),
+			b2Vec2(character->getX(), character->getY() + character->getHalfHeight())
+		);
+		return intersectPoint;
 	}
-	return intersectPoint;
 }
 
 float GroundLine::yAt(float x)
@@ -57,6 +67,10 @@ float GroundLine::getCosA()
 float GroundLine::getSinA()
 {
 	return sinA;
+}
+float GroundLine::getK()
+{
+	return k;
 }
 
 int GroundLine::getType()
