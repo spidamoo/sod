@@ -164,7 +164,9 @@ bool Game::update(bool withPhysics)
 	// Get the time elapsed since last call of FrameFunc().
 	// This will help us to synchronize on different
 	// machines and video modes.
-	float dt = hge->Timer_GetDelta();
+	dt = hge->Timer_GetDelta();
+	hge->Input_GetMousePos(&mouseX, &mouseY);
+	worldMouseX = worldX(mouseX); worldMouseY = worldY(mouseY);
 	if (withPhysics) updateWorld(dt);
 	updateGui(dt);
 
@@ -651,6 +653,14 @@ void Game::setCamera(b2Vec2 pos)
 b2Vec2 Game::getCameraPos()
 {
 	return cameraPos;
+}
+float Game::getWorldMouseX()
+{
+	return worldMouseX;
+}
+float Game::getWorldMouseY()
+{
+	return worldMouseY;
 }
 void Game::moveScreen(b2Vec2 diff)
 {

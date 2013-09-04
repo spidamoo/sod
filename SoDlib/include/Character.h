@@ -27,7 +27,7 @@ class Character
 
 		void setAnim(int anim);
 
-		float animatedValue(float prev, float next);
+		float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
 
 		b2Vec2 getPosition();
 		void setPosition(b2Vec2 newPos);
@@ -53,23 +53,27 @@ class Character
 		int*** frameAnimLayer;
 		bool*** frameAnimShow;
 
-		float*** angleAnimX, angleAnimY, angleAnimAngle;
-		int*** angleAnimLayer; bool angleAnimShow;
-
 		float*** frameHotSpotX;
 		float*** frameHotSpotY;
 		float*** frameHotSpotAngle;
 		bool*** frameHotSpotShow;
 
+		float*** angleAnimX; float*** angleAnimY; float*** angleAnimAngle;
+		float*** angleHotSpotX; float*** angleHotSpotY; float*** angleHotSpotAngle;
+		bool*** angleHotSpotShow;
+		bool*** angleAnimShow;
+		int* angleCounts; float** angles;
+		bool** animRotating, hotSpotRotating;
+
 		float height, width, halfHeight, halfWidth;
 		int* framesCounts;
 		float** framesLengths;
-		int currentFrame;
-		int nextFrame;
+		int currentFrame, nextFrame;
 		int animationsCount;
 		int currentAnimation;
 		float currentTime;
-		float frameProgress;
+		int prevAngle, nextAngle;
+		float frameProgress, angleProgress;
 
 		int* actionsCounts;
 
