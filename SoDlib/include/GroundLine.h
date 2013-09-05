@@ -10,7 +10,7 @@ class GroundLine
 		virtual ~GroundLine();
 
 		b2Vec2 characterIntersects(Character* character, int type);
-		float yAt(float x);
+		float yAt(float x), xAt(float y);
 		float getCosA(), getSinA();
 		float getK();
 		int getType();
@@ -20,7 +20,7 @@ class GroundLine
 		void debugDraw(), debugDraw(DWORD color);
 	protected:
 		b2Vec2 startPoint, endPoint;
-		float k;
+		float k, inversedK;
 		float angle, sinA, cosA;
 		Game* game;
 	private:

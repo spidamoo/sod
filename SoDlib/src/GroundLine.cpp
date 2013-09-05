@@ -19,6 +19,7 @@ GroundLine::GroundLine(Game* game, float x1, float y1, float x2, float y2)
 	sinA = sin(angle);
 	cosA = cos(angle);
 	k = (y2 - y1) / (x2 - x1);
+	inversedK = 1 / k;
 }
 
 GroundLine::~GroundLine()
@@ -58,6 +59,10 @@ b2Vec2 GroundLine::characterIntersects(Character* character, int type)
 float GroundLine::yAt(float x)
 {
 	return startPoint.y + (x - startPoint.x) * k;
+}
+float GroundLine::xAt(float y)
+{
+	return startPoint.x + (y - startPoint.y) * inversedK;
 }
 
 float GroundLine::getCosA()

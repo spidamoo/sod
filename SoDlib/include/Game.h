@@ -61,6 +61,7 @@ class Game
 
 		int getScreenWidth(), getScreenHeight();
 		float getWorldScreenWidth(), getWorldScreenHeight();
+		float getMapWidth(), getMapHeight();
 
 		float worldX(float screenX);
 		float worldY(float screenY);

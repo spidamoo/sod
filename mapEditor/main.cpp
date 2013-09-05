@@ -277,8 +277,11 @@ bool FrameFunc()
 				animations[animationsCount] = beingInsertedAnim;
 
 				animationsCount++;
-				resetMode();
 			}
+			if (game->getHge()->Input_KeyUp(HGEK_RBUTTON)) {
+                resetMode();
+            }
+
 			break;
         case MODE_ANIM_DRAG:
 			if (selectedAnim != -1) {
@@ -417,11 +420,15 @@ bool RenderFunc()
             }
 			break;
         case MODE_INSERT_GL_STEP2:
-            DWORD color = 0xFFFFFFAA;
-            if (abs(game->screenY(dragOffsetY) - y) > abs(game->screenX(dragOffsetX) - x)) {
-                color = 0xFF00FFAA;
+            if (worldX <= 0 || worldX >= width || worldY <= 0 || worldY >= height) {
+                disabledIcon->Render(x, y);
+            } else {
+                DWORD color = 0xFFFFFFAA;
+                if (abs(game->screenY(dragOffsetY) - y) > abs(game->screenX(dragOffsetX) - x)) {
+                    color = 0xFF00FFAA;
+                }
+                game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, color);
             }
-            game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, color);
 			break;
 	}
 

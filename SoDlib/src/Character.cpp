@@ -351,23 +351,6 @@ void Character::update(float dt)
 	}
 
 	prevPosition = position;
-	//onGround = -1;
-
-	float h = position.y;
-	for (int i = 0; i < game->getGroundLinesCount(); i++) {
-		if (
-			game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR
-			&& !(game->getGroundLine(i)->characterIntersects(this, GROUND_LINE_INTERSECTION_TYPE_FULL) == b2Vec2_zero)
-			&& speed.y >= 0
-		) {
-
-			h = game->getGroundLine(i)->yAt(position.x) - halfHeight;
-			if (h < position.y) {
-				position.y = h;
-				onGround = i;
-			}
-		}
-	}
 
 	if (onGround != -1) {
 		speed = b2Vec2_zero;
@@ -375,6 +358,67 @@ void Character::update(float dt)
 		speed += (dt * game->getGravity());
 		position += (dt * speed);
 	}
+
+	float h = position.y;
+	for (int i = 0; i < game->getGroundLinesCount(); i++) {
+		if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR) {
+			if (
+                position.x > game->getGroundLine(i)->getStartPoint().x && position.x < game->getGroundLine(i)->getEndPoint().x
+            ) {
+                if (prevPosition.y < game->getGroundLine(i)->yAt(position.x) && position.y + halfHeight > game->getGroundLine(i)->yAt(position.x)) {
+                    onGround = i;
+                    position.y = game->getGroundLine(i)->yAt(position.x) - halfHeight;
+                } else if (prevPosition.y > game->getGroundLine(i)->yAt(position.x) && position.y - halfHeight < game->getGroundLine(i)->yAt(position.x)) {
+                    position.y = game->getGroundLine(i)->yAt(position.x) + halfHeight;
+                    speed.y = 0;
+                }
+			}
+		} else {
+		    if (game->getGroundLine(i)->getK() > 0) {
+                if (
+                    position.y - halfHeight > game->getGroundLine(i)->getStartPoint().y
+                    && position.y + halfHeight < game->getGroundLine(i)->getEndPoint().y
+                ) {
+                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
+                        speed.x = 0;
+                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        speed.x = 0;
+                    }
+                } else (
+                    position.y - halfHeight > game->getGroundLine(i)->getEndPoint().y
+                    && position.y + halfHeight < game->getGroundLine(i)->getStartPoint().y
+                ) {
+                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
+                        speed.x = 0;
+                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        speed.x = 0;
+                    }
+                }
+			}
+		}
+	}
+
+	if (position.x > game->getMapWidth()) {
+        position.x = game->getMapWidth();
+        speed.x = 0;
+	}
+	if (position.x < 0) {
+        position.x = 0;
+        speed.x = 0;
+	}
+	if (position.y > game->getMapHeight()) {
+        position.y = game->getMapHeight();
+        speed.y = 0;
+	}
+	if (position.y < 0) {
+        position.y = 0;
+        speed.y = 0;
+	}
+
 
 	for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
 		if (actions[currentAnimation][i]->take(game, this)) {
@@ -386,7 +430,6 @@ void Character::update(float dt)
 			position.x > game->getGroundLine(onGround)->getEndPoint().x ||
 			position.x < game->getGroundLine(onGround)->getStartPoint().x
 		) {
-		    printf("you no longer on ground\n");
 			onGround = -1;
 		}
 	}

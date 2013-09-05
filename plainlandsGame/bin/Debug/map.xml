@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<map animations="7" ground_lines="5">
+<map animations="23" ground_lines="13">
     <animation file="bgs\ground.png.xml" x="0.64" y="3.54" angle="0" />
     <animation file="bgs\ground.png.xml" x="1.92" y="3.54" angle="0" />
     <animation file="bgs\ground.png.xml" x="3.2" y="3.54" angle="0" />
@@ -7,9 +7,33 @@
     <animation file="bgs\ground.png.xml" x="5.4821" y="2.69664" angle="-0.614396" />
     <animation file="bgs\ground.png.xml" x="6.57583" y="2.15248" angle="-0.301034" />
     <animation file="bgs\ground.png.xml" x="7.79" y="1.97" angle="0" />
+    <animation file="bgs\ground.png.xml" x="9.52" y="4.15" angle="0" />
+    <animation file="bgs\ground.png.xml" x="8.2983" y="4.35003" angle="-0.338648" />
+    <animation file="bgs\ground.png.xml" x="7.14411" y="4.82791" angle="-0.42545" />
+    <animation file="bgs\ground.png.xml" x="5.99835" y="5.40918" angle="-0.498583" />
+    <animation file="bgs\ground.png.xml" x="4.90121" y="6.04532" angle="-0.573639" />
+    <animation file="bgs\ground.png.xml" x="3.765" y="6.4" angle="0" />
+    <animation file="bgs\ground.png.xml" x="2.495" y="6.4" angle="0" />
+    <animation file="bgs\ground.png.xml" x="0.620003" y="9.615" angle="0" />
+    <animation file="bgs\ground.png.xml" x="1.9" y="9.615" angle="0" />
+    <animation file="bgs\ground.png.xml" x="3.175" y="9.615" angle="0" />
+    <animation file="bgs\ground.png.xml" x="4.45" y="9.615" angle="0" />
+    <animation file="bgs\ground.png.xml" x="5.73" y="9.61" angle="0" />
+    <animation file="bgs\ground.png.xml" x="7.005" y="9.605" angle="0" />
+    <animation file="bgs\ground.png.xml" x="8.285" y="9.605" angle="0" />
+    <animation file="bgs\ground.png.xml" x="9.49" y="9.605" angle="0" />
+    <animation file="bgs\ground.png.xml" x="0.580002" y="7.96" angle="0" />
     <ground_line x1="0.00250059" y1="3.4575" x2="3.8075" y2="3.46" />
     <ground_line x1="3.8075" y1="3.46" x2="4.915" y2="3" />
     <ground_line x1="4.915" y1="3" x2="5.955" y2="2.26" />
     <ground_line x1="5.955" y1="2.26" x2="7.15001" y2="1.885" />
     <ground_line x1="7.15001" y1="1.885" x2="8.43251" y2="1.89" />
+    <ground_line x1="8.89" y1="4.06" x2="10.1" y2="4.055" />
+    <ground_line x1="7.66749" y1="4.4925" x2="8.89" y2="4.06" />
+    <ground_line x1="6.51999" y1="5.02751" x2="7.66749" y2="4.4925" />
+    <ground_line x1="5.39249" y1="5.63251" x2="6.51999" y2="5.02751" />
+    <ground_line x1="4.33749" y1="6.31751" x2="5.39249" y2="5.63251" />
+    <ground_line x1="1.84998" y1="6.31751" x2="4.33749" y2="6.31751" />
+    <ground_line x1="-0.1" y1="9.53002" x2="10.1" y2="9.51752" />
+    <ground_line x1="-0.1" y1="7.875" x2="1.22125" y2="7.87875" />
 </map>

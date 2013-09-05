@@ -186,7 +186,7 @@ void Game::updateWorld(float dt)
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->update(dt);
 	}
-	//cameraPos = characters[0]->getPosition() - b2Vec2(8, 4.5);
+	cameraPos = characters[0]->getPosition() - b2Vec2(8, 4.5);
 }
 bool Game::updateControls()
 {
@@ -696,6 +696,14 @@ int Game::getScreenWidth()
 int Game::getScreenHeight()
 {
 	return screenHeight;
+}
+float Game::getMapWidth()
+{
+	return mapWidth;
+}
+float Game::getMapHeight()
+{
+	return mapHeight;
 }
 
 float Game::getWorldScreenWidth()
