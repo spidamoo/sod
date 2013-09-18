@@ -29,12 +29,18 @@ const int MODE_ANIM_ROTATE = 5;
 const int MODE_INSERT_GL_STEP1   = 6;
 const int MODE_INSERT_GL_STEP2   = 7;
 
+const int MODE_SELECT_SPOT   = 10;
+
 int mode = MODE_DEFAULT;
 
 float width = 10; float height = 10;
 int animationsCount = 0; char** animationNames = new char*[256]; hgeAnimation** animations = new hgeAnimation*[256];
 float* animationX = new float[256]; float* animationY = new float[256]; float* animationAngle = new float[256];
 int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
+
+int platformsCount = 0; int* platformGroundLinesCounts = new int[256]; int* platformAnimsCounts = new int[256];
+int** platformGroundLines = new int*[256]; int** platformAnims = new int*[256];
+int* platformSpotsCounts = new int[256]; float** platformSpotX = new float*[256]; float** platformSpotY = new float*[256]; float** platformSpotAngle = new float*[256];
 
 float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
 int selectedAnim;
@@ -165,7 +171,7 @@ bool loadMap(char* fn)
     } else {
         printf("failed\n");
     }
-
+	resetMode();
 }
 
 
@@ -199,6 +205,10 @@ bool animButtonClick(hgeGUIMenuItem* sender)
 bool insertGroundLineButtonClick(hgeGUIMenuItem* sender)
 {
 	mode = MODE_INSERT_GL_STEP1;
+}
+bool spotModeButtonClick(hgeGUIMenuItem* sender)
+{
+	mode = MODE_SELECT_SPOT;
 }
 
 bool FrameFunc()
@@ -372,6 +382,18 @@ bool RenderFunc()
 	game->startDraw();
 
 	for (int i = 0; i < animationsCount; i++) {
+		DWORD color = 0xFFFFFFFF;
+		if (mode == MODE_SELECT_SPOT) {
+			color = 0xAAFFFFFF;
+			for (int j = 0; j < platformsCount; j++) {
+				for (int k = 0; k < platformAnimsCounts[j]; k++) {
+					if (platformAnims[j][k] == i) {
+						color = 0xAAAAAAAA;
+					}
+				}
+			}
+		}
+		animations[i]->SetColor(color);
         animations[i]->RenderEx(
             game->screenX(animationX[i]),
             game->screenY(animationY[i]),
@@ -390,7 +412,7 @@ bool RenderFunc()
             bb
         );
 
-        DWORD color = 0xFFAA0000;
+        color = 0xFFAA0000;
         if (i == selectedAnim) {
             color = 0xFFFF0000;
         }
@@ -452,6 +474,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	game = new Game(hge);
 
+	for (int i = 0; i < 256; i++) {
+		platformGroundLines[i] = new int[256];
+		platformAnims[i] = new int[256];
+		platformSpotX[i] = new float[256];
+		platformSpotY[i] = new float[256];
+		platformSpotAngle[i] = new float[256];
+	}
+
 	if (game->preload()) {
 		//bgTex = game->getHge()->Texture_Load("box.png");
 
@@ -464,6 +494,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		mainWindow->AddCtrl(new hgeGUIMenuItem(3, fnt, 180, 20, 0.0f, "load", loadMapButtonClick));
 		mainWindow->AddCtrl(new hgeGUIMenuItem(4, fnt, 150, 60, 0.0f, "insert anim", insertAnimButtonClick));
 		mainWindow->AddCtrl(new hgeGUIMenuItem(5, fnt, 150, 90, 0.0f, "insert line", insertGroundLineButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(6, fnt, 150, 120, 0.0f, "spot mode", spotModeButtonClick));
 
 		animsWindow = new GUIWindow(game, 100, 1000, 120, 600, 600);
 		game->getGUI()->AddCtrl(animsWindow);
