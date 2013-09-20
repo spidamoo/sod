@@ -29,8 +29,10 @@ const int MODE_ANIM_ROTATE = 5;
 const int MODE_INSERT_GL_STEP1   = 6;
 const int MODE_INSERT_GL_STEP2   = 7;
 
-const int MODE_SELECT_SPOT   = 10;
-const int MODE_NEW_SPOT = 11;
+const int MODE_SELECT_PLATFORM   = 10;
+const int MODE_NEW_PLATFORM = 11;
+const int MODE_EDIT_PLATFORM = 12;
+const int MODE_DRAG_PLATFORM_SPOT_TIME = 13;
 
 int mode = MODE_DEFAULT;
 
@@ -42,6 +44,8 @@ int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
 int platformsCount = 0; int* platformGroundLinesCounts = new int[256]; int* platformAnimsCounts = new int[256];
 int** platformGroundLines = new int*[256]; int** platformAnims = new int*[256];
 int* platformSpotsCounts = new int[256]; float** platformSpotX = new float*[256]; float** platformSpotY = new float*[256]; float** platformSpotAngle = new float*[256];
+float** platformSpotsTimes = new float*[256];
+int selectedPlatform = -1; int selectedPlatformSpot = -1;
 
 float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
 int selectedAnim;
@@ -209,7 +213,7 @@ bool insertGroundLineButtonClick(hgeGUIMenuItem* sender)
 }
 bool spotModeButtonClick(hgeGUIMenuItem* sender)
 {
-	mode = MODE_SELECT_SPOT;
+	mode = MODE_SELECT_PLATFORM;
 }
 
 bool FrameFunc()
@@ -362,14 +366,17 @@ bool FrameFunc()
 				resetMode();
 			}
             break;
-		case MODE_SELECT_SPOT:
+		case MODE_SELECT_PLATFORM:
 		    if (y < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
                 dragOffsetX = worldX;
                 dragOffsetY = worldY;
-                mode = MODE_NEW_SPOT;
+                mode = MODE_NEW_PLATFORM;
 		    }
 			break;
-        case MODE_NEW_SPOT:
+        case MODE_NEW_PLATFORM:
+        	{
+
+
             int c1 = 0;
             for (int i = 0; i < animationsCount; i++) {
                 bool occupied = false;
@@ -441,14 +448,58 @@ bool FrameFunc()
 
             if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
                 if (c1 > 0 || c2 > 0) {
+					selectedPlatform = platformsCount;
                     platformsCount++;
+					mode = MODE_EDIT_PLATFORM;
                 } else {
                     platformAnimsCounts[platformsCount] = 0;
                     platformGroundLinesCounts[platformsCount] = 0;
+                    resetMode();
                 }
-                resetMode();
             }
+        	}
             break;
+		case MODE_EDIT_PLATFORM:
+			///Редактирование платформы: добавление и перемещение положений, время перемещений между ними
+			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {///Выбираем...
+				if (y < 50) {///... верхний интерфейс
+					selectedPlatformSpot = -1;
+					///Переберем все положения
+					float t = 0;///Время начала - 0
+					for (int i = 0; i < platformSpotsCounts[selectedPlatform]; i++) {
+						if (x > (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50 ///Попадаем в квадрат 50х50
+							&& x < 50 + (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50
+						) {
+							selectedPlatformSpot = i;
+							mode = MODE_DRAG_PLATFORM_SPOT_TIME;
+							dragOffsetX = x;///Запоминаем откуда начали
+						}
+						t += platformSpotsTimes[selectedPlatform][i];///Прибавляем время этого положения
+					}
+					if (x > 50 + t * 50 + platformSpotsCounts[selectedPlatform] * 50
+							&& x < 100 + t * 50 + platformSpotsCounts[selectedPlatform] * 50) {///Попали в большой +
+						printf("lol %d\n", selectedPlatform);
+						platformSpotAngle[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
+						platformSpotX[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
+						platformSpotY[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
+						platformSpotsTimes[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
+						platformSpotsCounts[selectedPlatform]++;
+					}
+				}
+			}
+			break;
+		case MODE_DRAG_PLATFORM_SPOT_TIME:
+			platformSpotsTimes[selectedPlatform][selectedPlatformSpot] += (x - dragOffsetX) * 0.02;///Прибавляем сдвиг с последнего раза
+			if (platformSpotsTimes[selectedPlatform][selectedPlatformSpot] < 0) {///Время не может быть отрицательным
+				platformSpotsTimes[selectedPlatform][selectedPlatformSpot] = 0;
+			} else {
+				dragOffsetX = x;///И запоминаем текущее положение
+			}
+			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
+				///Возвращаемся назад
+				mode = MODE_EDIT_PLATFORM;
+			}
+			break;
 	}
 
 	return game->update(false);
@@ -471,19 +522,26 @@ bool RenderFunc()
 
 	for (int i = 0; i < animationsCount; i++) {
 		DWORD color = 0xFFFFFFFF;
-		if (mode >= MODE_SELECT_SPOT) {
+		if (mode >= MODE_SELECT_PLATFORM) {
 			color = 0xAAFFFFFF;
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformAnimsCounts[j]; k++) {
 					if (platformAnims[j][k] == i) {
-						color = 0xAAAAAAAA;
+						color = 0xAAAAAAAA;///Анимация относится к какой-то левой платформе
 					}
 				}
 			}
 			for (int k = 0; k < platformAnimsCounts[platformsCount]; k++) {
                 if (platformAnims[platformsCount][k] == i) {
-                    color = 0xFFFFFFFF;
+                    color = 0xFFFFFFFF;///Анимация относится к создаваемой платформе
                 }
+            }
+            if (selectedPlatform > -1) {
+				for (int k = 0; k < platformAnimsCounts[selectedPlatform]; k++) {
+					if (platformAnims[selectedPlatform][k] == i) {
+						color = 0xFFFFFFFF;///Анимация относится к редактируемой платформе
+					}
+				}
             }
 		}
 		animations[i]->SetColor(color);
@@ -518,27 +576,36 @@ bool RenderFunc()
         if (groundLines[i]->getType() == GROUND_LINE_TYPE_WALL) {
             rgb = 0x0000FF00;
         }
-        if (mode >= MODE_SELECT_SPOT) {
+        if (mode >= MODE_SELECT_PLATFORM) {
 			alpha = 0xAA000000;
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
 					if (platformGroundLines[j][k] == i) {
-						alpha = 0x55000000;
+						alpha = 0x55000000;///Линия относится к какой-то левой платформе
 					}
 				}
 			}
 			for (int k = 0; k < platformGroundLinesCounts[platformsCount]; k++) {
                 if (platformGroundLines[platformsCount][k] == i) {
-                    alpha = 0xFF000000;
+                    alpha = 0xFF000000;///Линия относится к создаваемой платформе
                 }
+            }
+            if (selectedPlatform > -1) {
+				for (int k = 0; k < platformGroundLinesCounts[selectedPlatform]; k++) {
+					if (platformGroundLines[selectedPlatform][k] == i) {
+						alpha = 0xFF000000;///Линия относится к редактируемой платформе
+					}
+				}
             }
 		}
         DWORD color = alpha + rgb;
         groundLines[i]->debugDraw(color);
 	}
+	///Нарисуем рамочки вокруг платформ
 	for (int i = 0; i < platformsCount; i++) {
-        float left = 1605; float right = -5;
+        float left = 1605; float right = -5;///Края установим для начала за 5 пикселей за экраном
         float top = 905; float bottom = -5;
+        ///Перебор анимаций
         for (int j = 0; j < platformAnimsCounts[i]; j++) {
             hgeRect* bb = new hgeRect();
             animations[platformAnims[i][j]]->GetBoundingBoxEx(
@@ -549,6 +616,7 @@ bool RenderFunc()
                 game->getScaleFactor(),
                 bb
             );
+            ///Если края крайнее, выберем их
             if (bb->x1 < left) {
                 left = bb->x1;
             }
@@ -562,6 +630,7 @@ bool RenderFunc()
                 bottom = bb->y2;
             }
         }
+        ///Все то же самое для линий
         for (int j = 0; j < platformGroundLinesCounts[i]; j++) {
             if (game->screenX(groundLines[platformGroundLines[i][j]]->getLeft()) < left) {
                 left = game->screenX(groundLines[platformGroundLines[i][j]]->getLeft());
@@ -576,7 +645,11 @@ bool RenderFunc()
                 bottom = game->screenY(groundLines[platformGroundLines[i][j]]->getBottom());
             }
         }
-        game->drawRect(left, top, right, bottom, 0xFF008cff, 0);
+        DWORD color = 0xFF00AAFF;
+        if (i == selectedPlatform) {
+			color = 0xFF0000FF;
+        }
+        game->drawRect(left, top, right, bottom, color, 0);
 	}
 
 	game->drawRect(game->screenX(0), game->screenY(0), game->screenX(width), game->screenY(height), 0xFFAAAAAA, 0);
@@ -604,9 +677,32 @@ bool RenderFunc()
                 game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, color);
             }
 			break;
-        case MODE_NEW_SPOT:
+        case MODE_NEW_PLATFORM:
             game->drawRect(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, 0xFF0000AA, 0);
             break;
+	}
+
+	if (mode >= MODE_EDIT_PLATFORM) {
+		///Нарисуем синие кругали
+		///Стартовый кругаль
+		game->drawCircle(25, 25, 25, 0xFF0000FF, 0xFF0000FF);
+		float t = 0;///Начинаем с времени 0
+		for (int i = 0; i < platformSpotsCounts[selectedPlatform]; i++) {
+			DWORD color = 0xFF0000FF;
+			if (i == selectedPlatformSpot) {///Текущий кругаль подсвечен
+				color = 0xFF00AAFF;
+			}
+			///1 секунда=50 пикселей, каждый кругаль еще +50
+			///Рисуем перемычки между кругалями...
+			game->drawRect(t * 50 + (i + 1) * 50, 20, (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50, 30, 0xFF0000FF, 0xFF0000FF);
+			///И сами кругали
+			game->drawCircle(25 + (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50, 25, 25, color, color);
+			t += platformSpotsTimes[selectedPlatform][i];
+		}
+		///Большой зеленый плюс в рамочке
+		game->drawRect(50 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 0, 100 + 50 * t + platformSpotsCounts[selectedPlatform] * 50, 50, 0xFF00AA00, 0xAAFFFFFF);
+		game->drawRect(56 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 23, 94 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 27, 0xFF00AA00, 0xFF00AA00);
+		game->drawRect(73 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 6, 77 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 44, 0xFF00AA00, 0xFF00AA00);
 	}
 
 	game->endDraw();
@@ -635,9 +731,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		platformSpotX[i] = new float[256];
 		platformSpotY[i] = new float[256];
 		platformSpotAngle[i] = new float[256];
+		platformSpotsTimes[i] = new float[256];
 
 		platformAnimsCounts[i] = 0;
 		platformGroundLinesCounts[i] = 0;
+		platformSpotsCounts[i] = 0;
 	}
 
 	if (game->preload()) {
