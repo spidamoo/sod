@@ -78,6 +78,31 @@ float GroundLine::getK()
 	return k;
 }
 
+float GroundLine::getLeft()
+{
+	return startPoint.x;
+}
+float GroundLine::getRight()
+{
+	return endPoint.x;
+}
+float GroundLine::getTop()
+{
+    if (k > 0) {
+        return startPoint.y;
+    } else {
+        return endPoint.y;
+    }
+}
+float GroundLine::getBottom()
+{
+    if (k < 0) {
+        return startPoint.y;
+    } else {
+        return endPoint.y;
+    }
+}
+
 int GroundLine::getType()
 {
     if (angle > M_PI_4 || angle < -M_PI_4) {

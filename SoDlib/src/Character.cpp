@@ -386,7 +386,9 @@ void Character::update(float dt)
                         position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
                         speed.x = 0;
                     }
-                } else (
+                }
+			} else {
+			    if (
                     position.y - halfHeight > game->getGroundLine(i)->getEndPoint().y
                     && position.y + halfHeight < game->getGroundLine(i)->getStartPoint().y
                 ) {

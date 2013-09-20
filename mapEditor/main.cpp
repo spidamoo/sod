@@ -30,6 +30,7 @@ const int MODE_INSERT_GL_STEP1   = 6;
 const int MODE_INSERT_GL_STEP2   = 7;
 
 const int MODE_SELECT_SPOT   = 10;
+const int MODE_NEW_SPOT = 11;
 
 int mode = MODE_DEFAULT;
 
@@ -361,6 +362,93 @@ bool FrameFunc()
 				resetMode();
 			}
             break;
+		case MODE_SELECT_SPOT:
+		    if (y < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
+                dragOffsetX = worldX;
+                dragOffsetY = worldY;
+                mode = MODE_NEW_SPOT;
+		    }
+			break;
+        case MODE_NEW_SPOT:
+            int c1 = 0;
+            for (int i = 0; i < animationsCount; i++) {
+                bool occupied = false;
+                for (int j = 0; j < platformsCount; j++) {
+                    for (int k = 0; k < platformAnimsCounts[j]; k++) {
+                        if (platformAnims[j][k] == i) {
+                            occupied = true;
+                        }
+                    }
+                }
+                if (occupied) {
+                    continue;
+                }
+                hgeRect* bb = new hgeRect();
+                animations[i]->GetBoundingBoxEx(
+                    game->screenX(animationX[i]),
+                    game->screenY(animationY[i]),
+                    animationAngle[i],
+                    game->getScaleFactor(),
+                    game->getScaleFactor(),
+                    bb
+                );
+                if (
+                    (
+                        (bb->x1 > game->screenX(dragOffsetX) && bb->x2 < x)
+                        ||
+                        (bb->x2 < game->screenX(dragOffsetX) && bb->x1 > x)
+                    ) && (
+                        (bb->y1 > game->screenY(dragOffsetY) && bb->y2 < y)
+                        ||
+                        (bb->y2 < game->screenY(dragOffsetY) && bb->y1 > y)
+                    )
+                ) {
+                    platformAnims[platformsCount][c1] = i;
+                    c1++;
+                }
+            }
+            platformAnimsCounts[platformsCount] = c1;
+
+            int c2 = 0;
+            for (int i = 0; i < groundLinesCount; i++) {
+                bool occupied = false;
+                for (int j = 0; j < platformsCount; j++) {
+                    for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
+                        if (platformGroundLines[j][k] == i) {
+                            occupied = true;
+                        }
+                    }
+                }
+                if (occupied) {
+                    continue;
+                }
+                if (
+                    (
+                        (groundLines[i]->getLeft()   > dragOffsetX && groundLines[i]->getRight()  < worldX)
+                        ||
+                        (groundLines[i]->getRight()  < dragOffsetX && groundLines[i]->getLeft()   > worldX)
+                    ) && (
+                        (groundLines[i]->getTop()    > dragOffsetY && groundLines[i]->getBottom() < worldY)
+                        ||
+                        (groundLines[i]->getBottom() < dragOffsetY && groundLines[i]->getTop()    > worldY)
+                    )
+                ) {
+                    platformGroundLines[platformsCount][c2] = i;
+                    c2++;
+                }
+            }
+            platformGroundLinesCounts[platformsCount] = c2;
+
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
+                if (c1 > 0 || c2 > 0) {
+                    platformsCount++;
+                } else {
+                    platformAnimsCounts[platformsCount] = 0;
+                    platformGroundLinesCounts[platformsCount] = 0;
+                }
+                resetMode();
+            }
+            break;
 	}
 
 	return game->update(false);
@@ -383,7 +471,7 @@ bool RenderFunc()
 
 	for (int i = 0; i < animationsCount; i++) {
 		DWORD color = 0xFFFFFFFF;
-		if (mode == MODE_SELECT_SPOT) {
+		if (mode >= MODE_SELECT_SPOT) {
 			color = 0xAAFFFFFF;
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformAnimsCounts[j]; k++) {
@@ -392,6 +480,11 @@ bool RenderFunc()
 					}
 				}
 			}
+			for (int k = 0; k < platformAnimsCounts[platformsCount]; k++) {
+                if (platformAnims[platformsCount][k] == i) {
+                    color = 0xFFFFFFFF;
+                }
+            }
 		}
 		animations[i]->SetColor(color);
         animations[i]->RenderEx(
@@ -420,11 +513,70 @@ bool RenderFunc()
 
 	}
 	for (int i = 0; i < groundLinesCount; i++) {
-        DWORD color = 0xFFFFFF00;
+        DWORD alpha = 0xFF000000;
+        DWORD rgb = 0x00FFFF00;
         if (groundLines[i]->getType() == GROUND_LINE_TYPE_WALL) {
-            color = 0xFF00FF00;
+            rgb = 0x0000FF00;
         }
+        if (mode >= MODE_SELECT_SPOT) {
+			alpha = 0xAA000000;
+			for (int j = 0; j < platformsCount; j++) {
+				for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
+					if (platformGroundLines[j][k] == i) {
+						alpha = 0x55000000;
+					}
+				}
+			}
+			for (int k = 0; k < platformGroundLinesCounts[platformsCount]; k++) {
+                if (platformGroundLines[platformsCount][k] == i) {
+                    alpha = 0xFF000000;
+                }
+            }
+		}
+        DWORD color = alpha + rgb;
         groundLines[i]->debugDraw(color);
+	}
+	for (int i = 0; i < platformsCount; i++) {
+        float left = 1605; float right = -5;
+        float top = 905; float bottom = -5;
+        for (int j = 0; j < platformAnimsCounts[i]; j++) {
+            hgeRect* bb = new hgeRect();
+            animations[platformAnims[i][j]]->GetBoundingBoxEx(
+                game->screenX(animationX[platformAnims[i][j]]),
+                game->screenY(animationY[platformAnims[i][j]]),
+                animationAngle[platformAnims[i][j]],
+                game->getScaleFactor(),
+                game->getScaleFactor(),
+                bb
+            );
+            if (bb->x1 < left) {
+                left = bb->x1;
+            }
+            if (bb->x2 > right) {
+                right = bb->x2;
+            }
+            if (bb->y1 < top) {
+                top = bb->y1;
+            }
+            if (bb->y2 > bottom) {
+                bottom = bb->y2;
+            }
+        }
+        for (int j = 0; j < platformGroundLinesCounts[i]; j++) {
+            if (game->screenX(groundLines[platformGroundLines[i][j]]->getLeft()) < left) {
+                left = game->screenX(groundLines[platformGroundLines[i][j]]->getLeft());
+            }
+            if (game->screenX(groundLines[platformGroundLines[i][j]]->getRight()) > right) {
+                right = game->screenX(groundLines[platformGroundLines[i][j]]->getRight());
+            }
+            if (game->screenY(groundLines[platformGroundLines[i][j]]->getTop()) < top) {
+                top = game->screenY(groundLines[platformGroundLines[i][j]]->getTop());
+            }
+            if (game->screenY(groundLines[platformGroundLines[i][j]]->getBottom()) > bottom) {
+                bottom = game->screenY(groundLines[platformGroundLines[i][j]]->getBottom());
+            }
+        }
+        game->drawRect(left, top, right, bottom, 0xFF008cff, 0);
 	}
 
 	game->drawRect(game->screenX(0), game->screenY(0), game->screenX(width), game->screenY(height), 0xFFAAAAAA, 0);
@@ -452,6 +604,9 @@ bool RenderFunc()
                 game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, color);
             }
 			break;
+        case MODE_NEW_SPOT:
+            game->drawRect(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, 0xFF0000AA, 0);
+            break;
 	}
 
 	game->endDraw();
@@ -480,6 +635,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		platformSpotX[i] = new float[256];
 		platformSpotY[i] = new float[256];
 		platformSpotAngle[i] = new float[256];
+
+		platformAnimsCounts[i] = 0;
+		platformGroundLinesCounts[i] = 0;
 	}
 
 	if (game->preload()) {

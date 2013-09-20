@@ -15,6 +15,7 @@ class GroundLine
 		float getK();
 		int getType();
 		b2Vec2 getStartPoint(), getEndPoint();
+		float getLeft(), getRight(), getTop(), getBottom();
 		float horizontalDistanceTo(float x);
 
 		void debugDraw(), debugDraw(DWORD color);
