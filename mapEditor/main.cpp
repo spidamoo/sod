@@ -30,6 +30,7 @@ const int MODE_INSERT_GL_STEP1   = 6;
 const int MODE_INSERT_GL_STEP2   = 7;
 
 const int MODE_SELECT_SPOT   = 10;
+const int MODE_HIGHLIGHT_SPOT   = 11;
 
 int mode = MODE_DEFAULT;
 
@@ -41,6 +42,7 @@ int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
 int platformsCount = 0; int* platformGroundLinesCounts = new int[256]; int* platformAnimsCounts = new int[256];
 int** platformGroundLines = new int*[256]; int** platformAnims = new int*[256];
 int* platformSpotsCounts = new int[256]; float** platformSpotX = new float*[256]; float** platformSpotY = new float*[256]; float** platformSpotAngle = new float*[256];
+int* currentGroundLines = new int[256]; int* currentAnims = new int[256]; int currentGroundLinesCount = 0; int currentAnimsCount = 0;
 
 float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
 int selectedAnim;
