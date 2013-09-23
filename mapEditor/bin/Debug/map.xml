@@ -36,4 +36,10 @@
     <ground_line x1="1.84998" y1="6.31751" x2="4.33749" y2="6.31751" />
     <ground_line x1="-0.1" y1="9.53002" x2="10.1" y2="9.51752" />
     <ground_line x1="0.00250208" y1="7.875" x2="1.22125" y2="7.87875" />
+    <platform ground_lines="1" animations="1" spots="2">
+        <ground_line index="4" />
+        <animation index="6" />
+        <spot time="2" x="0.15" y="4.06" angle="0" />
+        <spot time="2" x="0" y="0" angle="0" />
+    </platform>
 </map>

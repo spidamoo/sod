@@ -199,6 +199,31 @@ bool saveMap(char* fn)
         element->SetDoubleAttribute("x2", groundLines[i]->getEndPoint().x);
         element->SetDoubleAttribute("y2", groundLines[i]->getEndPoint().y);
 	}
+	for (int i = 0; i < platformsCount; i++) {
+        TiXmlElement* element = new TiXmlElement( "platform" );
+        root->LinkEndChild( element );
+        element->SetAttribute("ground_lines", platformGroundLinesCounts[i]);
+        element->SetAttribute("animations", platformAnimsCounts[i]);
+        element->SetAttribute("spots", platformSpotsCounts[i]);
+        for (int j = 0; j < platformGroundLinesCounts[i]; j++) {
+            TiXmlElement* child = new TiXmlElement( "ground_line" );
+            element->LinkEndChild( child );
+            child->SetAttribute("index", platformGroundLines[i][j]);
+        }
+        for (int j = 0; j < platformAnimsCounts[i]; j++) {
+            TiXmlElement* child = new TiXmlElement( "animation" );
+            element->LinkEndChild( child );
+            child->SetAttribute("index", platformAnims[i][j]);
+        }
+        for (int j = 0; j < platformSpotsCounts[i]; j++) {
+            TiXmlElement* child = new TiXmlElement( "spot" );
+            element->LinkEndChild( child );
+            child->SetDoubleAttribute("time", platformSpotsTimes[i][j]);
+            child->SetDoubleAttribute("x", platformSpotX[i][j]);
+            child->SetDoubleAttribute("y", platformSpotY[i][j]);
+            child->SetDoubleAttribute("angle", platformSpotAngle[i][j]);
+        }
+	}
 
 	doc.LinkEndChild( root );
 	doc.SaveFile(fn);
@@ -268,6 +293,46 @@ bool loadMap(char* fn)
             element = element->NextSiblingElement("ground_line");
         }
         groundLinesCount = i;
+
+        i = 0;
+        element = root->FirstChildElement("platform");
+        while (element) {
+            int j =0;
+            TiXmlElement* child = element->FirstChildElement("ground_line");
+            while (child) {
+                platformGroundLines[i][j] = atoi(child->Attribute("index"));
+                j++;
+                child = child->NextSiblingElement("ground_line");
+            }
+            platformGroundLinesCounts[i] = j;
+
+            j = 0;
+            child = element->FirstChildElement("animation");
+            while (child) {
+                platformAnims[i][j] = atoi(child->Attribute("index"));
+                j++;
+                child = child->NextSiblingElement("animation");
+            }
+            platformAnimsCounts[i] = j;
+
+            j = 0;
+            child = element->FirstChildElement("spot");
+            while (child) {
+                platformSpotsTimes[i][j] = atof(child->Attribute("time"));
+                platformSpotX[i][j] = atof(child->Attribute("x"));
+                platformSpotY[i][j] = atof(child->Attribute("y"));
+                platformSpotAngle[i][j] = atof(child->Attribute("angle"));
+                j++;
+                child = child->NextSiblingElement("spot");
+            }
+            platformSpotsCounts[i] = j;
+
+            i++;
+            element = element->NextSiblingElement("platform");
+        }
+        platformsCount = i;
+
+        //delete root;
     } else {
         printf("failed\n");
     }
