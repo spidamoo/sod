@@ -27,7 +27,7 @@ Game::Game(HGE * hge)
 
 	gui = new hgeGUI();
 
-	pixelsPerMeter = 100.0f;
+	pixelsPerMeter = 40.0f;
 	scaleFactor = 1.0f;
 
 	gravity = b2Vec2(0, 20);
@@ -182,11 +182,12 @@ void Game::updateGui(float dt)
 }
 void Game::updateWorld(float dt)
 {
+    timeStep = dt;
 	//world->Step(timeStep, velocityIterations, positionIterations);
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->update(dt);
 	}
-	cameraPos = characters[0]->getPosition() - b2Vec2(8, 4.5);
+	cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
 }
 bool Game::updateControls()
 {

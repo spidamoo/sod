@@ -361,44 +361,58 @@ void Character::update(float dt)
 
 	float h = position.y;
 	for (int i = 0; i < game->getGroundLinesCount(); i++) {
-		if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR) {
-			if (
-                position.x > game->getGroundLine(i)->getStartPoint().x && position.x < game->getGroundLine(i)->getEndPoint().x
-            ) {
-                if (prevPosition.y < game->getGroundLine(i)->yAt(position.x) && position.y + halfHeight > game->getGroundLine(i)->yAt(position.x)) {
-                    onGround = i;
-                    position.y = game->getGroundLine(i)->yAt(position.x) - halfHeight;
-                } else if (prevPosition.y > game->getGroundLine(i)->yAt(position.x) && position.y - halfHeight < game->getGroundLine(i)->yAt(position.x)) {
-                    position.y = game->getGroundLine(i)->yAt(position.x) + halfHeight;
-                    speed.y = 0;
+		if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_WALL) {
+			if (game->getGroundLine(i)->getK() > 0) {///Линия сверху вниз
+                if (
+                    position.y - halfHeight < game->getGroundLine(i)->getEndPoint().y///Верхняя точка героя выше нижней точки линии
+                    && position.y + halfHeight > game->getGroundLine(i)->getStartPoint().y///Или нижняя героя ниже верхней линии
+                ) {
+                    ///Если середина была слева от линии, а правый край теперь справа
+                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;///Ставим к стенке (слева)
+                        speed.x = 0;///Останавливаем
+                        printf("bump on right\n");
+                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
+                        ///То же самое направо от стенки
+                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        speed.x = 0;
+                        printf("bump on left\n");
+                    }
+                }
+			} else {///Все то же самое для линии снизу вверх
+			    if (
+                    position.y - halfHeight < game->getGroundLine(i)->getStartPoint().y
+                    && position.y + halfHeight > game->getGroundLine(i)->getEndPoint().y
+                ) {
+                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
+                        speed.x = 0;
+                        printf("bump on right\n");
+                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
+                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        speed.x = 0;
+                        printf("bump on left\n");
+                    }
                 }
 			}
 		} else {
-		    if (game->getGroundLine(i)->getK() > 0) {
-                if (
-                    position.y - halfHeight > game->getGroundLine(i)->getStartPoint().y
-                    && position.y + halfHeight < game->getGroundLine(i)->getEndPoint().y
-                ) {
-                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
-                        speed.x = 0;
-                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
-                        speed.x = 0;
-                    }
+		    if (
+                position.x > game->getGroundLine(i)->getStartPoint().x && position.x < game->getGroundLine(i)->getEndPoint().x
+            ) {
+                float highY, lowY;
+                if (game->getGroundLine(i)->getK() > 0) {
+                    highY = game->getGroundLine(i)->yAt(position.x - halfWidth);
+                    lowY = game->getGroundLine(i)->yAt(position.x + halfWidth);
+                } else {
+                    highY = game->getGroundLine(i)->yAt(position.x + halfWidth);
+                    lowY = game->getGroundLine(i)->yAt(position.x - halfWidth);
                 }
-			} else {
-			    if (
-                    position.y - halfHeight > game->getGroundLine(i)->getEndPoint().y
-                    && position.y + halfHeight < game->getGroundLine(i)->getStartPoint().y
-                ) {
-                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
-                        speed.x = 0;
-                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
-                        speed.x = 0;
-                    }
+                if (prevPosition.y < highY && position.y + halfHeight > highY) {
+                    onGround = i;
+                    position.y = highY - halfHeight;
+                } else if (prevPosition.y > lowY && position.y - halfHeight < lowY) {
+                    position.y = lowY + halfHeight;
+                    speed.y = 0;
                 }
 			}
 		}
@@ -416,10 +430,10 @@ void Character::update(float dt)
         position.y = game->getMapHeight();
         speed.y = 0;
 	}
-	if (position.y < 0) {
-        position.y = 0;
-        speed.y = 0;
-	}
+//	if (position.y < 0) {
+//        position.y = 0;
+//        speed.y = 0;
+//	}
 
 
 	for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
@@ -429,8 +443,8 @@ void Character::update(float dt)
 
     if (onGround > -1) {
 		if (
-			position.x > game->getGroundLine(onGround)->getEndPoint().x ||
-			position.x < game->getGroundLine(onGround)->getStartPoint().x
+			position.x - halfWidth > game->getGroundLine(onGround)->getEndPoint().x ||
+			position.x + halfWidth < game->getGroundLine(onGround)->getStartPoint().x
 		) {
 			onGround = -1;
 		}
@@ -459,7 +473,8 @@ void Character::run(float speed)
 		this->speed.y = speedY;
 	} else {
 		speed = speed * (turnedRight ? 1 : -1);
-		this->speed.x = speed;
+		position.x += game->getTimeStep() * speed;
+		//this->speed.x = speed;
 	}
 }
 

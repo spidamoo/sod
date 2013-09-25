@@ -3,7 +3,7 @@ use Image::Magick;
 
 my @images = ();
 my @placedImages = ();
-my $resultSize = 256;
+my $resultSize = 16;
 
 sub findEmptySpace
 {
@@ -14,8 +14,8 @@ sub findEmptySpace
 			for my $y(0 .. $resultSize - $height) {
 				my $allowed = 1;
 				for my $image(@placedImages) {
-					if ($image->{x} + $image->{image}->Get("width")  > $x && $image->{x} < $x + $width &&
-						$image->{y} + $image->{image}->Get("height") > $y && $image->{y} < $y + $height
+					if ($image->{x} + $image->{image}->Get("width") + 1  > $x && $image->{x} < $x + $width + 1 &&
+						$image->{y} + $image->{image}->Get("height") + 1 > $y && $image->{y} < $y + $height + 1
 					) {
 						$allowed = 0;
 					}
