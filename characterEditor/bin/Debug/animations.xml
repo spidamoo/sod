@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<animation file="monsters\stone_ant\body.png.xml"/>
-<animation file="monsters\stone_ant\head.png.xml"/>
-<animation file="monsters\stone_ant\larm.png.xml"/>
-<animation file="monsters\stone_ant\rarm.png.xml"/>
-<animation file="monsters\stone_ant\lfoot.png.xml"/>
-<animation file="monsters\stone_ant\rfoot.png.xml"/>
+<animation file="mage/staff.png.xml"/>
+<animation file="mage/body.png.xml"/>
+<animation file="mage/head.png.xml"/>
+<animation file="mage/open_hand.png.xml"/>
+<animation file="mage/fist.png.xml"/>
+<animation file="mage/foot.png.xml"/>

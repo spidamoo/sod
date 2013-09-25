@@ -1,15 +1,15 @@
 HGE Started..
 
 HGE version: 1.80
-Date: 05.09.2013, 17:29:19
+Date: 25.09.2013, 19:50:21
 
 Application: plainlands game
-OS: Windows 6.2.9200
-Memory: 4158580K total, 1731784K free
+OS: Windows 6.1.7601
+Memory: 4158584K total, 1773180K free
 
-D3D Driver: igdumd32.dll
-Description: Набор микросхем Intel(R) G41 Express (корпорация Майкрософт - WDDM 1.1)
-Version: 8.15.10.2702
+D3D Driver: igdumdx32.dll
+Description: Intel(R) G41 Express Chipset
+Version: 8.15.10.2302
 Mode: 1600 x 900 x X8R8G8B8
 
 Init done.

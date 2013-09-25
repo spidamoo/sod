@@ -68,7 +68,7 @@ float* hotSpotHeights = new float[256];
 int bodiesCount = 0;
 int hotSpotsCount = 0;
 
-float characterHeight = 2;
+float characterHeight = 2; float characterWidth = 0.5;
 
 float* animationX = new float[256];
 float* animationY = new float[256];
@@ -631,7 +631,7 @@ int getPointedBody(float x, float y)
 
 			if (bb->TestPoint(x, y))
 				selected = i;
-		} else if (!animAngle(i)) {
+		} else if (!animShow(i)) {
 			hgeRect* bb = new hgeRect();
 			if (animations[i]->GetBoundingBoxEx(1300 + animationX[i], 450 - 1000 * currentTab + animationY[i], animationAngle[i], 1, 1, bb)->TestPoint(x, y))
 				selected = i;
@@ -699,7 +699,8 @@ bool saveCharacter(char* fn)
 	TiXmlElement* characterElem = new TiXmlElement( "character" );
 	characterElem->SetAttribute("bodies", bodiesCount);
 	characterElem->SetAttribute("hotspots", hotSpotsCount);
-	characterElem->SetAttribute("height", characterHeight);
+	characterElem->SetDoubleAttribute("height", characterHeight);
+	characterElem->SetDoubleAttribute("width", characterWidth);
 
 	for (int i = 0; i < bodiesCount; i++) {
         TiXmlElement* element = new TiXmlElement( "body" );
@@ -850,6 +851,9 @@ bool loadCharacter(char* fn)
 
     	if (characterElem->Attribute("height")) {
 			characterHeight = atof(characterElem->Attribute("height"));
+		}
+		if (characterElem->Attribute("width")) {
+			characterWidth = atof(characterElem->Attribute("width"));
 		}
 
     	b2Vec2 origin(0, 0);
@@ -1632,7 +1636,7 @@ bool RenderFunc()
 //	game->drawArc(game->screenX(0), game->screenY(0), 50 * game->getScaleFactor(), M_PI, 2 * M_PI, 0x55000000, 0);
 //	game->getHge()->Gfx_RenderLine(game->screenX(-10), game->screenY(0.5), game->screenX(10), game->screenY(0.5), 0x55000000);
 
-	game->drawRect(game->screenX(0), game->screenY(0), 0.25f * game->getFullScale(), 1.0f * game->getFullScale(), 0, 0x55000000, 0);
+	game->drawRect(game->screenX(0), game->screenY(0), characterWidth * 0.5 * game->getFullScale(), characterHeight * 0.5 * game->getFullScale(), 0, 0x55000000, 0);
 
 	for (int index = 0; index < bodiesCount; index++) {
 		int i = animLayer(index);
@@ -1749,7 +1753,6 @@ bool RenderFunc()
 
 	switch (mode) {
 		case MODE_INSERT_ANIM:
-			beingInsertedAnim->Render(insertX, insertY);
             break;
 		case MODE_ANIM_ROTATE:
 		case MODE_HOTSPOT_ROTATE:
@@ -1935,6 +1938,10 @@ bool RenderFunc()
 				0xFFFF0000, 0xAAFF0000
 			);
 		}
+	}
+
+	if (mode == MODE_INSERT_ANIM) {
+        beingInsertedAnim->Render(insertX, insertY);
 	}
 
 	game->endDraw();

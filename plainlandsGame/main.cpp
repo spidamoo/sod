@@ -51,7 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	game = new Game(hge);
 	if (game->preload()) {
 		//game->loadConstruction("ground.xml", b2Vec2(10, 5), b2_staticBody);
-		game->loadPlayerCharacter("pencil_man.xml", b2Vec2(2, 0));
+		game->loadPlayerCharacter("mage.xml", b2Vec2(2, 1));
 		//game->loadNonPlayerCharacter("stone_ant.xml", b2Vec2(8, 0));
 		//game->addGroundLine(new GroundLine(game, -1, 2, 20, 3));
 		game->loadMap("map.xml");

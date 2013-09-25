@@ -39,7 +39,7 @@ const int MODE_MOVING_PLATFORMS = 10;
 
 int mode = MODE_DEFAULT;
 
-float width = 10; float height = 10;
+float width = 20; float height = 10;
 int animationsCount = 0; char** animationNames = new char*[256]; hgeAnimation** animations = new hgeAnimation*[256];
 float* animationX = new float[256]; float* animationY = new float[256]; float* animationAngle = new float[256];
 int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
@@ -87,24 +87,24 @@ int getPointedAnim(float x, float y)
 }
 b2Vec2 getPlatformShift(int platform) {
 
-	///РЎС‡РёС‚Р°РµРј РѕР±С‰РµРµ РІСЂРµРјСЏ РґРІРёР¶РµРЅРёР№ РїР»Р°С‚С„РѕСЂРјС‹
+	///Считаем общее время движений платформы
 	float totalTime = 0;
 	for (int l = 0; l < platformSpotsCounts[platform]; l++) {
 		totalTime += platformSpotsTimes[platform][l];
 	}
-	float currentPlatformTime = currentTime;///РќР°Р№РґРµРј С‚РµРєСѓС‰РµРµ РІСЂРµРјСЏ РґР»СЏ СЌС‚РѕР№ РїР»Р°С‚С„РѕСЂРјС‹
+	float currentPlatformTime = currentTime;///Найдем текущее время для этой платформы
 	while (currentPlatformTime > totalTime) {
 		currentPlatformTime -= totalTime;
 	}
 	float t = 0;
 	int l = -1;
 	float prevT = 0;
-	while (t < currentPlatformTime) {///РќР°С…РѕРґРёРј С‚РµРєСѓС‰РёР№ spot
+	while (t < currentPlatformTime) {///Находим текущий spot
 		prevT = t;
 		l++;
 		t += platformSpotsTimes[platform][l];
 	}
-	///РўРµРїРµСЂСЊ l - РёРЅРґРµРєСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ СЃРїРѕС‚Р°. t - РІСЂРµРјСЏ СЃР»РµРґСѓСЋС‰РµРіРѕ СЃРїРѕС‚Р°
+	///Теперь l - индекс следующего спота. t - время следующего спота
 	float progress = (currentPlatformTime - prevT) / platformSpotsTimes[platform][l];
 	b2Vec2 shift = b2Vec2_zero;
 	if (l > 0) {
@@ -116,9 +116,9 @@ b2Vec2 getPlatformShift(int platform) {
 	return shift;
 }
 float* getPlatformBounds(int platform) {
-	float left = 1605; float right = -5;///РљСЂР°СЏ СѓСЃС‚Р°РЅРѕРІРёРј РґР»СЏ РЅР°С‡Р°Р»Р° Р·Р° 5 РїРёРєСЃРµР»РµР№ Р·Р° СЌРєСЂР°РЅРѕРј
+	float left = 1605; float right = -5;///Края установим для начала за 5 пикселей за экраном
 	float top = 905; float bottom = -5;
-	float shiftX = 0; float shiftY = 0;///РЎРґРІРёРі РЅР° СЃР»СѓСЏР°Р№, РµСЃР»Рё СЌС‚Р° РїР»Р°С‚С„РѕСЂРјР° СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ
+	float shiftX = 0; float shiftY = 0;///Сдвиг на слуяай, если эта платформа редактируется
 	if (mode >= MODE_EDIT_PLATFORM && selectedPlatform == platform && selectedPlatformSpot > -1) {
 		shiftX = platformSpotX[selectedPlatform][selectedPlatformSpot];
 		shiftY = platformSpotY[selectedPlatform][selectedPlatformSpot];
@@ -127,7 +127,7 @@ float* getPlatformBounds(int platform) {
 		b2Vec2 shift = getPlatformShift(platform);
 		shiftX = shift.x; shiftY = shift.y;
 	}
-	///РџРµСЂРµР±РѕСЂ Р°РЅРёРјР°С†РёР№
+	///Перебор анимаций
 	for (int j = 0; j < platformAnimsCounts[platform]; j++) {
 		hgeRect* bb = new hgeRect();
 		animations[platformAnims[platform][j]]->GetBoundingBoxEx(
@@ -138,7 +138,7 @@ float* getPlatformBounds(int platform) {
 			game->getScaleFactor(),
 			bb
 		);
-		///Р•СЃР»Рё РєСЂР°СЏ РєСЂР°Р№РЅРµРµ, РІС‹Р±РµСЂРµРј РёС…
+		///Если края крайнее, выберем их
 		if (bb->x1 < left) {
 			left = bb->x1;
 		}
@@ -152,7 +152,7 @@ float* getPlatformBounds(int platform) {
 			bottom = bb->y2;
 		}
 	}
-	///Р’СЃРµ С‚Рѕ Р¶Рµ СЃР°РјРѕРµ РґР»СЏ Р»РёРЅРёР№
+	///Все то же самое для линий
 	for (int j = 0; j < platformGroundLinesCounts[platform]; j++) {
 		if (game->screenX(groundLines[platformGroundLines[platform][j]]->getLeft() + shiftX) < left) {
 			left = game->screenX(groundLines[platformGroundLines[platform][j]]->getLeft() + shiftX);
@@ -530,28 +530,28 @@ bool FrameFunc()
 		case MODE_SELECT_PLATFORM:
 			selectedPlatform = -1;
 		    if (x < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
-				/// Р’С‹Р±РёСЂР°РµРј РїР»Р°С‚С„РѕСЂРјСѓ, РІ РєРѕС‚РѕСЂСѓСЋ С‚РєРЅСѓР»Рё
+				/// Выбираем платформу, в которую ткнули
 				for (int i = 0; i < platformsCount; i++) {
 					float* bounds = getPlatformBounds(i);
 					if (x > bounds[0] && y > bounds[1] && x < bounds[2] && y < bounds[3]) {
 						selectedPlatform = i;
 					}
 				}
-				if (selectedPlatform == -1) {///Р•СЃР»Рё РЅРё РІ РєР°РєСѓСЋ, СЃРѕР·РґР°РµРј РЅРѕРІСѓСЋ
+				if (selectedPlatform == -1) {///Если ни в какую, создаем новую
 					dragOffsetX = worldX;
 					dragOffsetY = worldY;
 					mode = MODE_NEW_PLATFORM;
-				} else {/// Р•СЃР»Рё РґР°, СЂРµРґР°РєС‚РёСЂСѓРµРј РµРµ
+				} else {/// Если да, редактируем ее
 					mode = MODE_EDIT_PLATFORM;
 					selectedPlatformSpot = -1;
 				}
 		    }
 			break;
         case MODE_NEW_PLATFORM:
-        	{///РЎРєРѕР±РєРё РЅСѓР¶РЅС‹ С‡С‚РѕР±С‹ РёРјРµС‚СЊ Р±Р»РѕРє, Р° РІ РЅРµРј РѕР±СЉСЏРІР»СЏС‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ
+        	{///Скобки нужны чтобы иметь блок, а в нем объявлять переменные
             int c1 = 0;
-            for (int i = 0; i < animationsCount; i++) {///РџРµСЂРµР±РёСЂР°РµРј РІСЃРµ РєР°СЂС‚РёРЅРєРё
-                bool occupied = false;///РџСЂРѕРІРµСЂСЏРµРј, РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р»Рё РєР°СЂС‚РёРЅРєР° СѓР¶Рµ РІ РєР°РєРѕР№-С‚Рѕ РїР»Р°С‚С„РѕСЂРјРµ
+            for (int i = 0; i < animationsCount; i++) {///Перебираем все картинки
+                bool occupied = false;///Проверяем, используется ли картинка уже в какой-то платформе
                 for (int j = 0; j < platformsCount; j++) {
                     for (int k = 0; k < platformAnimsCounts[j]; k++) {
                         if (platformAnims[j][k] == i) {
@@ -559,7 +559,7 @@ bool FrameFunc()
                         }
                     }
                 }
-                if (occupied) {///Р•СЃР»Рё РґР°, РїСЂРѕРїСѓСЃРєР°РµРј РµРµ
+                if (occupied) {///Если да, пропускаем ее
                     continue;
                 }
                 hgeRect* bb = new hgeRect();
@@ -571,7 +571,7 @@ bool FrameFunc()
                     game->getScaleFactor(),
                     bb
                 );
-                if (///РџСЂРѕРІРµСЂСЏРµРј, СѓРјРµС‰Р°РµС‚СЃСЏ Р»Рё bb РєР°СЂС‚РёРЅРєРё С†РµР»РёРєРѕРј РІ РІС‹РґРµР»РµРЅРЅСѓСЋ РѕР±Р»Р°СЃС‚СЊ
+                if (///Проверяем, умещается ли bb картинки целиком в выделенную область
                     (
                         (bb->x1 > game->screenX(dragOffsetX) && bb->x2 < x)
                         ||
@@ -581,14 +581,14 @@ bool FrameFunc()
                         ||
                         (bb->y2 < game->screenY(dragOffsetY) && bb->y1 > y)
                     )
-                ) {///Р•СЃР»Рё РґР°, С‚Рѕ Р·Р°РїРёС€РµРј РµРµ РІ РїР»Р°С‚С„РѕСЂРјСѓ, СЃР»РµРґСѓСЋС‰СѓСЋ РїРѕСЃР»Рµ РєСЂР°Р№РЅРµР№ (РµС‰Рµ РЅРµ СЃРѕР·РґР°РЅРЅСѓСЋ)
+                ) {///Если да, то запишем ее в платформу, следующую после крайней (еще не созданную)
                     platformAnims[platformsCount][c1] = i;
                     c1++;
                 }
             }
-            platformAnimsCounts[platformsCount] = c1;///Р—Р°РїРёСЃС‹РІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР№РјР°РЅРЅС‹С… РєР°СЂС‚РёРЅРѕРє
+            platformAnimsCounts[platformsCount] = c1;///Записываем количество пойманных картинок
 
-			///Р’СЃРµ С‚Рѕ Р¶Рµ СЃР°РјРѕРµ РґР»СЏ Р»РёРЅРёР№
+			///Все то же самое для линий
             int c2 = 0;
             for (int i = 0; i < groundLinesCount; i++) {
                 bool occupied = false;
@@ -619,13 +619,13 @@ bool FrameFunc()
             }
             platformGroundLinesCounts[platformsCount] = c2;
 
-            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {///РћС‚РїСѓСЃС‚РёР»Рё РєРЅРѕРїРєСѓ - РїРµСЂРµСЃС‚Р°Р»Рё РІС‹РґРµР»СЏС‚СЊ
-                if (c1 > 0 || c2 > 0) {///Р•СЃР»Рё Р±С‹Р»Р° РІС‹РґРµР»РµРЅР° С…РѕС‚СЊ РѕРґРЅР° РєР°СЂС‚РёРЅРєР° РёР»Рё Р»РёРЅРёСЏ, СЃРѕР·РґР°РµРј РЅРѕРІСѓСЋ РїР»Р°С‚С„РѕСЂРјСѓ
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {///Отпустили кнопку - перестали выделять
+                if (c1 > 0 || c2 > 0) {///Если была выделена хоть одна картинка или линия, создаем новую платформу
 					selectedPlatform = platformsCount;
                     platformsCount++;
 					mode = MODE_EDIT_PLATFORM;
 					selectedPlatformSpot = -1;
-                } else {/// РёРЅР°С‡Рµ СЃР±СЂР°СЃС‹РІР°РјСЃСЏ - СЃС‡РёС‚Р°РµРј СЌС‚Рѕ РѕС‚РјРµРЅРѕР№
+                } else {/// иначе сбрасывамся - считаем это отменой
                     platformAnimsCounts[platformsCount] = 0;
                     platformGroundLinesCounts[platformsCount] = 0;
                     resetMode();
@@ -634,41 +634,41 @@ bool FrameFunc()
         	}
             break;
 		case MODE_EDIT_PLATFORM:
-			///Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїР»Р°С‚С„РѕСЂРјС‹: РґРѕР±Р°РІР»РµРЅРёРµ Рё РїРµСЂРµРјРµС‰РµРЅРёРµ РїРѕР»РѕР¶РµРЅРёР№, РІСЂРµРјСЏ РїРµСЂРµРјРµС‰РµРЅРёР№ РјРµР¶РґСѓ РЅРёРјРё
-			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {///Р’С‹Р±РёСЂР°РµРј...
-				if (y < 50 && selectedPlatform > -1) {///... РІРµСЂС…РЅРёР№ РёРЅС‚РµСЂС„РµР№СЃ - РІСЂРµРјРµРЅРЅР«Рµ СѓР·Р»С‹
+			///Редактирование платформы: добавление и перемещение положений, время перемещений между ними
+			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {///Выбираем...
+				if (y < 50 && selectedPlatform > -1) {///... верхний интерфейс - временнЫе узлы
 					selectedPlatformSpot = -1;
-					///РџРµСЂРµР±РµСЂРµРј РІСЃРµ РїРѕР»РѕР¶РµРЅРёСЏ
-					float t = 0;///Р’СЂРµРјСЏ РЅР°С‡Р°Р»Р° - 0
+					///Переберем все положения
+					float t = 0;///Время начала - 0
 					for (int i = 0; i < platformSpotsCounts[selectedPlatform]; i++) {
-						if (x > (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50 ///РџРѕРїР°РґР°РµРј РІ РєРІР°РґСЂР°С‚ 50С…50
+						if (x > (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50 ///Попадаем в квадрат 50х50
 							&& x < 50 + (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50
 						) {
 							selectedPlatformSpot = i;
 							mode = MODE_DRAG_PLATFORM_SPOT_TIME;
-							dragOffsetX = x;///Р—Р°РїРѕРјРёРЅР°РµРј РѕС‚РєСѓРґР° РЅР°С‡Р°Р»Рё
+							dragOffsetX = x;///Запоминаем откуда начали
 						}
-						t += platformSpotsTimes[selectedPlatform][i];///РџСЂРёР±Р°РІР»СЏРµРј РІСЂРµРјСЏ СЌС‚РѕРіРѕ РїРѕР»РѕР¶РµРЅРёСЏ
+						t += platformSpotsTimes[selectedPlatform][i];///Прибавляем время этого положения
 					}
 					if (x < 50) {
 						selectedPlatformSpot = -1;
 					}
 					if (x > 50 + t * 50 + platformSpotsCounts[selectedPlatform] * 50
-							&& x < 100 + t * 50 + platformSpotsCounts[selectedPlatform] * 50) {///РџРѕРїР°Р»Рё РІ Р±РѕР»СЊС€РѕР№ +
+							&& x < 100 + t * 50 + platformSpotsCounts[selectedPlatform] * 50) {///Попали в большой +
 						platformSpotAngle[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
 						platformSpotX[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
 						platformSpotY[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
 						platformSpotsTimes[selectedPlatform][platformSpotsCounts[selectedPlatform]] = 0;
 						platformSpotsCounts[selectedPlatform]++;
 					}
-				} else if (x < 1300) {/// ... РїР»Р°С‚С„РѕСЂРјСѓ, РІ РєРѕС‚РѕСЂСѓСЋ С‚РєРЅСѓР»Рё
+				} else if (x < 1300) {/// ... платформу, в которую ткнули
 					for (int i = 0; i < platformsCount; i++) {
 						float* bounds = getPlatformBounds(i);
 						if (x > bounds[0] && y > bounds[1] && x < bounds[2] && y < bounds[3]) {
 							selectedPlatform = i;
 							if (selectedPlatformSpot > -1) {
-								mode = MODE_DRAG_PLATFORM;///РќР°С‡РёРЅР°РµРј С‚Р°С‰РёС‚СЊ
-								dragOffsetX = worldX;///Р—Р°РїРѕРјРёРЅР°РµРј РѕС‚РєСѓРґР° РЅР°С‡Р°Р»Рё
+								mode = MODE_DRAG_PLATFORM;///Начинаем тащить
+								dragOffsetX = worldX;///Запоминаем откуда начали
 								dragOffsetY = worldY;
 							}
 						}
@@ -682,24 +682,24 @@ bool FrameFunc()
 			}
 			break;
 		case MODE_DRAG_PLATFORM_SPOT_TIME:
-			platformSpotsTimes[selectedPlatform][selectedPlatformSpot] += (x - dragOffsetX) * 0.02;///РџСЂРёР±Р°РІР»СЏРµРј СЃРґРІРёРі СЃ РїРѕСЃР»РµРґРЅРµРіРѕ СЂР°Р·Р°
-			if (platformSpotsTimes[selectedPlatform][selectedPlatformSpot] < 0) {///Р’СЂРµРјСЏ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј
+			platformSpotsTimes[selectedPlatform][selectedPlatformSpot] += (x - dragOffsetX) * 0.02;///Прибавляем сдвиг с последнего раза
+			if (platformSpotsTimes[selectedPlatform][selectedPlatformSpot] < 0) {///Время не может быть отрицательным
 				platformSpotsTimes[selectedPlatform][selectedPlatformSpot] = 0;
 			} else {
-				dragOffsetX = x;///Р Р·Р°РїРѕРјРёРЅР°РµРј С‚РµРєСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ
+				dragOffsetX = x;///И запоминаем текущее положение
 			}
 			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
-				///Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ РЅР°Р·Р°Рґ
+				///Возвращаемся назад
 				mode = MODE_EDIT_PLATFORM;
 			}
 			break;
 		case MODE_DRAG_PLATFORM:
-			platformSpotX[selectedPlatform][selectedPlatformSpot] += (worldX - dragOffsetX);///РџСЂРёР±Р°РІР»СЏРµРј СЃРґРІРёРі СЃ РїРѕСЃР»РµРґРЅРµРіРѕ СЂР°Р·Р°
+			platformSpotX[selectedPlatform][selectedPlatformSpot] += (worldX - dragOffsetX);///Прибавляем сдвиг с последнего раза
 			platformSpotY[selectedPlatform][selectedPlatformSpot] += (worldY - dragOffsetY);
-			dragOffsetX = worldX;///Р Р·Р°РїРѕРјРёРЅР°РµРј С‚РµРєСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ
+			dragOffsetX = worldX;///И запоминаем текущее положение
 			dragOffsetY = worldY;
 			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
-				///Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ РЅР°Р·Р°Рґ
+				///Возвращаемся назад
 				mode = MODE_EDIT_PLATFORM;
 			}
 			break;
@@ -733,21 +733,21 @@ bool RenderFunc()
 	for (int i = 0; i < animationsCount; i++) {
 		DWORD color = 0xFFFFFFFF;
 		DWORD bbColor = 0xFFAA0000;
-		float shiftX = 0;///РЎРґРІРёРі РЅР° СЃР»СѓС‡Р°Р№, РµСЃР»Рё РјС‹ СЂРµРґР°РєС‚РёСЂСѓРµРј РїР»Р°С‚С„РѕСЂРјСѓ
+		float shiftX = 0;///Сдвиг на случай, если мы редактируем платформу
 		float shiftY = 0;
 		if (mode >= MODE_SELECT_PLATFORM) {
 			color = 0xAAFFFFFF;bbColor = 0xAAAA0000;
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformAnimsCounts[j]; k++) {
 					if (platformAnims[j][k] == i) {
-						color = 0xAAAAAAAA;///РђРЅРёРјР°С†РёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РєР°РєРѕР№-С‚Рѕ Р»РµРІРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+						color = 0xAAAAAAAA;///Анимация относится к какой-то левой платформе
 						bbColor = 0xAA550000;
 					}
 				}
 			}
 			for (int k = 0; k < platformAnimsCounts[platformsCount]; k++) {
                 if (platformAnims[platformsCount][k] == i) {
-                    color = 0xFFFFFFFF;///РђРЅРёРјР°С†РёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє СЃРѕР·РґР°РІР°РµРјРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+                    color = 0xFFFFFFFF;///Анимация относится к создаваемой платформе
                     bbColor = 0xFFAA0000;
 
                 }
@@ -755,7 +755,7 @@ bool RenderFunc()
             if (selectedPlatform > -1) {
 				for (int k = 0; k < platformAnimsCounts[selectedPlatform]; k++) {
 					if (platformAnims[selectedPlatform][k] == i) {
-						color = 0xFFFFFFFF;///РђРЅРёРјР°С†РёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє СЂРµРґР°РєС‚РёСЂСѓРµРјРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+						color = 0xFFFFFFFF;///Анимация относится к редактируемой платформе
 						bbColor = 0xFFAA0000;
 						if (selectedPlatformSpot > -1) {
 							shiftX = platformSpotX[selectedPlatform][selectedPlatformSpot];
@@ -769,7 +769,7 @@ bool RenderFunc()
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformAnimsCounts[j]; k++) {
 					if (platformAnims[j][k] == i) {
-						///РќР°С€Р»Рё РїР»Р°С‚С„РѕСЂРјСѓ, Рє РєРѕС‚РѕСЂРѕР№ РѕС‚РЅРѕСЃРёС‚СЃСЏ СЌС‚Р° Р°РЅРёРјР°С†РёСЏ, РїРѕР»СѓС‡Р°РµРј РµРµ СЃРґРІРёРі
+						///Нашли платформу, к которой относится эта анимация, получаем ее сдвиг
 						b2Vec2 shift = getPlatformShift(j);
 						shiftX = shift.x; shiftY = shift.y;
 					}
@@ -807,25 +807,25 @@ bool RenderFunc()
         if (groundLines[i]->getType() == GROUND_LINE_TYPE_WALL) {
             rgb = 0x0000FF00;
         }
-        b2Vec2 shift = b2Vec2_zero;///РЎРґРІРёРі РЅР° СЃР»СѓС‡Р°Р№, РµСЃР»Рё РјС‹ СЂРµРґР°РєС‚РёСЂСѓРµРј РїР»Р°С‚С„РѕСЂРјСѓ
+        b2Vec2 shift = b2Vec2_zero;///Сдвиг на случай, если мы редактируем платформу
         if (mode >= MODE_SELECT_PLATFORM) {
 			alpha = 0xAA000000;
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
 					if (platformGroundLines[j][k] == i) {
-						alpha = 0x55000000;///Р›РёРЅРёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РєР°РєРѕР№-С‚Рѕ Р»РµРІРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+						alpha = 0x55000000;///Линия относится к какой-то левой платформе
 					}
 				}
 			}
 			for (int k = 0; k < platformGroundLinesCounts[platformsCount]; k++) {
                 if (platformGroundLines[platformsCount][k] == i) {
-                    alpha = 0xFF000000;///Р›РёРЅРёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє СЃРѕР·РґР°РІР°РµРјРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+                    alpha = 0xFF000000;///Линия относится к создаваемой платформе
                 }
             }
             if (selectedPlatform > -1) {
 				for (int k = 0; k < platformGroundLinesCounts[selectedPlatform]; k++) {
 					if (platformGroundLines[selectedPlatform][k] == i) {
-						alpha = 0xFF000000;///Р›РёРЅРёСЏ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє СЂРµРґР°РєС‚РёСЂСѓРµРјРѕР№ РїР»Р°С‚С„РѕСЂРјРµ
+						alpha = 0xFF000000;///Линия относится к редактируемой платформе
 						if (selectedPlatformSpot > -1) {
 							shift.x = platformSpotX[selectedPlatform][selectedPlatformSpot];
 							shift.y = platformSpotY[selectedPlatform][selectedPlatformSpot];
@@ -838,7 +838,7 @@ bool RenderFunc()
 			for (int j = 0; j < platformsCount; j++) {
 				for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
 					if (platformGroundLines[j][k] == i) {
-						///РќР°С€Р»Рё РїР»Р°С‚С„РѕСЂРјСѓ, Рє РєРѕС‚РѕСЂРѕР№ РѕС‚РЅРѕСЃРёС‚СЃСЏ СЌС‚Р° Р»РёРЅРёСЏ, РїРѕР»СѓС‡Р°РµРј РµРµ СЃРґРІРёРі
+						///Нашли платформу, к которой относится эта линия, получаем ее сдвиг
 						shift = getPlatformShift(j);
 					}
 				}
@@ -847,7 +847,7 @@ bool RenderFunc()
         DWORD color = alpha + rgb;
         game->drawLine(game->screenPos(groundLines[i]->getStartPoint() + shift), game->screenPos(groundLines[i]->getEndPoint() + shift), color);
 	}
-	///РќР°СЂРёСЃСѓРµРј СЂР°РјРѕС‡РєРё РІРѕРєСЂСѓРі РїР»Р°С‚С„РѕСЂРј
+	///Нарисуем рамочки вокруг платформ
 	for (int i = 0; i < platformsCount; i++) {
 		float* bounds = getPlatformBounds(i);
         DWORD color = 0xFF00AAFF;
@@ -889,24 +889,24 @@ bool RenderFunc()
 	}
 
 	if (mode >= MODE_EDIT_PLATFORM && selectedPlatform > -1) {
-		///РќР°СЂРёСЃСѓРµРј СЃРёРЅРёРµ РєСЂСѓРіР°Р»Рё
-		///РЎС‚Р°СЂС‚РѕРІС‹Р№ РєСЂСѓРіР°Р»СЊ
+		///Нарисуем синие кругали
+		///Стартовый кругаль
 		DWORD color = 0xFF0000FF;
-		if (-1 == selectedPlatformSpot) {///РўРµРєСѓС‰РёР№ РєСЂСѓРіР°Р»СЊ РїРѕРґСЃРІРµС‡РµРЅ
+		if (-1 == selectedPlatformSpot) {///Текущий кругаль подсвечен
 			color = 0xFF00AAFF;
 		}
 		game->drawCircle(25, 25, 25, color, color);
-		float t = 0;///РќР°С‡РёРЅР°РµРј СЃ РІСЂРµРјРµРЅРё 0
+		float t = 0;///Начинаем с времени 0
 		fnt->SetColor(0xFFFFFFFF);
 		for (int i = 0; i < platformSpotsCounts[selectedPlatform]; i++) {
 			DWORD color = 0xFF0000FF;
-			if (i == selectedPlatformSpot) {///РўРµРєСѓС‰РёР№ РєСЂСѓРіР°Р»СЊ РїРѕРґСЃРІРµС‡РµРЅ
+			if (i == selectedPlatformSpot) {///Текущий кругаль подсвечен
 				color = 0xFF00AAFF;
 			}
-			///1 СЃРµРєСѓРЅРґР°=50 РїРёРєСЃРµР»РµР№, РєР°Р¶РґС‹Р№ РєСЂСѓРіР°Р»СЊ РµС‰Рµ +50
-			///Р РёСЃСѓРµРј РїРµСЂРµРјС‹С‡РєРё РјРµР¶РґСѓ РєСЂСѓРіР°Р»СЏРјРё...
+			///1 секунда=50 пикселей, каждый кругаль еще +50
+			///Рисуем перемычки между кругалями...
 			game->drawRect(t * 50 + (i + 1) * 50, 20, (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50, 30, 0xFF0000FF, 0xFF0000FF);
-			///РџРѕРґРїРёС€РµРј РґР»РёРЅСѓ
+			///Подпишем длину
 			float width = (platformSpotsTimes[selectedPlatform][i]) * 50;
 			float y = 20;
 			if (width < 50) {
@@ -916,11 +916,11 @@ bool RenderFunc()
 				width = 50;
 			}
 			fnt->printfb(t * 50 + (i + 1) * 50, y, width, 10, HGETEXT_CENTER | HGETEXT_MIDDLE, "%.2f", platformSpotsTimes[selectedPlatform][i]);
-			///Р СЃР°РјРё РєСЂСѓРіР°Р»Рё
+			///И сами кругали
 			game->drawCircle(25 + (t + platformSpotsTimes[selectedPlatform][i]) * 50 + (i + 1) * 50, 25, 25, color, color);
 			t += platformSpotsTimes[selectedPlatform][i];
 		}
-		///Р‘РѕР»СЊС€РѕР№ Р·РµР»РµРЅС‹Р№ РїР»СЋСЃ РІ СЂР°РјРѕС‡РєРµ
+		///Большой зеленый плюс в рамочке
 		game->drawRect(50 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 0, 100 + 50 * t + platformSpotsCounts[selectedPlatform] * 50, 50, 0xFF00AA00, 0xAAFFFFFF);
 		game->drawRect(56 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 23, 94 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 27, 0xFF00AA00, 0xFF00AA00);
 		game->drawRect(73 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 6, 77 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 44, 0xFF00AA00, 0xFF00AA00);
