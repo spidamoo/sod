@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<animation file="mage/staff.png.xml"/>
+<animation file="mage/body.png.xml"/>
+<animation file="mage/head.png.xml"/>
+<animation file="mage/open_hand.png.xml"/>
+<animation file="mage/open_hand2.png.xml"/>
+<animation file="mage/fist.png.xml"/>
+<animation file="mage/foot.png.xml"/>
