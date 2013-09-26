@@ -3,6 +3,10 @@
 GroundLine::GroundLine(Game* game, float x1, float y1, float x2, float y2)
 {
 	this->game = game;
+	if (x1 == x2)
+        x2 += 0.0001f;
+//    if (y1 == y2)
+//        y2 += 0.0001f;
 	if (x1 < x2) {
 		startPoint.x = x1;
 		startPoint.y = y1;

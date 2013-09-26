@@ -62,6 +62,7 @@
 		<Unit filename="include/GroundLine.h" />
 		<Unit filename="include/MapAnimation.h" />
 		<Unit filename="include/NonPlayerCharacter.h" />
+		<Unit filename="include/Platform.h" />
 		<Unit filename="include/PlayerCharacter.h" />
 		<Unit filename="include/SoDlib.h" />
 		<Unit filename="include/hgeGUIMenuItem.h" />
@@ -81,6 +82,7 @@
 		<Unit filename="src/GroundLine.cpp" />
 		<Unit filename="src/MapAnimation.cpp" />
 		<Unit filename="src/NonPlayerCharacter.cpp" />
+		<Unit filename="src/Platform.cpp" />
 		<Unit filename="src/PlayerCharacter.cpp" />
 		<Unit filename="src/hgeGUIMenuItem.cpp" />
 		<Unit filename="tinystr.cpp" />

@@ -13,8 +13,10 @@ Game::Game(HGE * hge)
 	hge->System_SetState(HGE_SCREENBPP, 32);
 	hge->System_SetState(HGE_FPS, 60);
 
-	groundLines = new GroundLine*[1000]; groundLinesCount = 0;
-	mapAnimations = new MapAnimation*[1000]; mapAnimationsCount = 0;
+	//groundLines = new GroundLine*[1000];
+	groundLinesCount = 0;
+	//mapAnimations = new MapAnimation*[1000];
+	mapAnimationsCount = 0;
 	characters = new Character*[100];
 	charactersCount = 0;
 
@@ -577,6 +579,11 @@ void Game::addMapAnimation(MapAnimation* newMA)
 	mapAnimations[mapAnimationsCount] = newMA;
 	mapAnimationsCount++;
 }
+void Game::addPlatform(Platform* newPlatform)
+{
+	platforms[platformsCount] = newPlatform;
+	platformsCount++;
+}
 
 int Game::getCharactersCount()
 {
@@ -740,6 +747,12 @@ void Game::loadMap(char* fn)
     	if (root->Attribute("height")) {
 			mapHeight = atof(root->Attribute("height"));
 		}
+		mapAnimationsCount = atoi(root->Attribute("animations"));
+		mapAnimations = new MapAnimation*[mapAnimationsCount];
+		groundLinesCount = atoi(root->Attribute("ground_lines"));
+		groundLines = new GroundLine*[groundLinesCount];
+		platformsCount = atoi(root->Attribute("platforms"));
+		platforms = new Platform*[platformsCount];
 
         TiXmlElement* element = root->FirstChildElement("animation");
         int i = 0;
@@ -753,23 +766,35 @@ void Game::loadMap(char* fn)
 			hgeAnimation* animation = loadAnimation(animationName);
 			delete animationName;
 
-			addMapAnimation(new MapAnimation(this, animation, x, y, angle));
+            mapAnimations[i] = new MapAnimation(this, animation, x, y, angle);
 
 			i++;
             element = element->NextSiblingElement("animation");
         }
         mapAnimationsCount = i;
 
+
         i = 0;
         element = root->FirstChildElement("ground_line");
         while (element) {
         	printf("loading ground line...\n");
-			addGroundLine(new GroundLine(this, atof(element->Attribute("x1")), atof(element->Attribute("y1")), atof(element->Attribute("x2")), atof(element->Attribute("y2"))));
+			groundLines[i] = new GroundLine(this, atof(element->Attribute("x1")), atof(element->Attribute("y1")), atof(element->Attribute("x2")), atof(element->Attribute("y2")));
 
 			i++;
             element = element->NextSiblingElement("ground_line");
         }
         groundLinesCount = i;
+
+        i = 0;
+        element = root->FirstChildElement("platform");
+        while (element) {
+        	printf("loading platform...\n");
+        	platforms[i] = new Platform(this, element);
+
+			i++;
+            element = element->NextSiblingElement("platform");
+        }
+        platformsCount = i;
     } else {
         printf("failed\n");
     }

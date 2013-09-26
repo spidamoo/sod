@@ -45,7 +45,7 @@ class Game
 		Character* loadPlayerCharacter(char * fn, b2Vec2 origin);
 		Character* loadNonPlayerCharacter(char * fn, b2Vec2 origin);
 		b2Fixture* loadFixture(b2Body* body, TiXmlElement* elem);
-		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA);
+		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA); void addPlatform(Platform* newPlatform);
 		void loadMap(char* fn);
 
 		int getCharactersCount();
@@ -94,6 +94,7 @@ class Game
 
 		GroundLine** groundLines; int groundLinesCount;
 		MapAnimation** mapAnimations; int mapAnimationsCount;
+		Platform** platforms; int platformsCount;
 		char** animationNames;
 		int animationsCount;
 		Character** characters;
