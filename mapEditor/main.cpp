@@ -51,7 +51,7 @@ float** platformSpotsTimes = new float*[256];
 int selectedPlatform = -1; int selectedPlatformSpot = -1;
 
 float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
-int selectedAnim;
+int selectedAnim = -1; int selectedGroundLine = -1;
 float currentTime = 0;
 
 void resetMode()
@@ -81,6 +81,27 @@ int getPointedAnim(float x, float y)
 
         if (bb->TestPoint(x, y))
             selected = i;
+	}
+
+	return selected;
+}
+int getPointedGroundLine(float x, float y)
+{
+	int selected = -1;
+	for (int i = 0; i < groundLinesCount; i++) {
+		float distance = distanceToSegment(
+			game->screenX(groundLines[i]->getStartPoint().x),
+			game->screenY(groundLines[i]->getStartPoint().y),
+			game->screenX(groundLines[i]->getEndPoint().x),
+			game->screenY(groundLines[i]->getEndPoint().y),
+			x, y
+		);
+		//printf("%f.2 ", distance);
+        if (
+			distance < 4
+		) {
+			selected = i;
+		}
 	}
 
 	return selected;
@@ -350,7 +371,23 @@ bool loadMapButtonClick(hgeGUIMenuItem* sender)
 	loadMap("map.xml");
 }
 
-
+void deleteGroundLine(int index) {
+	for (int i = 0; i < platformsCount; i++) {
+		int used = -1;
+		for (int j = 0; j < platformGroundLinesCounts[i]; j++) {
+			if (platformGroundLines[i][j] == index) {
+				used = j;
+			}
+		}
+		if (used > -1) {
+			platformGroundLinesCounts[i]--;
+			platformGroundLines[i][used] = platformGroundLines[i][platformGroundLinesCounts[i]];
+		}
+	}
+	groundLinesCount--;
+	delete groundLines[index];
+	groundLines[index] = groundLines[groundLinesCount];
+}
 
 bool insertAnimButtonClick(hgeGUIMenuItem* sender)
 {
@@ -408,8 +445,9 @@ bool FrameFunc()
 
 	switch(mode) {
 		case MODE_DEFAULT:
+			selectedAnim = getPointedAnim(x, y);
+			selectedGroundLine = getPointedGroundLine(x, y);
 		    if (y < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
-                selectedAnim = getPointedAnim(x, y);
                 if (selectedAnim != -1) {
                     dragOffsetX = worldX - animationX[selectedAnim];
                     dragOffsetY = worldY - animationY[selectedAnim];
@@ -417,7 +455,6 @@ bool FrameFunc()
                 }
 		    }
 		    if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_SHIFT)) {
-				selectedAnim = getPointedAnim(x, y);
 				if (selectedAnim != -1) {
 					//mainWindow->Hide();
 					dragOffsetX = worldX;
@@ -432,7 +469,10 @@ bool FrameFunc()
                 dragOffsetY = y;
                 mode = MODE_CAMERA_MOVE;
             }
-
+			if (selectedGroundLine > -1 && game->getHge()->Input_KeyDown(HGEK_DELETE)) {
+				deleteGroundLine(selectedGroundLine);
+				selectedGroundLine = -1;
+			}
 			break;
 		case MODE_CAMERA_MOVE:
 			game->moveScreen(b2Vec2(dragOffsetX - x, dragOffsetY - y));
@@ -859,6 +899,35 @@ bool RenderFunc()
 	}
 
 	game->drawRect(game->screenX(0), game->screenY(0), game->screenX(width), game->screenY(height), 0xFFAAAAAA, 0);
+
+	if (selectedAnim > -1) {///Подсветим выбранную анимацию
+		hgeRect* bb = new hgeRect();
+        animations[selectedAnim]->GetBoundingBoxEx(
+            game->screenX(animationX[selectedAnim]),
+            game->screenY(animationY[selectedAnim]),
+            animationAngle[selectedAnim],
+            game->getScaleFactor(),
+            game->getScaleFactor(),
+            bb
+        );
+
+        game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, 0xFFFF0000, 0);
+	}
+
+	if (selectedGroundLine > -1) {///Подсветим выбранную линию
+		DWORD color = 0xFFFFFF00;
+        if (groundLines[selectedGroundLine]->getType() == GROUND_LINE_TYPE_WALL) {
+            color = 0xFF00FF00;
+        }
+		game->drawRect(
+			game->screenX(0.5 * (groundLines[selectedGroundLine]->getStartPoint().x + groundLines[selectedGroundLine]->getEndPoint().x)),
+			game->screenY(0.5 * (groundLines[selectedGroundLine]->getStartPoint().y + groundLines[selectedGroundLine]->getEndPoint().y)),
+			groundLines[selectedGroundLine]->getLength() * game->getFullScale() * 0.5f,
+			2,
+			groundLines[selectedGroundLine]->getAngle(),
+			color, color
+		);
+	}
 
     switch (mode) {
 		case MODE_INSERT_ANIM:

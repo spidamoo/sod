@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
-<map animations="6" ground_lines="13">
+<map animations="6" ground_lines="11">
     <animation file="bgs\ground.png.xml" x="1.2" y="1.925" angle="0" />
     <animation file="bgs\ground.png.xml" x="1.23125" y="9.98125" angle="0" />
     <animation file="bgs\ground.png.xml" x="4.41875" y="9.98125" angle="0" />
     <animation file="bgs\ground.png.xml" x="7.61563" y="9.98125" angle="0" />
     <animation file="bgs\ground.png.xml" x="9.9" y="9.98125" angle="0" />
     <animation file="bgs\ground.png.xml" x="3.58125" y="9.48437" angle="0" />
-    <ground_line x1="0.0625014" y1="1.725" x2="0.0625014" y2="9.53674e-007" />
+    <ground_line x1="0.0625014" y1="9.53674e-007" x2="0.0625014" y2="1.725" />
     <ground_line x1="0.0625014" y1="1.725" x2="2.80625" y2="1.725" />
     <ground_line x1="2.80625" y1="1.725" x2="2.8125" y2="2.11875" />
     <ground_line x1="1.43051e-006" y1="2.125" x2="2.8125" y2="2.11875" />
@@ -16,8 +16,6 @@
     <ground_line x1="5.17813" y1="9.68125" x2="5.18125" y2="9.28437" />
     <ground_line x1="1.97813" y1="9.68437" x2="5.17813" y2="9.68125" />
     <ground_line x1="1.97813" y1="9.68437" x2="1.98125" y2="9.2875" />
-    <ground_line x1="0.0250001" y1="0.0250001" x2="9.975" y2="0.0250001" />
-    <ground_line x1="9.925" y1="9.9375" x2="9.975" y2="0.0250001" />
     <ground_line x1="0.199999" y1="2.00625" x2="0.206249" y2="9.8875" />
     <platform ground_lines="4" animations="1" spots="2">
         <ground_line index="6" />

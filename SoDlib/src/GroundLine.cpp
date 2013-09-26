@@ -20,6 +20,7 @@ GroundLine::GroundLine(Game* game, float x1, float y1, float x2, float y2)
 	cosA = cos(angle);
 	k = (y2 - y1) / (x2 - x1);
 	inversedK = 1 / k;
+	length = sqrtf(powf(y2 - y1, 2) + powf(x2 - x1, 2));
 }
 
 GroundLine::~GroundLine()
@@ -65,6 +66,10 @@ float GroundLine::xAt(float y)
 	return startPoint.x + (y - startPoint.y) * inversedK;
 }
 
+float GroundLine::getAngle()
+{
+	return angle;
+}
 float GroundLine::getCosA()
 {
 	return cosA;
@@ -103,6 +108,11 @@ float GroundLine::getBottom()
     }
 }
 
+float GroundLine::getLength()
+{
+    return length;
+}
+
 int GroundLine::getType()
 {
     if (angle > M_PI_4 || angle < -M_PI_4) {
@@ -139,4 +149,9 @@ float GroundLine::horizontalDistanceTo(float x)
         return x - endPoint.x;
     }
     return 0;
+}
+
+float GroundLine::distanceTo(float x, float y)
+{
+	return distanceToSegment(startPoint.x, startPoint.y, endPoint.x, endPoint.y, x, y);
 }

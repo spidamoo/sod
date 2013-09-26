@@ -120,4 +120,5 @@ class Game
 };
 
 b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) ;
+float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, float pointY);
 #endif // GAME_H

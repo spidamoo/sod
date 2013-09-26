@@ -11,18 +11,20 @@ class GroundLine
 
 		b2Vec2 characterIntersects(Character* character, int type);
 		float yAt(float x), xAt(float y);
-		float getCosA(), getSinA();
+		float getAngle(), getCosA(), getSinA();
 		float getK();
 		int getType();
 		b2Vec2 getStartPoint(), getEndPoint();
 		float getLeft(), getRight(), getTop(), getBottom();
+		float getLength();
 		float horizontalDistanceTo(float x);
-
+		float distanceTo(float x, float y);
 		void debugDraw(), debugDraw(DWORD color);
 	protected:
 		b2Vec2 startPoint, endPoint;
 		float k, inversedK;
 		float angle, sinA, cosA;
+		float length;
 		Game* game;
 	private:
 };
