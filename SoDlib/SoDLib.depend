@@ -374,3 +374,378 @@
 1380119661 source:d:\git\sod\sodlib\src\character.cpp
 	"Character.h"
 
+1342709300 source:d:\work\git\sod\sodlib\hgeanim.cpp
+	<hgeanim.h>
+
+1177328880 d:\work\git\sod\hge181\include\hgeanim.h
+	"hgesprite.h"
+
+1177592146 d:\work\git\sod\hge181\include\hgesprite.h
+	"hge.h"
+	"hgerect.h"
+
+1202820504 d:\work\git\sod\hge181\include\hge.h
+	<windows.h>
+
+1176893286 d:\work\git\sod\hge181\include\hgerect.h
+
+1353254303 source:d:\work\git\sod\sodlib\hgecolor.cpp
+	<hgecolor.h>
+	<math.h>
+
+1176893286 d:\work\git\sod\hge181\include\hgecolor.h
+	"hge.h"
+
+1340106432 source:d:\work\git\sod\sodlib\hgefont.cpp
+	<hgefont.h>
+	<stdlib.h>
+	<stdio.h>
+
+1184932634 d:\work\git\sod\hge181\include\hgefont.h
+	"hge.h"
+	"hgesprite.h"
+
+1347216209 source:d:\work\git\sod\sodlib\hgegui.cpp
+	<hgegui.h>
+
+1198253000 d:\work\git\sod\hge181\include\hgegui.h
+	"hge.h"
+	"hgesprite.h"
+	"hgerect.h"
+
+1347216223 source:d:\work\git\sod\sodlib\hgeguictrls.cpp
+	<hgeguictrls.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
+1176893286 d:\work\git\sod\hge181\include\hgeguictrls.h
+	"hge.h"
+	"hgesprite.h"
+	"hgefont.h"
+	"hgerect.h"
+	"hgegui.h"
+
+1340106537 source:d:\work\git\sod\sodlib\hgerect.cpp
+	<hgerect.h>
+	<math.h>
+
+1340106505 source:d:\work\git\sod\sodlib\hgesprite.cpp
+	<hgesprite.h>
+	<math.h>
+
+1354471331 source:d:\work\git\sod\sodlib\src\animation.cpp
+	"Animation.h"
+
+1354450463 d:\work\git\sod\sodlib\include\animation.h
+	<SoDlib.h>
+
+1378318649 d:\work\git\sod\sodlib\include\sodlib.h
+	<hge.h>
+	<hgeanim.h>
+	<hgegui.h>
+	<hgeguictrls.h>
+	<hgecolor.h>
+	<Box2D/Box2D.h>
+	<tinyxml.h>
+	<Exception.h>
+	<Game.h>
+	<Construction.h>
+	<CharacterActionCause.h>
+	<CharacterActionEffect.h>
+	<CharacterAction.h>
+	<CharacterHotSpot.h>
+	<Character.h>
+	<NonPlayerCharacter.h>
+	<PlayerCharacter.h>
+	<GroundLine.h>
+	<MapAnimation.h>
+	<DebugDraw.h>
+	<GUIWindow.h>
+	<hgeGUIMenuItem.h>
+
+1314999540 d:\work\git\sod\box2d\box2d.h
+	<Box2D/Common/b2Settings.h>
+	<Box2D/Common/b2Draw.h>
+	<Box2D/Common/b2Timer.h>
+	<Box2D/Collision/Shapes/b2CircleShape.h>
+	<Box2D/Collision/Shapes/b2EdgeShape.h>
+	<Box2D/Collision/Shapes/b2ChainShape.h>
+	<Box2D/Collision/Shapes/b2PolygonShape.h>
+	<Box2D/Collision/b2BroadPhase.h>
+	<Box2D/Collision/b2Distance.h>
+	<Box2D/Collision/b2DynamicTree.h>
+	<Box2D/Collision/b2TimeOfImpact.h>
+	<Box2D/Dynamics/b2Body.h>
+	<Box2D/Dynamics/b2Fixture.h>
+	<Box2D/Dynamics/b2WorldCallbacks.h>
+	<Box2D/Dynamics/b2TimeStep.h>
+	<Box2D/Dynamics/b2World.h>
+	<Box2D/Dynamics/Contacts/b2Contact.h>
+	<Box2D/Dynamics/Joints/b2DistanceJoint.h>
+	<Box2D/Dynamics/Joints/b2FrictionJoint.h>
+	<Box2D/Dynamics/Joints/b2GearJoint.h>
+	<Box2D/Dynamics/Joints/b2WheelJoint.h>
+	<Box2D/Dynamics/Joints/b2MouseJoint.h>
+	<Box2D/Dynamics/Joints/b2PrismaticJoint.h>
+	<Box2D/Dynamics/Joints/b2PulleyJoint.h>
+	<Box2D/Dynamics/Joints/b2RevoluteJoint.h>
+	<Box2D/Dynamics/Joints/b2RopeJoint.h>
+	<Box2D/Dynamics/Joints/b2WeldJoint.h>
+
+1315003762 d:\work\git\sod\box2d\common\b2settings.h
+	<cassert>
+	<cmath>
+
+1301211102 d:\work\git\sod\box2d\common\b2draw.h
+	<Box2D/Common/b2Math.h>
+
+1315061282 d:\work\git\sod\box2d\common\b2math.h
+	<Box2D/Common/b2Settings.h>
+	<cmath>
+	<cfloat>
+	<cstddef>
+	<limits>
+
+1315770396 d:\work\git\sod\box2d\common\b2timer.h
+	<Box2D/Common/b2Settings.h>
+
+1300947420 d:\work\git\sod\box2d\collision\shapes\b2circleshape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1313941794 d:\work\git\sod\box2d\collision\shapes\b2shape.h
+	<Box2D/Common/b2BlockAllocator.h>
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Collision.h>
+
+1300947420 d:\work\git\sod\box2d\common\b2blockallocator.h
+	<Box2D/Common/b2Settings.h>
+
+1307265762 d:\work\git\sod\box2d\collision\b2collision.h
+	<Box2D/Common/b2Math.h>
+	<climits>
+
+1314820388 d:\work\git\sod\box2d\collision\shapes\b2edgeshape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1314819744 d:\work\git\sod\box2d\collision\shapes\b2chainshape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1300947420 d:\work\git\sod\box2d\collision\shapes\b2polygonshape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1301221404 d:\work\git\sod\box2d\collision\b2broadphase.h
+	<Box2D/Common/b2Settings.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/b2DynamicTree.h>
+	<algorithm>
+
+1308948390 d:\work\git\sod\box2d\collision\b2dynamictree.h
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Common/b2GrowableStack.h>
+
+1300947420 d:\work\git\sod\box2d\common\b2growablestack.h
+	<Box2D/Common/b2Settings.h>
+	<cstring>
+
+1300947420 d:\work\git\sod\box2d\collision\b2distance.h
+	<Box2D/Common/b2Math.h>
+
+1300947420 d:\work\git\sod\box2d\collision\b2timeofimpact.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Distance.h>
+
+1315048344 d:\work\git\sod\box2d\dynamics\b2body.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+	<memory>
+
+1315032742 d:\work\git\sod\box2d\dynamics\b2fixture.h
+	<Box2D/Dynamics/b2Body.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1314034002 d:\work\git\sod\box2d\dynamics\b2worldcallbacks.h
+	<Box2D/Common/b2Settings.h>
+
+1315769532 d:\work\git\sod\box2d\dynamics\b2timestep.h
+	<Box2D/Common/b2Math.h>
+
+1315134398 d:\work\git\sod\box2d\dynamics\b2world.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Common/b2BlockAllocator.h>
+	<Box2D/Common/b2StackAllocator.h>
+	<Box2D/Dynamics/b2ContactManager.h>
+	<Box2D/Dynamics/b2WorldCallbacks.h>
+	<Box2D/Dynamics/b2TimeStep.h>
+
+1300947420 d:\work\git\sod\box2d\common\b2stackallocator.h
+	<Box2D/Common/b2Settings.h>
+
+1300947420 d:\work\git\sod\box2d\dynamics\b2contactmanager.h
+	<Box2D/Collision/b2BroadPhase.h>
+
+1305747220 d:\work\git\sod\box2d\dynamics\contacts\b2contact.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+	<Box2D/Dynamics/b2Fixture.h>
+
+1315123384 d:\work\git\sod\box2d\dynamics\joints\b2distancejoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315135600 d:\work\git\sod\box2d\dynamics\joints\b2joint.h
+	<Box2D/Common/b2Math.h>
+
+1315134678 d:\work\git\sod\box2d\dynamics\joints\b2frictionjoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315134934 d:\work\git\sod\box2d\dynamics\joints\b2gearjoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315135552 d:\work\git\sod\box2d\dynamics\joints\b2wheeljoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315135612 d:\work\git\sod\box2d\dynamics\joints\b2mousejoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315326328 d:\work\git\sod\box2d\dynamics\joints\b2prismaticjoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315135320 d:\work\git\sod\box2d\dynamics\joints\b2pulleyjoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315132774 d:\work\git\sod\box2d\dynamics\joints\b2revolutejoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315154614 d:\work\git\sod\box2d\dynamics\joints\b2ropejoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315131064 d:\work\git\sod\box2d\dynamics\joints\b2weldjoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1305386698 d:\work\git\sod\sodlib\include\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1305386698 d:\work\git\sod\sodlib\include\tinystr.h
+	<assert.h>
+	<string.h>
+
+1341679979 d:\work\git\sod\sodlib\include\exception.h
+	<stdio.h>
+	<string.h>
+
+1380139829 d:\work\git\sod\sodlib\include\game.h
+	<SoDlib.h>
+
+1357404989 d:\work\git\sod\sodlib\include\construction.h
+	<SoDlib.h>
+
+1364108541 d:\work\git\sod\sodlib\include\characteractioncause.h
+	<SoDlib.h>
+
+1364063182 d:\work\git\sod\sodlib\include\characteractioneffect.h
+	<SoDlib.h>
+
+1363970119 d:\work\git\sod\sodlib\include\characteraction.h
+	<SoDlib.h>
+
+1363631441 d:\work\git\sod\sodlib\include\characterhotspot.h
+	<SoDlib.h>
+
+1378235018 d:\work\git\sod\sodlib\include\character.h
+	<SoDlib.h>
+
+1364058630 d:\work\git\sod\sodlib\include\nonplayercharacter.h
+	<SoDlib.h>
+
+1364063810 d:\work\git\sod\sodlib\include\playercharacter.h
+	<SoDlib.h>
+
+1380139584 d:\work\git\sod\sodlib\include\groundline.h
+	<SoDlib.h>
+
+1378318649 d:\work\git\sod\sodlib\include\mapanimation.h
+	<SoDlib.h>
+
+1363638071 d:\work\git\sod\sodlib\include\debugdraw.h
+	<SoDLib.h>
+
+1364326445 d:\work\git\sod\sodlib\include\guiwindow.h
+	<SoDlib.h>
+	<list>
+
+1353419913 d:\work\git\sod\sodlib\include\hgeguimenuitem.h
+	<SoDlib.h>
+
+1380135621 source:d:\work\git\sod\sodlib\src\character.cpp
+	"Character.h"
+
+1363970124 source:d:\work\git\sod\sodlib\src\characteraction.cpp
+	"CharacterAction.h"
+
+1377893052 source:d:\work\git\sod\sodlib\src\characteractioncause.cpp
+	"CharacterActionCause.h"
+
+1364069426 source:d:\work\git\sod\sodlib\src\characteractioneffect.cpp
+	"CharacterActionEffect.h"
+
+1363634098 source:d:\work\git\sod\sodlib\src\characterhotspot.cpp
+	"CharacterHotSpot.h"
+
+1377717553 source:d:\work\git\sod\sodlib\src\construction.cpp
+	"Construction.h"
+
+1363640969 source:d:\work\git\sod\sodlib\src\debugdraw.cpp
+	"DebugDraw.h"
+
+1341681952 source:d:\work\git\sod\sodlib\src\exception.cpp
+	"Exception.h"
+
+1377939083 source:d:\work\git\sod\sodlib\src\guiwindow.cpp
+	"GUIWindow.h"
+
+1357574814 source:d:\work\git\sod\sodlib\src\hgeguimenuitem.cpp
+	"hgeGUIMenuItem.h"
+
+1378318649 source:d:\work\git\sod\sodlib\src\mapanimation.cpp
+	"MapAnimation.h"
+
+1364067025 source:d:\work\git\sod\sodlib\src\nonplayercharacter.cpp
+	"NonPlayerCharacter.h"
+
+1364067049 source:d:\work\git\sod\sodlib\src\playercharacter.cpp
+	"PlayerCharacter.h"
+
+1305386698 source:d:\work\git\sod\sodlib\tinystr.cpp
+	"tinystr.h"
+
+1378318649 source:d:\work\git\sod\sodlib\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1305386698 source:d:\work\git\sod\sodlib\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1305386698 source:d:\work\git\sod\sodlib\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1380137852 source:d:\work\git\sod\sodlib\src\game.cpp
+	"Game.h"
+
+1380139809 source:d:\work\git\sod\sodlib\src\groundline.cpp
+	"GroundLine.h"
+

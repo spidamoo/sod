@@ -716,32 +716,6 @@ float Game::getWorldScreenHeight()
 	return screenHeight / (scaleFactor * pixelsPerMeter);
 }
 
-b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
-	// Store the values for fast access and easy
-	// equations-to-code conversion
-	float x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
-	float y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
-
-	float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-	// If d is zero, there is no intersection
-	if (d == 0) return b2Vec2_zero;
-
-	// Get the x and y
-	float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
-	float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
-	float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
-
-	// Check if the x and y coordinates are within both lines
-	if ( x < std::min(x1, x2) || x > std::max(x1, x2) ||
-	x < std::min(x3, x4) || x > std::max(x3, x4) ) return b2Vec2_zero;
-	if ( y < std::min(y1, y2) || y > std::max(y1, y2) ||
-	y < std::min(y3, y4) || y > std::max(y3, y4) ) return b2Vec2_zero;
-
-	// Return the point of intersection
-	b2Vec2 ret(x, y);
-	return ret;
-}
-
 void Game::loadMap(char* fn)
 {
 	//mapAnimations = new hgeAnimation*[256];
@@ -802,3 +776,58 @@ void Game::loadMap(char* fn)
 
 }
 
+b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
+	// Store the values for fast access and easy
+	// equations-to-code conversion
+	float x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
+	float y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
+
+	float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+	// If d is zero, there is no intersection
+	if (d == 0) return b2Vec2_zero;
+
+	// Get the x and y
+	float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
+	float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
+	float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
+
+	// Check if the x and y coordinates are within both lines
+	if ( x < std::min(x1, x2) || x > std::max(x1, x2) ||
+	x < std::min(x3, x4) || x > std::max(x3, x4) ) return b2Vec2_zero;
+	if ( y < std::min(y1, y2) || y > std::max(y1, y2) ||
+	y < std::min(y3, y4) || y > std::max(y3, y4) ) return b2Vec2_zero;
+
+	// Return the point of intersection
+	b2Vec2 ret(x, y);
+	return ret;
+}
+
+float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, float pointY)
+{
+    float diffX = x2 - x1;
+    float diffY = y2 - y1;
+    if ((diffX == 0) && (diffY == 0)) {
+        diffX = pointX - x1;
+        diffY = pointY - y1;
+        return sqrt(diffX * diffX + diffY * diffY);
+    }
+
+    float t = ((pointX - x1) * diffX + (pointY - y1) * diffY) / (diffX * diffX + diffY * diffY);
+
+    if (t < 0) {
+        ///point is nearest to the first point i.e x1 and y1
+        diffX = pointX - x1;
+        diffY = pointY - y1;
+    } else if (t > 1) {
+        ///point is nearest to the end point i.e x2 and y2
+        diffX = pointX - x2;
+        diffY = pointY - y2;
+    } else {
+        ///if perpendicular line intersect the line segment.
+        diffX = pointX - (x1 + t * diffX);
+        diffY = pointY - (y1 + t * diffY);
+    }
+
+    ///returning shortest distance
+    return sqrt(diffX * diffX + diffY * diffY);
+}
