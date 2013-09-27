@@ -159,3 +159,9 @@ float GroundLine::distanceTo(float x, float y)
 {
 	return distanceToSegment(startPoint.x, startPoint.y, endPoint.x, endPoint.y, x, y);
 }
+
+void GroundLine::move(float dx, float dy)
+{
+    startPoint.x += dx; startPoint.y += dy;
+    endPoint.x += dx; endPoint.y += dy;
+}

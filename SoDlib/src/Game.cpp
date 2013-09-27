@@ -189,11 +189,14 @@ void Game::updateWorld(float dt)
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->update(dt);
 	}
+	for (int i = 0; i < platformsCount; i++) {
+        platforms[i]->update(dt);
+	}
 	cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
 }
 bool Game::updateControls()
 {
-	// Process keys
+	/// Process keys
 	if (hge->Input_GetKeyState(HGEK_ESCAPE)) return true;
 	if (hge->Input_KeyDown(HGEK_TAB))        schematicDrawMode = !schematicDrawMode;
 	//if (hge->Input_KeyDown(HGEK_SPACE))      loadConstruction("box.xml", b2Vec2(10 + hge->Random_Float(-1, 1), 0));
@@ -202,12 +205,9 @@ bool Game::updateControls()
 
 void Game::startDraw()
 {
-	// Begin rendering quads.
-	// This function must be called
-	// before any actual rendering.
 	hge->Gfx_BeginScene();
 
-	// Clear screen with skyblue color
+	/// Clear screen with skyblue color
 	DWORD color = 0x7fc7ff;
 	if (schematicDrawMode) {
 		color = 0;
@@ -219,7 +219,7 @@ void Game::endDraw()
 {
 
 	gui->Render();
-	// End rendering and update the screen
+	/// End rendering and update the screen
 	hge->Gfx_EndScene();
 }
 
@@ -616,6 +616,19 @@ GroundLine* Game::getGroundLine(int index)
 {
 	if (index < groundLinesCount) {
 		return groundLines[index];
+	} else {
+		return NULL;
+	}
+}
+
+int Game::getMapAnimationsCount()
+{
+	return mapAnimationsCount;
+}
+MapAnimation* Game::getMapAnimation(int index)
+{
+	if (index < mapAnimationsCount) {
+		return mapAnimations[index];
 	} else {
 		return NULL;
 	}

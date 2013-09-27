@@ -483,6 +483,11 @@ void Character::jump(b2Vec2 speed)
 
 }
 
+void Character::move(float dx, float dy)
+{
+    position.x += dx; position.y += dy;
+}
+
 void Character::setAnim(int anim)
 {
 	currentAnimation = anim;

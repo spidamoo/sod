@@ -24,6 +24,7 @@ class Character
 		void turn();
 		void run(float speed);
 		void jump(b2Vec2 speed);
+		void move(float dx, float dy);
 
 		void setAnim(int anim);
 

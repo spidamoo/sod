@@ -24,3 +24,8 @@ void MapAnimation::draw(bool schematicMode)
         game->getScaleFactor()
     );
 }
+
+void MapAnimation::move(float dx, float dy)
+{
+    x += dx; y += dy;
+}

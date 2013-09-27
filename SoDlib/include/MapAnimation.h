@@ -10,6 +10,7 @@ class MapAnimation
         virtual ~MapAnimation();
 
         void draw(bool schematicMode);
+        void move(float dx, float dy);
     protected:
         float x, y, angle;
         hgeAnimation* animation;

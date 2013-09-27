@@ -54,6 +54,9 @@ class Game
 		int getGroundLinesCount();
 		GroundLine* getGroundLine(int index);
 
+		int getMapAnimationsCount();
+		MapAnimation* getMapAnimation(int index);
+
 		HGE* getHge();
 		b2World* getWorld();
 
