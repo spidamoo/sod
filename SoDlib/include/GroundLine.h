@@ -20,6 +20,7 @@ class GroundLine
 		float horizontalDistanceTo(float x);
 		float distanceTo(float x, float y);
 		void debugDraw(), debugDraw(DWORD color);
+		void move(float dx, float dy);
 	protected:
 		b2Vec2 startPoint, endPoint;
 		float k, inversedK;

@@ -359,45 +359,45 @@ void Character::update(float dt)
 		position += (dt * speed);
 	}
 
+    for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
+		if (actions[currentAnimation][i]->take(game, this)) {
+		}
+	}
+
 	float h = position.y;
-	for (int i = 0; i < game->getGroundLinesCount(); i++) {
+	for (int i = 0; i < game->getGroundLinesCount(); i++) {///Обработаем все стены
 		if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_WALL) {
-			if (game->getGroundLine(i)->getK() > 0) {///Линия сверху вниз
+
                 if (
-                    position.y - halfHeight < game->getGroundLine(i)->getEndPoint().y///Верхняя точка героя выше нижней точки линии
-                    && position.y + halfHeight > game->getGroundLine(i)->getStartPoint().y///Или нижняя героя ниже верхней линии
+                    position.y - halfHeight + 0.1f < game->getGroundLine(i)->getBottom()///Верхняя точка героя выше нижней точки линии
+                    && position.y + halfHeight - 0.1f > game->getGroundLine(i)->getTop()///Или нижняя героя ниже верхней линии
                 ) {
                     ///Если середина была слева от линии, а правый край теперь справа
                     if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;///Ставим к стенке (слева)
+                        ///Ставим к стенке (слева)
+                        if (onGround == -1) {
+                            position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
+                        } else {
+                            position = prevPosition;
+                        }
                         speed.x = 0;///Останавливаем
-                        printf("bump on right\n");
                     } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
                         ///То же самое направо от стенки
-                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        if (onGround == -1) {
+                            position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
+                        } else {
+                            position = prevPosition;
+                        }
                         speed.x = 0;
-                        printf("bump on left\n");
                     }
                 }
-			} else {///Все то же самое для линии снизу вверх
-			    if (
-                    position.y - halfHeight < game->getGroundLine(i)->getStartPoint().y
-                    && position.y + halfHeight > game->getGroundLine(i)->getEndPoint().y
-                ) {
-                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x + halfWidth > game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) - halfWidth;
-                        speed.x = 0;
-                        printf("bump on right\n");
-                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x - halfWidth < game->getGroundLine(i)->xAt(position.y)) {
-                        position.x = game->getGroundLine(i)->xAt(position.y) + halfWidth;
-                        speed.x = 0;
-                        printf("bump on left\n");
-                    }
-                }
-			}
-		} else {
+
+		}
+	}
+	for (int i = 0; i < game->getGroundLinesCount(); i++) {///Теперь все полы/потолки
+		if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR) {
 		    if (
-                position.x > game->getGroundLine(i)->getStartPoint().x && position.x < game->getGroundLine(i)->getEndPoint().x
+                position.x + halfWidth > game->getGroundLine(i)->getStartPoint().x && position.x - halfWidth < game->getGroundLine(i)->getEndPoint().x
             ) {
                 float highY, lowY;
                 if (game->getGroundLine(i)->getK() > 0) {
@@ -434,12 +434,6 @@ void Character::update(float dt)
 //        position.y = 0;
 //        speed.y = 0;
 //	}
-
-
-	for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
-		if (actions[currentAnimation][i]->take(game, this)) {
-		}
-	}
 
     if (onGround > -1) {
 		if (
@@ -487,6 +481,11 @@ void Character::jump(b2Vec2 speed)
 	//speed.y = 6 * speed.y;
 	//position.y -= 2;
 
+}
+
+void Character::move(float dx, float dy)
+{
+    position.x += dx; position.y += dy;
 }
 
 void Character::setAnim(int anim)

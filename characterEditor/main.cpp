@@ -17,6 +17,7 @@ const int MODE_CAMERA_MOVE = 8;
 const int MODE_ANIM_ROTATE = 9;
 const int MODE_LAYER_DRAG  = 10;
 const int MODE_ANIM_CONTEXT_MENU = 11;
+const int MODE_RESIZE_CHARACTER = 12;
 
 const int MODE_PLAYING     = 20;
 
@@ -109,6 +110,8 @@ bool drawBoxes = true;
 
 HTEXTURE bgTex;
 hgeFont* fnt;
+
+hgeAnimation* disabledIcon; hgeAnimation* resizeIcon;
 
 hgeQuad grayQuad;
 
@@ -1316,6 +1319,11 @@ bool FrameFunc()
 						mode = MODE_ANGLE_DRAG;
 					}
 				}
+
+				if (sqrt(pow(x - game->screenX(characterWidth * 0.5), 2) + pow(y - game->screenY(-characterHeight * 0.5), 2)) < 5) {
+                    ///Если мышка возле угла прямоугольника, показывающего размер, то будем менять размер
+                    mode = MODE_RESIZE_CHARACTER;
+                }
 			}
 			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_SHIFT)) {
 				selectedBody = getPointedBody(x, y);
@@ -1617,6 +1625,17 @@ bool FrameFunc()
 				resetMode();
 			}
 			break;
+        case MODE_RESIZE_CHARACTER:
+            characterWidth = worldX * 2;
+            characterHeight = -worldY * 2;
+            if (characterWidth < 0)
+                characterWidth = 0;
+            if (characterHeight < 0)
+                characterHeight = 0;
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
+                resetMode();
+            }
+            break;
 	}
 
 	return game->update(false);
@@ -1635,8 +1654,20 @@ bool RenderFunc()
 //	game->getHge()->Gfx_RenderLine(game->screenX(0.5), game->screenY(-characterHeight), game->screenX(0.5), game->screenY(0), 0x55000000);
 //	game->drawArc(game->screenX(0), game->screenY(0), 50 * game->getScaleFactor(), M_PI, 2 * M_PI, 0x55000000, 0);
 //	game->getHge()->Gfx_RenderLine(game->screenX(-10), game->screenY(0.5), game->screenX(10), game->screenY(0.5), 0x55000000);
+    ///Положение мышки на экране и в мире
+    float x, y;
+    game->getHge()->Input_GetMousePos(&x, &y);
+    float worldX = game->worldX(x);
+	float worldY = game->worldY(y);
+	///Добавление анимации в пул
+	float insertX = x; float insertY = y;
+	if (insertX < 1300) insertX = 1300; if (insertY < 450) insertY = 450;
 
+    ///Прямоугольник, показывающий размер персонажа в мире
 	game->drawRect(game->screenX(0), game->screenY(0), characterWidth * 0.5 * game->getFullScale(), characterHeight * 0.5 * game->getFullScale(), 0, 0x55000000, 0);
+	if (sqrt(pow(x - game->screenX(characterWidth * 0.5), 2) + pow(y - game->screenY(-characterHeight * 0.5), 2)) < 5) {
+        resizeIcon->Render(x, y);///Нарисуем иконку, если мышка возле правого верхнего угла
+	}
 
 	for (int index = 0; index < bodiesCount; index++) {
 		int i = animLayer(index);
@@ -1709,13 +1740,6 @@ bool RenderFunc()
 			);
 		}
 	}
-
-	float x, y;
-    game->getHge()->Input_GetMousePos(&x, &y);
-    float worldX = game->worldX(x);
-	float worldY = game->worldY(y);
-	float insertX = x; float insertY = y;
-	if (insertX < 1300) insertX = 1300; if (insertY < 450) insertY = 450;
 
 	//game->getHge()->Gfx_RenderLine(game->screenX(0) - 10, game->screenY(0) - 10, game->screenX(0) + 10, game->screenY(0) + 10, 0xFF000000);
 	//game->getHge()->Gfx_RenderLine(game->screenX(0) - 10, game->screenY(0) + 10, game->screenX(0) + 10, game->screenY(0) - 10, 0xFF000000);
@@ -2045,6 +2069,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//bgTex = game->getHge()->Texture_Load("box.png");
 
 		fnt = new hgeFont("font1.fnt");
+
+		disabledIcon = game->loadAnimation("disabled_icon.xml");
+		resizeIcon = game->loadAnimation("resize_icon.xml");
 
 		grayQuad.v[0].x = 1300; grayQuad.v[0].y = 0; grayQuad.v[0].col = 0xFFAAAAAA; grayQuad.v[0].z = 1;
 		grayQuad.v[1].x = 1600; grayQuad.v[1].y = 0; grayQuad.v[1].col = 0xFFAAAAAA; grayQuad.v[1].z = 1;

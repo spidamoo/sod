@@ -1,0 +1,236 @@
+<?xml version="1.0" ?>
+<character bodies="9" hotspots="0" height="1.75" width="0.75" animations="3">
+    <body animation="mage/staff.png.xml" x="5" y="79" angle="1.22144e-038" />
+    <body animation="mage/body.png.xml" x="6" y="130" angle="1.22213e-038" />
+    <body animation="mage/head.png.xml" x="0" y="88" angle="0" />
+    <body animation="mage/open_hand.png.xml" x="162" y="169" angle="0" />
+    <body animation="mage/fist.png.xml" x="4.00012" y="106" angle="0" />
+    <body animation="mage/foot.png.xml" x="3" y="162" angle="0" />
+    <body animation="mage/foot.png.xml" x="4" y="232" angle="0" />
+    <body animation="mage/open_hand2.png.xml" x="50.6322" y="91.6212" angle="-2.77161" />
+    <body animation="mage/fist.png.xml" x="76" y="145" angle="0" />
+    <animation frames="1" angles="1">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="-0.144305" y="0.148026" angle="-0.148146" show="1" layer="6" />
+            <body x="0.025" y="0.209374" angle="1.22213e-038" show="1" layer="5" />
+            <body x="0.00937605" y="-0.514064" angle="0" show="1" layer="1" />
+            <body x="4.5" y="0.570311" angle="0" show="0" layer="0" />
+            <body x="-0.0125003" y="0.0312492" angle="0" show="1" layer="4" />
+            <body x="-0.28125" y="0.778124" angle="0" show="1" layer="2" />
+            <body x="0.35" y="0.778124" angle="0" show="1" layer="3" />
+            <body x="1.94375" y="0.315624" angle="0" show="0" layer="7" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="3">
+            <action>
+                <on causes="1">
+                    <cause type="3" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="1" param="0" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="2">
+                    <cause type="3" param="2" />
+					<cause type="201" param="0" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="1" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="2">
+                    <cause type="3" param="3" />
+                    <cause type="201" param="0" />
+                </on>
+                <do effects="2">
+                    <effect type="4" param="10" param2="0" />
+                    <effect type="2" param="2" />
+                </do>
+            </action>
+        </actions>
+    </animation>
+    <animation frames="4" angles="1">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.4">
+            <body x="-0.314411" y="0.0250659" angle="-0.463599" show="1" layer="6" />
+            <body x="0.0218747" y="0.225002" angle="1.22213e-038" show="1" layer="5" />
+            <body x="0.0406249" y="-0.487498" angle="0" show="1" layer="1" />
+            <body x="0" y="0" angle="0" show="0" layer="3" />
+            <body x="-0.155159" y="-0.0925353" angle="0.519069" show="1" layer="0" />
+            <body x="-0.463841" y="0.71908" angle="0.893336" show="1" layer="4" />
+            <body x="0.493893" y="0.759933" angle="-0.255182" show="1" layer="2" />
+            <body x="0" y="0" angle="0" show="0" layer="7" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <frame length="0.4">
+            <body x="-0.164915" y="0.261034" angle="-0.531065" show="1" layer="6" />
+            <body x="0.0218747" y="0.225002" angle="1.22213e-038" show="1" layer="5" />
+            <body x="0.0406249" y="-0.487498" angle="0" show="1" layer="1" />
+            <body x="0" y="0" angle="0" show="0" layer="3" />
+            <body x="-0.0695043" y="0.0499492" angle="0.158997" show="1" layer="0" />
+            <body x="0.0930991" y="0.890715" angle="0.0194996" show="1" layer="4" />
+            <body x="-0.011394" y="0.772518" angle="-0.0154628" show="1" layer="2" />
+            <body x="0" y="0" angle="0" show="0" layer="7" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <frame length="0.4">
+            <body x="0.0644965" y="0.362123" angle="-1.21048" show="1" layer="6" />
+            <body x="0.0218747" y="0.225002" angle="1.22213e-038" show="1" layer="5" />
+            <body x="0.0406249" y="-0.487498" angle="0" show="1" layer="1" />
+            <body x="0" y="0" angle="0" show="0" layer="3" />
+            <body x="0.10882" y="0.139983" angle="-0.648608" show="1" layer="0" />
+            <body x="0.558075" y="0.728963" angle="-0.336725" show="1" layer="4" />
+            <body x="-0.509485" y="0.745003" angle="0.828857" show="1" layer="2" />
+            <body x="0" y="0" angle="0" show="0" layer="7" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <frame length="0.4">
+            <body x="-0.160634" y="0.171307" angle="-0.718513" show="1" layer="6" />
+            <body x="0.0218747" y="0.225002" angle="1.22213e-038" show="1" layer="5" />
+            <body x="0.0406249" y="-0.487498" angle="0" show="1" layer="1" />
+            <body x="0" y="0" angle="0" show="0" layer="3" />
+            <body x="-0.0595796" y="0.00476265" angle="0.191569" show="1" layer="0" />
+            <body x="0.046385" y="0.751297" angle="0.0185516" show="1" layer="4" />
+            <body x="0.016026" y="0.858024" angle="-0.0297815" show="1" layer="2" />
+            <body x="0" y="0" angle="0" show="0" layer="7" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="4">
+            <action>
+                <on causes="1">
+                    <cause type="2" param="2" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="0" param2="0" />
+                </do>
+            </action>
+			<action>
+                <on causes="1">
+                    <cause type="201" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="2" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="201" param="0" />
+                </on>
+                <do effects="1">
+                    <effect type="3" param="4" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="2">
+                    <cause type="3" param="3" />
+                    <cause type="201" param="0" />
+                </on>
+                <do effects="2">
+                    <effect type="4" param="10" param2="2" />
+                    <effect type="2" param="2" />
+                </do>
+            </action>
+        </actions>
+    </animation>
+    <animation frames="1" angles="1">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="-0.42441" y="-0.57019" angle="0.89013" show="1" layer="7" />
+            <body x="0.0343742" y="0.0281277" angle="1.22213e-038" show="1" layer="1" />
+            <body x="0.0567276" y="-0.69305" angle="0.395482" show="1" layer="2" />
+            <body x="2.10937" y="-0.387501" angle="0" show="0" layer="0" />
+            <body x="-0.247677" y="-0.497995" angle="1.92125" show="1" layer="3" />
+            <body x="0.490908" y="0.686625" angle="-1.23117" show="1" layer="4" />
+            <body x="-0.469031" y="0.578576" angle="0.611442" show="1" layer="5" />
+            <body x="0.369652" y="-0.63682" angle="-2.35713" show="1" layer="6" />
+            <body x="0" y="0" angle="0" show="0" layer="8" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+            <body x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="3">
+            <action>
+                <on causes="1">
+                    <cause type="201" param="0" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="3" param="2" />
+                </on>
+                <do effects="1">
+                    <effect type="3" param="2" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="3" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="1" param="0" param2="0" />
+                </do>
+            </action>
+        </actions>
+    </animation>
+</character>
+

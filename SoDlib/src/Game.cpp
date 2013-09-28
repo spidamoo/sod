@@ -13,8 +13,10 @@ Game::Game(HGE * hge)
 	hge->System_SetState(HGE_SCREENBPP, 32);
 	hge->System_SetState(HGE_FPS, 60);
 
-	groundLines = new GroundLine*[1000]; groundLinesCount = 0;
-	mapAnimations = new MapAnimation*[1000]; mapAnimationsCount = 0;
+	//groundLines = new GroundLine*[1000];
+	groundLinesCount = 0;
+	//mapAnimations = new MapAnimation*[1000];
+	mapAnimationsCount = 0;
 	characters = new Character*[100];
 	charactersCount = 0;
 
@@ -187,11 +189,14 @@ void Game::updateWorld(float dt)
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->update(dt);
 	}
+	for (int i = 0; i < platformsCount; i++) {
+        platforms[i]->update(dt);
+	}
 	cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
 }
 bool Game::updateControls()
 {
-	// Process keys
+	/// Process keys
 	if (hge->Input_GetKeyState(HGEK_ESCAPE)) return true;
 	if (hge->Input_KeyDown(HGEK_TAB))        schematicDrawMode = !schematicDrawMode;
 	//if (hge->Input_KeyDown(HGEK_SPACE))      loadConstruction("box.xml", b2Vec2(10 + hge->Random_Float(-1, 1), 0));
@@ -200,12 +205,9 @@ bool Game::updateControls()
 
 void Game::startDraw()
 {
-	// Begin rendering quads.
-	// This function must be called
-	// before any actual rendering.
 	hge->Gfx_BeginScene();
 
-	// Clear screen with skyblue color
+	/// Clear screen with skyblue color
 	DWORD color = 0x7fc7ff;
 	if (schematicDrawMode) {
 		color = 0;
@@ -217,7 +219,7 @@ void Game::endDraw()
 {
 
 	gui->Render();
-	// End rendering and update the screen
+	/// End rendering and update the screen
 	hge->Gfx_EndScene();
 }
 
@@ -577,6 +579,11 @@ void Game::addMapAnimation(MapAnimation* newMA)
 	mapAnimations[mapAnimationsCount] = newMA;
 	mapAnimationsCount++;
 }
+void Game::addPlatform(Platform* newPlatform)
+{
+	platforms[platformsCount] = newPlatform;
+	platformsCount++;
+}
 
 int Game::getCharactersCount()
 {
@@ -609,6 +616,19 @@ GroundLine* Game::getGroundLine(int index)
 {
 	if (index < groundLinesCount) {
 		return groundLines[index];
+	} else {
+		return NULL;
+	}
+}
+
+int Game::getMapAnimationsCount()
+{
+	return mapAnimationsCount;
+}
+MapAnimation* Game::getMapAnimation(int index)
+{
+	if (index < mapAnimationsCount) {
+		return mapAnimations[index];
 	} else {
 		return NULL;
 	}
@@ -740,6 +760,12 @@ void Game::loadMap(char* fn)
     	if (root->Attribute("height")) {
 			mapHeight = atof(root->Attribute("height"));
 		}
+		mapAnimationsCount = atoi(root->Attribute("animations"));
+		mapAnimations = new MapAnimation*[mapAnimationsCount];
+		groundLinesCount = atoi(root->Attribute("ground_lines"));
+		groundLines = new GroundLine*[groundLinesCount];
+		platformsCount = atoi(root->Attribute("platforms"));
+		platforms = new Platform*[platformsCount];
 
         TiXmlElement* element = root->FirstChildElement("animation");
         int i = 0;
@@ -753,23 +779,35 @@ void Game::loadMap(char* fn)
 			hgeAnimation* animation = loadAnimation(animationName);
 			delete animationName;
 
-			addMapAnimation(new MapAnimation(this, animation, x, y, angle));
+            mapAnimations[i] = new MapAnimation(this, animation, x, y, angle);
 
 			i++;
             element = element->NextSiblingElement("animation");
         }
         mapAnimationsCount = i;
 
+
         i = 0;
         element = root->FirstChildElement("ground_line");
         while (element) {
         	printf("loading ground line...\n");
-			addGroundLine(new GroundLine(this, atof(element->Attribute("x1")), atof(element->Attribute("y1")), atof(element->Attribute("x2")), atof(element->Attribute("y2"))));
+			groundLines[i] = new GroundLine(this, atof(element->Attribute("x1")), atof(element->Attribute("y1")), atof(element->Attribute("x2")), atof(element->Attribute("y2")));
 
 			i++;
             element = element->NextSiblingElement("ground_line");
         }
         groundLinesCount = i;
+
+        i = 0;
+        element = root->FirstChildElement("platform");
+        while (element) {
+        	printf("loading platform...\n");
+        	platforms[i] = new Platform(this, element);
+
+			i++;
+            element = element->NextSiblingElement("platform");
+        }
+        platformsCount = i;
     } else {
         printf("failed\n");
     }

@@ -203,6 +203,9 @@ bool saveMap(char* fn)
 	TiXmlElement* root = new TiXmlElement( "map" );
 	root->SetAttribute("animations", animationsCount);
 	root->SetAttribute("ground_lines", groundLinesCount);
+	root->SetAttribute("platforms", platformsCount);
+	root->SetDoubleAttribute("width", width);
+	root->SetDoubleAttribute("height", height);
 
 	for (int i = 0; i < animationsCount; i++) {
         TiXmlElement* element = new TiXmlElement( "animation" );
@@ -318,7 +321,7 @@ bool loadMap(char* fn)
         i = 0;
         element = root->FirstChildElement("platform");
         while (element) {
-            int j =0;
+            int j = 0;
             TiXmlElement* child = element->FirstChildElement("ground_line");
             while (child) {
                 platformGroundLines[i][j] = atoi(child->Attribute("index"));
