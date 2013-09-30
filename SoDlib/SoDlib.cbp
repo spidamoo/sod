@@ -57,6 +57,7 @@
 		<Unit filename="include/Construction.h" />
 		<Unit filename="include/DebugDraw.h" />
 		<Unit filename="include/Effect.h" />
+		<Unit filename="include/EffectPrototype.h" />
 		<Unit filename="include/Exception.h" />
 		<Unit filename="include/GUIWindow.h" />
 		<Unit filename="include/Game.h" />
@@ -67,6 +68,7 @@
 		<Unit filename="include/PlayerCharacter.h" />
 		<Unit filename="include/RectangularEffect.h" />
 		<Unit filename="include/SoDlib.h" />
+		<Unit filename="include/exprtk.hpp" />
 		<Unit filename="include/hgeGUIMenuItem.h" />
 		<Unit filename="include/tinystr.h" />
 		<Unit filename="include/tinyxml.h" />
@@ -79,6 +81,7 @@
 		<Unit filename="src/Construction.cpp" />
 		<Unit filename="src/DebugDraw.cpp" />
 		<Unit filename="src/Effect.cpp" />
+		<Unit filename="src/EffectPrototype.cpp" />
 		<Unit filename="src/Exception.cpp" />
 		<Unit filename="src/GUIWindow.cpp" />
 		<Unit filename="src/Game.cpp" />
