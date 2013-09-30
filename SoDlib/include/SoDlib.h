@@ -31,6 +31,7 @@ typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 #include <Exception.h>
 #include <Game.h>
 #include <Construction.h>
+#include <Effect.h>
 #include <CharacterActionCause.h>
 #include <CharacterActionEffect.h>
 #include <CharacterAction.h>
