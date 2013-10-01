@@ -12,9 +12,7 @@ class Game
 		bool preload();
 		void loop();
 
-		bool loadAnimationNames(char* fn);
-		int getAnimationsCount();
-		char* getAnimationName(int index);
+		bool loadEffectPrototypes(char* fn);
 
 		bool update();
 		bool update(bool physics);
@@ -98,10 +96,8 @@ class Game
 		GroundLine** groundLines; int groundLinesCount;
 		MapAnimation** mapAnimations; int mapAnimationsCount;
 		Platform** platforms; int platformsCount;
-		char** animationNames;
-		int animationsCount;
-		Character** characters;
-		int charactersCount;
+		Character** characters; int charactersCount;
+		EffectPrototype** effectPrototypes; int effectPrototypesCount;
 
 		float32 timeStep;
 		int32 velocityIterations;

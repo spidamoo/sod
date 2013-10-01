@@ -19,6 +19,7 @@ Game::Game(HGE * hge)
 	mapAnimationsCount = 0;
 	characters = new Character*[100];
 	charactersCount = 0;
+	effectPrototypesCount = 0;
 
 	timeStep = 1.0f / 60.0f;
 	velocityIterations = 6;
@@ -81,8 +82,6 @@ bool Game::preload()
 			whiteTriple.v[1].z = 1;
 			whiteTriple.v[2].z = 1;
 
-			loadAnimationNames("animations.xml");
-
 			return true;
     	} else {
     		char * error = strdup(hge->System_GetErrorMessage());
@@ -97,52 +96,43 @@ bool Game::preload()
     return false;
 }
 
-bool Game::loadAnimationNames(char* fileName)
+
+bool Game::loadEffectPrototypes(char* fileName)
 {
-	printf("loading anim list %s ... \n", fileName);
-    TiXmlDocument doc(fileName);
+	printf("loading effect prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fn);
     bool loadOkay = doc.LoadFile();
     if (loadOkay) {
-		TiXmlElement* element = doc.FirstChildElement("animation");
+    	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
+
+		effectPrototypesCount = atoi(root->Attribute("count"));
+		effectPrototypes = new EffectPrototype*[effectPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
         int i = 0;
         while (element) {
-			i++;
-            element = element->NextSiblingElement("animation");
-        }
-        animationNames = new char*[i];
-		animationsCount = i;
-
-        element = doc.FirstChildElement("animation");
-        i = 0;
-        while (element) {
-			animationNames[i] = new char[64];
-			int c = 0;
-			for (c = 0; element->Attribute("file")[c] != '\0'; c++) {
-			    animationNames[i][c] = element->Attribute("file")[c];
+			int type = atoi(element->Attribute("type"));
+			EffectPrototype* newObject;
+			switch (type) {
+				case EFFECT_TYPE_RECTANGULAR:
+					newObject = new RectangularEffectPrototype;
+					break;
+				case EFFECT_TYPE_HOTSPOT:
+					newObject = new HotSpotEffectPrototype;
+					break;
 			}
-			animationNames[i][c] = '\0';
+            newObject->loadFromXml(element);
 
-			//printf("c %s\n", animationNames[i]);
 			i++;
-            element = element->NextSiblingElement("animation");
-
+            element = element->NextSiblingElement("prototype");
         }
-    	return true;
+        effectPrototypesCount = i;
+		return true;
     } else {
-    	printf("failed\n");
-    	return false;
+        printf("failed\n");
+        return false;
     }
-}
 
-int Game::getAnimationsCount()
-{
-	return animationsCount;
-}
-
-char* Game::getAnimationName(int index)
-{
-    //printf("g %s\n", animationNames[index]);
-	return animationNames[index];
 }
 
 void Game::loop()

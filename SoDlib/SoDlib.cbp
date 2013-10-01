@@ -62,6 +62,8 @@
 		<Unit filename="include/GUIWindow.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/GroundLine.h" />
+		<Unit filename="include/HotSpotEffect.h" />
+		<Unit filename="include/HotSpotEffectPrototype.h" />
 		<Unit filename="include/MapAnimation.h" />
 		<Unit filename="include/NonPlayerCharacter.h" />
 		<Unit filename="include/Platform.h" />
@@ -86,6 +88,8 @@
 		<Unit filename="src/GUIWindow.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GroundLine.cpp" />
+		<Unit filename="src/HotSpotEffect.cpp" />
+		<Unit filename="src/HotSpotEffectPrototype.cpp" />
 		<Unit filename="src/MapAnimation.cpp" />
 		<Unit filename="src/NonPlayerCharacter.cpp" />
 		<Unit filename="src/Platform.cpp" />

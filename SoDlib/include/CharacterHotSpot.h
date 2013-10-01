@@ -3,6 +3,8 @@
 
 #include <SoDlib.h>
 
+const int HOT_SPOT_TYPE_WEAPON = 1;
+
 class CharacterHotSpot
 {
 	public:

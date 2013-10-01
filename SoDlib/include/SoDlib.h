@@ -31,9 +31,11 @@ typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 #include <Exception.h>
 #include <Game.h>
 #include <Construction.h>
-#include <Effect.h>
 #include <EffectPrototype.h>
+#include <HotSpotEffectPrototype.h>
+#include <Effect.h>
 #include <RectangularEffect.h>
+#include <HotSpotEffect.h>
 #include <CharacterActionCause.h>
 #include <CharacterActionEffect.h>
 #include <CharacterAction.h>
