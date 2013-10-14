@@ -13,10 +13,16 @@ class GroundLine;
 class Platform;
 class MapAnimation;
 class DebugDraw;
+class EffectPrototype;
+class Effect;
+class RectangularEffect;
+class HotSpotEffect;
 class Game;
 class hgeGUIMenuItem;
 
 typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
+
+#include <string>
 
 #include <hge.h>
 #include <hgeanim.h>

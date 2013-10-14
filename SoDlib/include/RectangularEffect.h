@@ -1,7 +1,7 @@
+#include <SoDlib.h>
+#ifdef CHARACTER_H_COMPLETE
 #ifndef RECTANGULAREFFECT_H
 #define RECTANGULAREFFECT_H
-
-#include <SoDlib.h>
 
 
 class RectangularEffect : public Effect
@@ -15,3 +15,4 @@ class RectangularEffect : public Effect
 };
 
 #endif // RECTANGULAREFFECT_H
+#endif

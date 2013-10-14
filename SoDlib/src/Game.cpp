@@ -100,7 +100,7 @@ bool Game::preload()
 bool Game::loadEffectPrototypes(char* fileName)
 {
 	printf("loading effect prototypes %s ... \n", fileName);
-    TiXmlDocument doc(fn);
+    TiXmlDocument doc(fileName);
     bool loadOkay = doc.LoadFile();
     if (loadOkay) {
     	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
@@ -115,10 +115,10 @@ bool Game::loadEffectPrototypes(char* fileName)
 			EffectPrototype* newObject;
 			switch (type) {
 				case EFFECT_TYPE_RECTANGULAR:
-					newObject = new RectangularEffectPrototype;
+					newObject = new RectangularEffectPrototype();
 					break;
 				case EFFECT_TYPE_HOTSPOT:
-					newObject = new HotSpotEffectPrototype;
+					newObject = new HotSpotEffectPrototype();
 					break;
 			}
             newObject->loadFromXml(element);

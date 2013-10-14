@@ -1,7 +1,7 @@
+#include <SoDlib.h>
+#ifdef CHARACTER_H_COMPLETE
 #ifndef HOTSPOTEFFECT_H
 #define HOTSPOTEFFECT_H
-
-#include <SoDlib.h>
 
 
 class HotSpotEffect : public Effect
@@ -15,3 +15,4 @@ class HotSpotEffect : public Effect
 };
 
 #endif // HOTSPOTEFFECT_H
+#endif

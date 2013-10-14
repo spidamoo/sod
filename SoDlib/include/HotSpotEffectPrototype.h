@@ -1,7 +1,7 @@
+#include <SoDlib.h>
+#ifdef EFFECTPROTOTYPE_H_COMPLETE
 #ifndef HOTSPOTEFFECTPROTOTYPE_H
 #define HOTSPOTEFFECTPROTOTYPE_H
-
-#include <SoDlib.h>
 
 
 class HotSpotEffectPrototype : public EffectPrototype
@@ -17,3 +17,4 @@ class HotSpotEffectPrototype : public EffectPrototype
 };
 
 #endif // HOTSPOTEFFECTPROTOTYPE_H
+#endif

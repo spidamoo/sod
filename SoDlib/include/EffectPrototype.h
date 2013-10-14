@@ -19,5 +19,5 @@ class EffectPrototype
 		int type;
 	private:
 };
-
+#define EFFECTPROTOTYPE_H_COMPLETE
 #endif // EFFECTPROTOTYPE_H

@@ -16,5 +16,5 @@ class Effect
 		float time;
 	private:
 };
-
+#define EFFECT_H_COMPLETE
 #endif // EFFECT_H
