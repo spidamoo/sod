@@ -3,8 +3,13 @@
 
 #include <SoDlib.h>
 
-const int EFFECT_TYPE_RECTANGULAR = 1;
-const int EFFECT_TYPE_HOTSPOT = 2;
+const int EFFECT_POSITION_TYPE_STATIC  = 1;
+const int EFFECT_POSITION_TYPE_HOTSPOT = 2;
+const int EFFECT_POSITION_TYPE_DYNAMIC = 3;
+
+const int EFFECT_AREA_TYPE_POINT  = 1;
+const int EFFECT_AREA_TYPE_RECT   = 2;
+const int EFFECT_AREA_TYPE_CIRCLE = 3;
 
 class EffectPrototype
 {
@@ -14,9 +19,14 @@ class EffectPrototype
 
 		void loadFromXml(TiXmlElement* xml);
 	protected:
-		std::string speedFormula, angleFormula, rFormula, gFormula, bFormula, aFormula, timeFormula, amountFormula, durationFormula;
+		std::string speedFormula, angleFormula, rFormula, gFormula, bFormula, aFormula,
+            timeFormula, amountFormula, durationFormula;
 
-		int type;
+        exprtk::expression startSpeedExpr, startAngleExpr, startRExpr, startGExpr, startBExpr,
+            startAExpr, startTimeExpr, startAmountExpr, startDurationExpr;
+        exprtk::symbol_table symbolTable;
+
+		int positionType, areaType;
 	private:
 };
 #define EFFECTPROTOTYPE_H_COMPLETE

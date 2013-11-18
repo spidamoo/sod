@@ -111,16 +111,7 @@ bool Game::loadEffectPrototypes(char* fileName)
         TiXmlElement* element = root->FirstChildElement("prototype");
         int i = 0;
         while (element) {
-			int type = atoi(element->Attribute("type"));
-			EffectPrototype* newObject;
-			switch (type) {
-				case EFFECT_TYPE_RECTANGULAR:
-					newObject = new RectangularEffectPrototype();
-					break;
-				case EFFECT_TYPE_HOTSPOT:
-					newObject = new HotSpotEffectPrototype();
-					break;
-			}
+			EffectPrototype* newObject = new EffectPrototype();
             newObject->loadFromXml(element);
 
 			i++;

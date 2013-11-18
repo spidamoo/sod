@@ -40,8 +40,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// Set up video mode
 	hge->System_SetState(HGE_WINDOWED, true);
-	hge->System_SetState(HGE_SCREENWIDTH, 1600);
-	hge->System_SetState(HGE_SCREENHEIGHT, 900);
+	hge->System_SetState(HGE_SCREENWIDTH, 800);
+	hge->System_SetState(HGE_SCREENHEIGHT, 600);
 	hge->System_SetState(HGE_SCREENBPP, 32);
 	hge->System_SetState(HGE_FPS, 60);
 
