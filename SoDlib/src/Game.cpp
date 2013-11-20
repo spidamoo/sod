@@ -37,6 +37,8 @@ Game::Game(HGE * hge)
 
 	mapWidth = 10; mapHeight = 10;
 
+	exprtkParser = new exprtk::parser<float>();
+
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
 }
@@ -849,4 +851,9 @@ float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, fl
 
     ///returning shortest distance
     return sqrt(diffX * diffX + diffY * diffY);
+}
+
+exprtk::parser<float>* Game::getExprtkParser()
+{
+    return exprtkParser;
 }

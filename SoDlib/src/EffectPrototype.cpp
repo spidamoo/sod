@@ -1,8 +1,8 @@
 #include "EffectPrototype.h"
 
-EffectPrototype::EffectPrototype()
+EffectPrototype::EffectPrototype(Game* game)
 {
-	//ctor
+	this->game = game;
 }
 
 EffectPrototype::~EffectPrototype()
@@ -59,50 +59,73 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml)
 	}
 
 
+    startSpeedExpr.register_symbol_table(symbolTable);
+    startAngleExpr.register_symbol_table(symbolTable);
+    startRExpr.register_symbol_table(symbolTable);
+    startGExpr.register_symbol_table(symbolTable);
+    startBExpr.register_symbol_table(symbolTable);
+    startAExpr.register_symbol_table(symbolTable);
+    startTimeExpr.register_symbol_table(symbolTable);
+    startAmountExpr.register_symbol_table(symbolTable);
+    startDurationExpr.register_symbol_table(symbolTable);
+
+    startXExpr.register_symbol_table(symbolTable);
+    startYExpr.register_symbol_table(symbolTable);
 
 	if (xml->Attribute("start_speed_formula")) {
-		speedFormula = xml->Attribute("speed_formula");
+        game->getExprtkParser()->compile(xml->Attribute("start_speed_formula"), startSpeedExpr);
 	} else {
-		speedFormula = "";
+		game->getExprtkParser()->compile("0", startSpeedExpr);
 	}
-	if (xml->Attribute("angle_formula")) {
-		angleFormula = xml->Attribute("angle_formula");
+	if (xml->Attribute("start_angle_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_angle_formula"), startAngleExpr);
 	} else {
-		angleFormula = "";
+		game->getExprtkParser()->compile("0", startAngleExpr);
 	}
-	if (xml->Attribute("r_formula")) {
-		rFormula = xml->Attribute("r_formula");
+	if (xml->Attribute("start_r_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_r_formula"), startRExpr);
 	} else {
-		rFormula = "";
+		game->getExprtkParser()->compile("0", startRExpr);
 	}
-	if (xml->Attribute("g_formula")) {
-		gFormula = xml->Attribute("g_formula");
+	if (xml->Attribute("start_g_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_g_formula"), startGExpr);
 	} else {
-		gFormula = "";
+		game->getExprtkParser()->compile("0", startGExpr);
 	}
-	if (xml->Attribute("b_formula")) {
-		bFormula = xml->Attribute("b_formula");
+	if (xml->Attribute("start_b_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_b_formula"), startBExpr);
 	} else {
-		bFormula = "";
+		game->getExprtkParser()->compile("0", startBExpr);
 	}
-	if (xml->Attribute("a_formula")) {
-		aFormula = xml->Attribute("a_formula");
+	if (xml->Attribute("start_a_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_a_formula"), startAExpr);
 	} else {
-		aFormula = "";
+		game->getExprtkParser()->compile("0", startAExpr);
 	}
-	if (xml->Attribute("time_formula")) {
-		timeFormula = xml->Attribute("time_formula");
+	if (xml->Attribute("start_time_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_time_formula"), startTimeExpr);
 	} else {
-		timeFormula = "";
+		game->getExprtkParser()->compile("0", startTimeExpr);
 	}
-	if (xml->Attribute("amount_formula")) {
-		amountFormula = xml->Attribute("amount_formula");
+	if (xml->Attribute("start_amount_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_amount_formula"), startAmountExpr);
 	} else {
-		amountFormula = "";
+		game->getExprtkParser()->compile("0", startAmountExpr);
 	}
-	if (xml->Attribute("duration_formula")) {
-		durationFormula = xml->Attribute("duration_formula");
+	if (xml->Attribute("start_duration_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_duration_formula"), startDurationExpr);
 	} else {
-		durationFormula = "";
+		game->getExprtkParser()->compile("0", startDurationExpr);
+	}
+
+	if (xml->Attribute("start_x_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_x_formula"), startXExpr);
+	} else {
+		game->getExprtkParser()->compile("0", startXExpr);
+	}
+	if (xml->Attribute("start_y_formula")) {
+	    game->getExprtkParser()->compile(xml->Attribute("start_y_formula"), startYExpr);
+	} else {
+		game->getExprtkParser()->compile("0", startYExpr);
 	}
 }

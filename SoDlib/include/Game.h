@@ -83,6 +83,7 @@ class Game
 		b2Vec2 getGravity();
 		float getTimeStep();
 
+        exprtk::parser<float>* exprtkParser;
 	protected:
 		b2World* world;
 		HGE* hge;
@@ -116,6 +117,8 @@ class Game
 
 		float pixelsPerMeter, scaleFactor;
 		b2Vec2 gravity;
+
+		exprtk::parser<float>* getExprtkParser();
 	private:
 };
 

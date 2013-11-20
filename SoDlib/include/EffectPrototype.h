@@ -14,17 +14,19 @@ const int EFFECT_AREA_TYPE_CIRCLE = 3;
 class EffectPrototype
 {
 	public:
-		EffectPrototype();
+		EffectPrototype(Game* game);
 		virtual ~EffectPrototype();
 
 		void loadFromXml(TiXmlElement* xml);
 	protected:
+	    Game* game;
+
 		std::string speedFormula, angleFormula, rFormula, gFormula, bFormula, aFormula,
             timeFormula, amountFormula, durationFormula;
 
-        exprtk::expression startSpeedExpr, startAngleExpr, startRExpr, startGExpr, startBExpr,
-            startAExpr, startTimeExpr, startAmountExpr, startDurationExpr;
-        exprtk::symbol_table symbolTable;
+        exprtk::expression<float> startSpeedExpr, startAngleExpr, startRExpr, startGExpr, startBExpr,
+            startAExpr, startTimeExpr, startAmountExpr, startDurationExpr, startXExpr, startYExpr;
+        exprtk::symbol_table<float> symbolTable;
 
 		int positionType, areaType;
 	private:

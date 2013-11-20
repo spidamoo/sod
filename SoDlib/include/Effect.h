@@ -14,6 +14,11 @@ class Effect
 		Game* game;
 		b2Vec2 position, prevPosition, speed;
 		float time;
+
+		exprtk::expression<float> speedExpr, angleExpr, rExpr, gExpr, bExpr, aExpr,
+            timeExpr, amountExpr, durationExpr;
+
+		EffectPrototype* prototype;
 	private:
 };
 #define EFFECT_H_COMPLETE
