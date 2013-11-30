@@ -26,9 +26,9 @@ class Character
 		void jump(b2Vec2 speed);
 		void move(float dx, float dy);
 
-		void setAnim(int anim);
+		void doDamage(int amount);
 
-		float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
+		void setAnim(int anim);
 
 		b2Vec2 getPosition();
 		void setPosition(b2Vec2 newPos);
@@ -38,7 +38,17 @@ class Character
 		float getHalfWidth();
 		int getOnGround();
 
+		float getHotSpotX(int index), getHotSpotY(int index);
+
+		float getAnimTime();
+
+		void addCondition(Condition* condition);
+		void removeCondition(int index);
+
+        int getDamage();
 	protected:
+	    float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
+
 		Game* game;
 
 		b2Vec2 position, prevPosition, speed;
@@ -83,6 +93,10 @@ class Character
 
 		bool turnedRight;
 		int onGround;
+
+		int currentHitPoints, maxHitPoints;
+
+		Condition** conditions; int conditionsCount;
 };
 #define CHARACTER_H_COMPLETE
 #endif // CHARACTER_H

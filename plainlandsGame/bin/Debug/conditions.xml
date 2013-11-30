@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<condition_prototypes count="1">
+	<prototype
+		value_formula="1" type="1"
+	/>
+
+</condition_prototypes>

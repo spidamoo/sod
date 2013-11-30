@@ -19,9 +19,10 @@ bool FrameFunc()
 // Put your rendering code here.
 bool RenderFunc()
 {
-	game->startDraw();
-	game->drawGame();
-	game->endDraw();
+    game->draw();
+//	game->startDraw();
+//	game->drawGame();
+//	game->endDraw();
 	return false;
 }
 
@@ -38,13 +39,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "plainlands game");
 
-	// Set up video mode
-	hge->System_SetState(HGE_WINDOWED, true);
-	hge->System_SetState(HGE_SCREENWIDTH, 800);
-	hge->System_SetState(HGE_SCREENHEIGHT, 600);
-	hge->System_SetState(HGE_SCREENBPP, 32);
-	hge->System_SetState(HGE_FPS, 60);
-
 	//b2Vec2 gravity(0.0f, 10.0f);
 	//b2World* world = new b2World(gravity);
 
@@ -56,6 +50,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//game->loadNonPlayerCharacter("stone_ant.xml", b2Vec2(8, 0));
 		//game->addGroundLine(new GroundLine(game, -1, 2, 20, 3));
 		game->loadMap("map.xml");
+		game->loadEffectPrototypes("effects.xml");
+		game->loadConditionPrototypes("conditions.xml");
 		game->moveCamera(b2Vec2(0, -4.5));
 		game->loop();
 	}

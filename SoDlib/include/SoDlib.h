@@ -13,16 +13,18 @@ class GroundLine;
 class Platform;
 class MapAnimation;
 class DebugDraw;
+class ConditionPrototype;
+class Condition;
+class EffectAction;
 class EffectPrototype;
 class Effect;
-class RectangularEffect;
-class HotSpotEffect;
 class Game;
 class hgeGUIMenuItem;
 
 typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 
 #include <string>
+#include <time.h>
 
 #include <hge.h>
 #include <hgeanim.h>
@@ -34,14 +36,16 @@ typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 
 #include <tinyxml.h>
 
+#include <muParser.h>
+
 #include <Exception.h>
 #include <Game.h>
-#include <Construction.h>
+//#include <Construction.h>
+#include <ConditionPrototype.h>
+#include <Condition.h>
+#include <EffectAction.h>
 #include <EffectPrototype.h>
-#include <HotSpotEffectPrototype.h>
 #include <Effect.h>
-#include <RectangularEffect.h>
-#include <HotSpotEffect.h>
 #include <CharacterActionCause.h>
 #include <CharacterActionEffect.h>
 #include <CharacterAction.h>

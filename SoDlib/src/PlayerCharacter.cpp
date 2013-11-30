@@ -35,6 +35,9 @@ bool PlayerCharacter::isKeyHit(int key)
 		case CHARACTER_KEY_JUMP:
 			return game->getHge()->Input_KeyDown(HGEK_UP);
 			break;
+        case CHARACTER_KEY_ATTACK:
+			return game->getHge()->Input_KeyDown(HGEK_SPACE);
+			break;
 	}
 }
 
@@ -57,6 +60,9 @@ bool PlayerCharacter::isKeyDown(int key)
 			break;
 		case CHARACTER_KEY_JUMP:
 			return game->getHge()->Input_GetKeyState(HGEK_UP);
+			break;
+        case CHARACTER_KEY_ATTACK:
+			return game->getHge()->Input_GetKeyState(HGEK_SPACE);
 			break;
 	}
 }

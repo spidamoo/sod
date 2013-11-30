@@ -7,6 +7,7 @@ const int ACTIONEFFECT_TYPE_TURN = 1;
 const int ACTIONEFFECT_TYPE_CHANGEANIM = 2;
 const int ACTIONEFFECT_TYPE_RUN = 3;
 const int ACTIONEFFECT_TYPE_JUMP = 4;
+const int ACTIONEFFECT_TYPE_SPAWN_EFFECT = 5;
 
 class CharacterActionEffect
 {

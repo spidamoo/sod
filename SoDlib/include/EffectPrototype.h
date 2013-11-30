@@ -11,6 +11,49 @@ const int EFFECT_AREA_TYPE_POINT  = 1;
 const int EFFECT_AREA_TYPE_RECT   = 2;
 const int EFFECT_AREA_TYPE_CIRCLE = 3;
 
+const int EFFECT_FUNCTION_SPEED    = 0;
+const int EFFECT_FUNCTION_ANGLE    = 1;
+const int EFFECT_FUNCTION_R        = 2;
+const int EFFECT_FUNCTION_G        = 3;
+const int EFFECT_FUNCTION_B        = 4;
+const int EFFECT_FUNCTION_A        = 5;
+const int EFFECT_FUNCTION_TIME     = 6;
+const int EFFECT_FUNCTION_AMOUNT   = 7;
+const int EFFECT_FUNCTION_DURATION = 8;
+const int EFFECT_FUNCTION_X        = 9;
+const int EFFECT_FUNCTION_Y        = 10;
+const int EFFECT_FUNCTION_XSPEED   = 11;
+const int EFFECT_FUNCTION_YSPEED   = 12;
+const int EFFECT_FUNCTION_SCALE    = 13;
+
+const int EFFECT_FUNCTIONS_COUNT = 14;
+
+static const char* EFFECT_FUNCTION_NAMES[EFFECT_FUNCTIONS_COUNT] = {
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale"
+};
+
+const int EFFECT_PARAM_SPEED    = 0;
+const int EFFECT_PARAM_ANGLE    = 1;
+const int EFFECT_PARAM_R        = 2;
+const int EFFECT_PARAM_G        = 3;
+const int EFFECT_PARAM_B        = 4;
+const int EFFECT_PARAM_A        = 5;
+const int EFFECT_PARAM_TIME     = 6;
+const int EFFECT_PARAM_AMOUNT   = 7;
+const int EFFECT_PARAM_DURATION = 8;
+const int EFFECT_PARAM_X        = 9;
+const int EFFECT_PARAM_Y        = 10;
+const int EFFECT_PARAM_XSPEED   = 11;
+const int EFFECT_PARAM_YSPEED   = 12;
+const int EFFECT_PARAM_SCALE    = 13;
+
+const int EFFECT_PARAMS_COUNT = 14;
+
+static const char* EFFECT_PARAM_NAMES[EFFECT_PARAMS_COUNT] = {
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale"
+};
+
+
 class EffectPrototype
 {
 	public:
@@ -18,18 +61,32 @@ class EffectPrototype
 		virtual ~EffectPrototype();
 
 		void loadFromXml(TiXmlElement* xml);
+
+		Effect* spawnEffect(Character* character);
+		Effect* spawnEffect(Effect* effect);
+
+		int getPositionType(), getAreaType(), getHotSpotIndex();
+
+		int getActionsCount(); EffectAction* getAction(int index);
+
+        float evalStartExpression(int ident);
+		float evalExpression(int ident);
+		bool getExpressionExists(int ident);
+
+		void setParam(int index, float value);
 	protected:
 	    Game* game;
 
-		std::string speedFormula, angleFormula, rFormula, gFormula, bFormula, aFormula,
-            timeFormula, amountFormula, durationFormula;
+        mu::Parser* expressionParsers;
+        mu::Parser* startExpressionParsers;
+		bool* expressionExists;
 
-        exprtk::expression<float> startSpeedExpr, startAngleExpr, startRExpr, startGExpr, startBExpr,
-            startAExpr, startTimeExpr, startAmountExpr, startDurationExpr, startXExpr, startYExpr;
-        exprtk::symbol_table<float> symbolTable;
+		float* params;
 
-		int positionType, areaType;
+		int positionType, areaType, hotSpotIndex;
+
+		EffectAction** actions; int actionsCount;
+		char** animations; int animationsCount; int blendMode;
 	private:
 };
-#define EFFECTPROTOTYPE_H_COMPLETE
 #endif // EFFECTPROTOTYPE_H

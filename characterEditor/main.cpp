@@ -45,6 +45,8 @@ GUIWindow* animContextMenuWindow;
 hgeAnimation* beingInsertedAnim;
 char* beingInsertedAnimName;
 
+char** listAnimationNames = new char*[256];
+
 int selectedBody = -1;
 int selectedLayer = -1;
 int selectedHotSpot = -1;
@@ -1204,6 +1206,23 @@ bool framesModeButtonClick(hgeGUIMenuItem* sender)
 	editMode = EDIT_MODE_FRAMES;
 }
 
+void loadAnimationsList()
+{
+    TiXmlDocument doc("animations.xml");
+    bool loadOkay = doc.LoadFile();
+    int i = 0;
+    if (loadOkay) {
+    	TiXmlElement* element = doc.FirstChildElement("animation");
+    	while (element) {
+            listAnimationNames[i] = (char*)element->Attribute("file");
+            animsWindow->AddCtrl(new hgeGUIMenuItem(101 + i, fnt, 250, 10 + i * 20, 0.0f, listAnimationNames[i], animButtonClick));
+            element = element->NextSiblingElement("animation");
+            i++;
+    	}
+    }
+
+}
+
 bool FrameFunc()
 {
 	float x, y;
@@ -1245,11 +1264,11 @@ bool FrameFunc()
 					selectedHotSpot = getPointedHotSpot(x, y);
 					if (selectedBody != -1) {
 						if (frameAnimShow[currentAnimation][currentFrame][selectedBody]) {
-							selectedBodyX = game->screenX(animX(selectedBody));
-							selectedBodyY = game->screenY(animY(selectedBody));
+							selectedBodyX = animX(selectedBody);
+							selectedBodyY = animY(selectedBody);
 							selectedBodyAngle = animAngle(selectedBody);
-							dragOffsetX = x - selectedBodyX;
-							dragOffsetY = y - selectedBodyY;
+							dragOffsetX = x - game->screenX(animX(selectedBody));
+							dragOffsetY = y - game->screenY(animY(selectedBody));
 						} else {
 							selectedBodyX = animationX[selectedBody] + 1300;
 							selectedBodyY = animationY[selectedBody] - 1000 * currentTab + 450;
@@ -1382,8 +1401,6 @@ bool FrameFunc()
 			if (selectedBody != -1) {
 				float currentX = x - dragOffsetX;
 				float currentY = y - dragOffsetY;
-				selectedBodyX = currentX;
-				selectedBodyY = currentY;
 				//frameAnimX[currentAnimation][currentFrame][selectedBody] = currentX;
 				//frameAnimY[currentAnimation][currentFrame][selectedBody] = currentY;
 
@@ -1401,15 +1418,17 @@ bool FrameFunc()
 					//animations[selectedBody]->SetZ(1.0f - 0.001 * frameAnimLayer[currentAnimation][currentFrame][selectedBody]);
 					printf("layer %f\n", animations[selectedBody]->GetZ());
 				}
-				if (selectedBodyX < 1300) {
-					setAnimX(selectedBody, game->worldX(selectedBodyX));
-					setAnimY(selectedBody, game->worldY(selectedBodyY));
+				if (currentX < 1300) {
+					setAnimX(selectedBody, game->worldX(currentX));
+					setAnimY(selectedBody, game->worldY(currentY));
 					setAnimAngle(selectedBody, selectedBodyAngle);
 					setAnimShow(selectedBody, true);
 				} else {
+                    setAnimX(selectedBody, selectedBodyX);
+					setAnimY(selectedBody, selectedBodyY);
 					setAnimShow(selectedBody, false);
-					animationX[selectedBody] = selectedBodyX - 1300;
-					animationY[selectedBody] = selectedBodyY + 1000 * currentTab - 450;
+					animationX[selectedBody] = currentX - 1300;
+					animationY[selectedBody] = currentY + 1000 * currentTab - 450;
 					animationAngle[selectedBody] = selectedBodyAngle;
 					if (animationY[selectedBody] < 1000 * currentTab)
 						animationY[selectedBody] = 1000 * currentTab;
@@ -1738,6 +1757,7 @@ bool RenderFunc()
 				game->getPixelsPerMeter() * game->getScaleFactor(),
 				color, fillcolor
 			);
+
 		}
 	}
 
@@ -2116,10 +2136,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		animsWindow = new GUIWindow(game, 100, 1000, 120, 800, 600);
 		game->getGUI()->AddCtrl(animsWindow);
-		for (int i = 0; i < game->getAnimationsCount(); i++) {
-			animsWindow->AddCtrl(new hgeGUIMenuItem(101 + i, fnt, 250, 10 + i * 20, 0.0f, game->getAnimationName(i), animButtonClick));
-			//printf("foo %s\n", game->getAnimationName(i));
-		}
+		loadAnimationsList();
 		animsWindow->Hide();
 
 		animContextMenuWindow = new GUIWindow(game, 50, 0, 0, 100, 30);

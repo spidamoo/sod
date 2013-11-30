@@ -8,6 +8,10 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin)
 	halfHeight = 1.0f;
 	width = 0.5f;
 	halfWidth = 0.25f;
+
+	maxHitPoints = 10;
+	currentHitPoints = 10;
+
 	loadFromXml(xml, origin);
 
     currentAnimation = 0;
@@ -19,6 +23,9 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin)
     speed = b2Vec2_zero;
     prevPosition = position;
     angle = 0.25f * M_PI;
+
+    conditions = new Condition*[100];
+    conditionsCount = 0;
 
     printf("character loaded\n");
 }
@@ -294,6 +301,23 @@ void Character::draw(bool schematicMode)
 			}
 		}
 	}
+
+	game->drawRect(
+        game->screenX(position.x) - 25,
+        game->screenY(position.y - halfHeight) - 10,
+        game->screenX(position.x) + 25,
+        game->screenY(position.y - halfHeight) - 5,
+        0xFFFFFFFF, 0xFF000000
+    );
+    if ( currentHitPoints > 0 ) {
+        game->drawRect(
+            game->screenX(position.x) - 24,
+            game->screenY(position.y - halfHeight) - 9,
+            game->screenX(position.x) - 24 + 48 * currentHitPoints / maxHitPoints,
+            game->screenY(position.y - halfHeight) - 6,
+            0xFFFF0000, 0xFFFF0000
+        );
+    }
 }
 
 void Character::update(float dt)
@@ -444,6 +468,20 @@ void Character::update(float dt)
 		}
 	}
 
+    int* conditionsToRemove = new int[conditionsCount];
+	int conditionsToRemoveCount = 0;
+	for (int i = 0; i < conditionsCount; i++) {
+        conditions[i]->update(dt);
+        if ( conditions[i]->getTime() < 0 ) {
+            conditionsToRemove[conditionsToRemoveCount] = i;
+            conditionsToRemoveCount++;
+        }
+	}
+	for (int i = conditionsToRemoveCount - 1; i >= 0 ; i--) {
+	    removeCondition( conditionsToRemove[i] );
+	}
+	delete conditionsToRemove;
+
 	control(dt);
 }
 
@@ -486,6 +524,14 @@ void Character::jump(b2Vec2 speed)
 void Character::move(float dx, float dy)
 {
     position.x += dx; position.y += dy;
+}
+
+
+void Character::doDamage(int amount)
+{
+    currentHitPoints -= amount;
+    if ( currentHitPoints < 0)
+        currentHitPoints = 0;
 }
 
 void Character::setAnim(int anim)
@@ -541,4 +587,44 @@ float Character::getHalfWidth()
 int Character::getOnGround()
 {
 	return onGround;
+}
+
+float Character::getHotSpotX(int index)
+{
+    int offset = turnedRight ? -1 : 1;
+    return position.x + offset * animatedValue( frameHotSpotX[currentAnimation][currentFrame][index], frameHotSpotX[currentAnimation][nextFrame][index] );
+}
+float Character::getHotSpotY(int index)
+{
+    return position.y + animatedValue( frameHotSpotY[currentAnimation][currentFrame][index], frameHotSpotY[currentAnimation][nextFrame][index] );
+}
+
+float Character::getAnimTime()
+{
+    return currentTime;
+}
+
+void Character::addCondition(Condition* condition)
+{
+    conditions[conditionsCount] = condition;
+    conditionsCount++;
+}
+
+void Character::removeCondition(int index)
+{
+    if (index == conditionsCount - 1) {
+        delete conditions[index];
+        conditions[index] = NULL;
+        conditionsCount--;
+    } else {
+        delete conditions[index];
+        conditions[index] = conditions[conditionsCount - 1];
+        conditions[conditionsCount - 1] = NULL;
+        conditionsCount--;
+    }
+}
+
+int Character::getDamage()
+{
+    return 1;
 }

@@ -6,20 +6,35 @@
 class Effect
 {
 	public:
-		Effect();
+		Effect(Game* game, EffectPrototype* prototype);
 		virtual ~Effect();
 
-		void update(float dt), draw();
-	protected:
-		Game* game;
-		b2Vec2 position, prevPosition, speed;
-		float time;
+		void setOwner(Character* character); Character* getOwner();
+		void initialize();
 
-		exprtk::expression<float> speedExpr, angleExpr, rExpr, gExpr, bExpr, aExpr,
-            timeExpr, amountExpr, durationExpr;
+		void update(float dt), draw(bool schematicMode);
+
+		float getTime();
+		void setPosition(b2Vec2 position); b2Vec2 getPosition();
+
+		void setAnimation(hgeAnimation* animation, int blendMode);
+
+		bool characterCrosses(Character* character);
+	protected:
+		Game* game; Character* owner;
+		float angle, speed;
+		b2Vec2 position, prevPosition, componentSpeed;
+		float time;
+		int r, g, b, a;
+		float scale;
 
 		EffectPrototype* prototype;
+
+		float* actionTimes;
+
+		hgeAnimation* animation;
+
+		int** actionInteractions;
 	private:
 };
-#define EFFECT_H_COMPLETE
 #endif // EFFECT_H

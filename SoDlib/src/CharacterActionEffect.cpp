@@ -45,5 +45,9 @@ void CharacterActionEffect::perform(Game* game, Character* character)
 		case ACTIONEFFECT_TYPE_JUMP:
 			character->jump(b2Vec2(param2, -param));
 			break;
+        case ACTIONEFFECT_TYPE_SPAWN_EFFECT:
+            game->addEffect( game->getEffectPrototype(param)->spawnEffect(character) );
+            //printf("effect spawn\n");
+            break;
 	}
 }

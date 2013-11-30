@@ -35,9 +35,14 @@
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-O2" />
+					<Add directory="include" />
+					<Add directory=".." />
+					<Add directory="../hge181/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="..\hge181\lib\gcc\libhge.a" />
+					<Add library="..\Box2D\libBox2D.a" />
 				</Linker>
 			</Target>
 		</Build>
@@ -54,9 +59,12 @@
 		<Unit filename="include/CharacterActionCause.h" />
 		<Unit filename="include/CharacterActionEffect.h" />
 		<Unit filename="include/CharacterHotSpot.h" />
+		<Unit filename="include/Condition.h" />
+		<Unit filename="include/ConditionPrototype.h" />
 		<Unit filename="include/Construction.h" />
 		<Unit filename="include/DebugDraw.h" />
 		<Unit filename="include/Effect.h" />
+		<Unit filename="include/EffectAction.h" />
 		<Unit filename="include/EffectPrototype.h" />
 		<Unit filename="include/Exception.h" />
 		<Unit filename="include/GUIWindow.h" />
@@ -67,8 +75,21 @@
 		<Unit filename="include/Platform.h" />
 		<Unit filename="include/PlayerCharacter.h" />
 		<Unit filename="include/SoDlib.h" />
-		<Unit filename="include/exprtk.hpp" />
 		<Unit filename="include/hgeGUIMenuItem.h" />
+		<Unit filename="include/muParser.h" />
+		<Unit filename="include/muParserBase.h" />
+		<Unit filename="include/muParserBytecode.h" />
+		<Unit filename="include/muParserCallback.h" />
+		<Unit filename="include/muParserDLL.h" />
+		<Unit filename="include/muParserDef.h" />
+		<Unit filename="include/muParserError.h" />
+		<Unit filename="include/muParserFixes.h" />
+		<Unit filename="include/muParserInt.h" />
+		<Unit filename="include/muParserStack.h" />
+		<Unit filename="include/muParserTemplateMagic.h" />
+		<Unit filename="include/muParserTest.h" />
+		<Unit filename="include/muParserToken.h" />
+		<Unit filename="include/muParserTokenReader.h" />
 		<Unit filename="include/tinystr.h" />
 		<Unit filename="include/tinyxml.h" />
 		<Unit filename="src/Animation.cpp" />
@@ -77,9 +98,12 @@
 		<Unit filename="src/CharacterActionCause.cpp" />
 		<Unit filename="src/CharacterActionEffect.cpp" />
 		<Unit filename="src/CharacterHotSpot.cpp" />
+		<Unit filename="src/Condition.cpp" />
+		<Unit filename="src/ConditionPrototype.cpp" />
 		<Unit filename="src/Construction.cpp" />
 		<Unit filename="src/DebugDraw.cpp" />
 		<Unit filename="src/Effect.cpp" />
+		<Unit filename="src/EffectAction.cpp" />
 		<Unit filename="src/EffectPrototype.cpp" />
 		<Unit filename="src/Exception.cpp" />
 		<Unit filename="src/GUIWindow.cpp" />
@@ -90,6 +114,15 @@
 		<Unit filename="src/Platform.cpp" />
 		<Unit filename="src/PlayerCharacter.cpp" />
 		<Unit filename="src/hgeGUIMenuItem.cpp" />
+		<Unit filename="src/muParser.cpp" />
+		<Unit filename="src/muParserBase.cpp" />
+		<Unit filename="src/muParserBytecode.cpp" />
+		<Unit filename="src/muParserCallback.cpp" />
+		<Unit filename="src/muParserDLL.cpp" />
+		<Unit filename="src/muParserError.cpp" />
+		<Unit filename="src/muParserInt.cpp" />
+		<Unit filename="src/muParserTest.cpp" />
+		<Unit filename="src/muParserTokenReader.cpp" />
 		<Unit filename="tinystr.cpp" />
 		<Unit filename="tinyxml.cpp" />
 		<Unit filename="tinyxmlerror.cpp" />

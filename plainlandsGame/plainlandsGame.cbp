@@ -26,16 +26,21 @@
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/plainlandsGame" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Release" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="../hge181/include" />
+					<Add directory=".." />
+					<Add directory="../SoDlib/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add library="..\hge181\lib\gcc\libhge.a" />
+					<Add library="..\SoDlib\libSoDlib.a" />
+					<Add library="..\Box2D\libBox2D.a" />
 				</Linker>
 			</Target>
 		</Build>

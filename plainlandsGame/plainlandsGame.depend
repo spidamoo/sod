@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1377888806 source:d:\work\sod\plainlandsgame\main.cpp
+1385255683 source:d:\work\sod\plainlandsgame\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -7,18 +7,18 @@
 	<Box2D/Box2D.h>
 	<SoDlib.h>
 
-1202816904 d:\work\sod\hge181\include\hge.h
+1384979514 d:\work\sod\hge181\include\hge.h
 	<windows.h>
 
-1184929034 d:\work\sod\hge181\include\hgefont.h
+1384979514 d:\work\sod\hge181\include\hgefont.h
 	"hge.h"
 	"hgesprite.h"
 
-1177588546 d:\work\sod\hge181\include\hgesprite.h
+1384979514 d:\work\sod\hge181\include\hgesprite.h
 	"hge.h"
 	"hgerect.h"
 
-1176889686 d:\work\sod\hge181\include\hgerect.h
+1384979514 d:\work\sod\hge181\include\hgerect.h
 
 1340106432 source:d:\work\sod\plainlandsgame\hgefont.cpp
 	<hgefont.h>
@@ -33,7 +33,7 @@
 	<hgerect.h>
 	<math.h>
 
-1314995940 d:\work\sod\box2d\box2d.h
+1384979514 d:\work\sod\box2d\box2d.h
 	<Box2D/Common/b2Settings.h>
 	<Box2D/Common/b2Draw.h>
 	<Box2D/Common/b2Timer.h>
@@ -62,85 +62,85 @@
 	<Box2D/Dynamics/Joints/b2RopeJoint.h>
 	<Box2D/Dynamics/Joints/b2WeldJoint.h>
 
-1315000162 d:\work\sod\box2d\common\b2settings.h
+1384979514 d:\work\sod\box2d\common\b2settings.h
 	<cassert>
 	<cmath>
 
-1301207502 d:\work\sod\box2d\common\b2draw.h
+1384979514 d:\work\sod\box2d\common\b2draw.h
 	<Box2D/Common/b2Math.h>
 
-1315057682 d:\work\sod\box2d\common\b2math.h
+1384979514 d:\work\sod\box2d\common\b2math.h
 	<Box2D/Common/b2Settings.h>
 	<cmath>
 	<cfloat>
 	<cstddef>
 	<limits>
 
-1315766796 d:\work\sod\box2d\common\b2timer.h
+1384979514 d:\work\sod\box2d\common\b2timer.h
 	<Box2D/Common/b2Settings.h>
 
-1300943820 d:\work\sod\box2d\collision\shapes\b2circleshape.h
+1384979514 d:\work\sod\box2d\collision\shapes\b2circleshape.h
 	<Box2D/Collision/Shapes/b2Shape.h>
 
-1313938194 d:\work\sod\box2d\collision\shapes\b2shape.h
+1384979514 d:\work\sod\box2d\collision\shapes\b2shape.h
 	<Box2D/Common/b2BlockAllocator.h>
 	<Box2D/Common/b2Math.h>
 	<Box2D/Collision/b2Collision.h>
 
-1300943820 d:\work\sod\box2d\common\b2blockallocator.h
+1384979514 d:\work\sod\box2d\common\b2blockallocator.h
 	<Box2D/Common/b2Settings.h>
 
-1307262162 d:\work\sod\box2d\collision\b2collision.h
+1384979514 d:\work\sod\box2d\collision\b2collision.h
 	<Box2D/Common/b2Math.h>
 	<climits>
 
-1314816788 d:\work\sod\box2d\collision\shapes\b2edgeshape.h
+1384979514 d:\work\sod\box2d\collision\shapes\b2edgeshape.h
 	<Box2D/Collision/Shapes/b2Shape.h>
 
-1314816144 d:\work\sod\box2d\collision\shapes\b2chainshape.h
+1384979514 d:\work\sod\box2d\collision\shapes\b2chainshape.h
 	<Box2D/Collision/Shapes/b2Shape.h>
 
-1300943820 d:\work\sod\box2d\collision\shapes\b2polygonshape.h
+1384979514 d:\work\sod\box2d\collision\shapes\b2polygonshape.h
 	<Box2D/Collision/Shapes/b2Shape.h>
 
-1301217804 d:\work\sod\box2d\collision\b2broadphase.h
+1384979514 d:\work\sod\box2d\collision\b2broadphase.h
 	<Box2D/Common/b2Settings.h>
 	<Box2D/Collision/b2Collision.h>
 	<Box2D/Collision/b2DynamicTree.h>
 	<algorithm>
 
-1308944790 d:\work\sod\box2d\collision\b2dynamictree.h
+1384979514 d:\work\sod\box2d\collision\b2dynamictree.h
 	<Box2D/Collision/b2Collision.h>
 	<Box2D/Common/b2GrowableStack.h>
 
-1300943820 d:\work\sod\box2d\common\b2growablestack.h
+1384979514 d:\work\sod\box2d\common\b2growablestack.h
 	<Box2D/Common/b2Settings.h>
 	<cstring>
 
-1300943820 d:\work\sod\box2d\collision\b2distance.h
+1384979514 d:\work\sod\box2d\collision\b2distance.h
 	<Box2D/Common/b2Math.h>
 
-1300943820 d:\work\sod\box2d\collision\b2timeofimpact.h
+1384979514 d:\work\sod\box2d\collision\b2timeofimpact.h
 	<Box2D/Common/b2Math.h>
 	<Box2D/Collision/b2Distance.h>
 
-1315044744 d:\work\sod\box2d\dynamics\b2body.h
+1384979514 d:\work\sod\box2d\dynamics\b2body.h
 	<Box2D/Common/b2Math.h>
 	<Box2D/Collision/Shapes/b2Shape.h>
 	<memory>
 
-1315029142 d:\work\sod\box2d\dynamics\b2fixture.h
+1384979514 d:\work\sod\box2d\dynamics\b2fixture.h
 	<Box2D/Dynamics/b2Body.h>
 	<Box2D/Collision/b2Collision.h>
 	<Box2D/Collision/Shapes/b2Shape.h>
 
-1314030402 d:\work\sod\box2d\dynamics\b2worldcallbacks.h
+1384979514 d:\work\sod\box2d\dynamics\b2worldcallbacks.h
 	<Box2D/Common/b2Settings.h>
 
-1315765932 d:\work\sod\box2d\dynamics\b2timestep.h
+1384979514 d:\work\sod\box2d\dynamics\b2timestep.h
 	<Box2D/Common/b2Math.h>
 
-1315130798 d:\work\sod\box2d\dynamics\b2world.h
+1384979514 d:\work\sod\box2d\dynamics\b2world.h
 	<Box2D/Common/b2Math.h>
 	<Box2D/Common/b2BlockAllocator.h>
 	<Box2D/Common/b2StackAllocator.h>
@@ -148,49 +148,49 @@
 	<Box2D/Dynamics/b2WorldCallbacks.h>
 	<Box2D/Dynamics/b2TimeStep.h>
 
-1300943820 d:\work\sod\box2d\common\b2stackallocator.h
+1384979514 d:\work\sod\box2d\common\b2stackallocator.h
 	<Box2D/Common/b2Settings.h>
 
-1300943820 d:\work\sod\box2d\dynamics\b2contactmanager.h
+1384979514 d:\work\sod\box2d\dynamics\b2contactmanager.h
 	<Box2D/Collision/b2BroadPhase.h>
 
-1305743620 d:\work\sod\box2d\dynamics\contacts\b2contact.h
+1384979514 d:\work\sod\box2d\dynamics\contacts\b2contact.h
 	<Box2D/Common/b2Math.h>
 	<Box2D/Collision/b2Collision.h>
 	<Box2D/Collision/Shapes/b2Shape.h>
 	<Box2D/Dynamics/b2Fixture.h>
 
-1315119784 d:\work\sod\box2d\dynamics\joints\b2distancejoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2distancejoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315132000 d:\work\sod\box2d\dynamics\joints\b2joint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2joint.h
 	<Box2D/Common/b2Math.h>
 
-1315131078 d:\work\sod\box2d\dynamics\joints\b2frictionjoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2frictionjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315131334 d:\work\sod\box2d\dynamics\joints\b2gearjoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2gearjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315131952 d:\work\sod\box2d\dynamics\joints\b2wheeljoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2wheeljoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315132012 d:\work\sod\box2d\dynamics\joints\b2mousejoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2mousejoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315322728 d:\work\sod\box2d\dynamics\joints\b2prismaticjoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2prismaticjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315131720 d:\work\sod\box2d\dynamics\joints\b2pulleyjoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2pulleyjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315129174 d:\work\sod\box2d\dynamics\joints\b2revolutejoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2revolutejoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315151014 d:\work\sod\box2d\dynamics\joints\b2ropejoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2ropejoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1315127464 d:\work\sod\box2d\dynamics\joints\b2weldjoint.h
+1384979514 d:\work\sod\box2d\dynamics\joints\b2weldjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
 1340106537 source:d:\projects\plainlands\sod\plainlandsgame\hgerect.cpp
@@ -396,7 +396,9 @@
 	<stdio.h>
 	<string.h>
 
-1377878870 d:\work\sod\sodlib\include\sodlib.h
+1385604984 d:\work\sod\sodlib\include\sodlib.h
+	<string>
+	<time.h>
 	<hge.h>
 	<hgeanim.h>
 	<hgegui.h>
@@ -404,9 +406,14 @@
 	<hgecolor.h>
 	<Box2D/Box2D.h>
 	<tinyxml.h>
+	<muParser.h>
 	<Exception.h>
 	<Game.h>
-	<Construction.h>
+	<ConditionPrototype.h>
+	<Condition.h>
+	<EffectAction.h>
+	<EffectPrototype.h>
+	<Effect.h>
 	<CharacterActionCause.h>
 	<CharacterActionEffect.h>
 	<CharacterAction.h>
@@ -415,24 +422,26 @@
 	<NonPlayerCharacter.h>
 	<PlayerCharacter.h>
 	<GroundLine.h>
+	<Platform.h>
+	<MapAnimation.h>
 	<DebugDraw.h>
 	<GUIWindow.h>
 	<hgeGUIMenuItem.h>
 
-1177325280 d:\work\sod\hge181\include\hgeanim.h
+1384979514 d:\work\sod\hge181\include\hgeanim.h
 	"hgesprite.h"
 
-1341676379 d:\work\sod\sodlib\include\exception.h
+1384979514 d:\work\sod\sodlib\include\exception.h
 	<stdio.h>
 	<string.h>
 
-1377947845 d:\work\sod\sodlib\include\game.h
+1385602951 d:\work\sod\sodlib\include\game.h
 	<SoDlib.h>
 
-1357401389 d:\work\sod\sodlib\include\construction.h
+1384979514 d:\work\sod\sodlib\include\construction.h
 	<SoDlib.h>
 
-1305383098 d:\work\sod\sodlib\include\tinyxml.h
+1384979514 d:\work\sod\sodlib\include\tinyxml.h
 	<ctype.h>
 	<stdio.h>
 	<stdlib.h>
@@ -443,57 +452,57 @@
 	<sstream>
 	"tinystr.h"
 
-1305383098 d:\work\sod\sodlib\include\tinystr.h
+1384979514 d:\work\sod\sodlib\include\tinystr.h
 	<assert.h>
 	<string.h>
 
-1198249400 d:\work\sod\hge181\include\hgegui.h
+1384979514 d:\work\sod\hge181\include\hgegui.h
 	"hge.h"
 	"hgesprite.h"
 	"hgerect.h"
 
-1176889686 d:\work\sod\hge181\include\hgeguictrls.h
+1384979514 d:\work\sod\hge181\include\hgeguictrls.h
 	"hge.h"
 	"hgesprite.h"
 	"hgefont.h"
 	"hgerect.h"
 	"hgegui.h"
 
-1176889686 d:\work\sod\hge181\include\hgecolor.h
+1384979514 d:\work\sod\hge181\include\hgecolor.h
 	"hge.h"
 
-1364322845 d:\work\sod\sodlib\include\guiwindow.h
+1384979514 d:\work\sod\sodlib\include\guiwindow.h
 	<SoDlib.h>
 	<list>
 
-1353416313 d:\work\sod\sodlib\include\hgeguimenuitem.h
+1384979514 d:\work\sod\sodlib\include\hgeguimenuitem.h
 	<SoDlib.h>
 
-1377929587 d:\work\sod\sodlib\include\character.h
+1385604507 d:\work\sod\sodlib\include\character.h
 	<SoDlib.h>
 
-1364104941 d:\work\sod\sodlib\include\characteractioncause.h
+1385168177 d:\work\sod\sodlib\include\characteractioncause.h
 	<SoDlib.h>
 
-1364059582 d:\work\sod\sodlib\include\characteractioneffect.h
+1385170888 d:\work\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1363966519 d:\work\sod\sodlib\include\characteraction.h
+1384979514 d:\work\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
-1363627841 d:\work\sod\sodlib\include\characterhotspot.h
+1384979514 d:\work\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1363634471 d:\work\sod\sodlib\include\debugdraw.h
+1384979514 d:\work\sod\sodlib\include\debugdraw.h
 	<SoDLib.h>
 
-1364055030 d:\work\sod\sodlib\include\nonplayercharacter.h
+1384979514 d:\work\sod\sodlib\include\nonplayercharacter.h
 	<SoDlib.h>
 
-1364060210 d:\work\sod\sodlib\include\playercharacter.h
+1385165316 d:\work\sod\sodlib\include\playercharacter.h
 	<SoDlib.h>
 
-1377887872 d:\work\sod\sodlib\include\groundline.h
+1384979514 d:\work\sod\sodlib\include\groundline.h
 	<SoDlib.h>
 
 1377892406 source:d:\work\git\sod\plainlandsgame\main.cpp
@@ -1345,5 +1354,107 @@
 	<list>
 
 1378195931 d:\git\sod\sodlib\include\hgeguimenuitem.h
+	<SoDlib.h>
+
+1385063708 d:\work\sod\sodlib\include\muparser.h
+	<vector>
+	"muParserBase.h"
+	"muParserTemplateMagic.h"
+
+1385063708 d:\work\sod\sodlib\include\muparserbase.h
+	<cmath>
+	<string>
+	<iostream>
+	<map>
+	<memory>
+	<locale>
+	"muParserDef.h"
+	"muParserStack.h"
+	"muParserTokenReader.h"
+	"muParserBytecode.h"
+	"muParserError.h"
+
+1385224309 d:\work\sod\sodlib\include\muparserdef.h
+	<iostream>
+	<string>
+	<sstream>
+	<map>
+	"muParserFixes.h"
+
+1385063708 d:\work\sod\sodlib\include\muparserfixes.h
+
+1385063708 d:\work\sod\sodlib\include\muparserstack.h
+	<cassert>
+	<string>
+	<stack>
+	<vector>
+	"muParserError.h"
+	"muParserToken.h"
+
+1385063708 d:\work\sod\sodlib\include\muparsererror.h
+	<cassert>
+	<stdexcept>
+	<string>
+	<sstream>
+	<vector>
+	<memory>
+	"muParserDef.h"
+
+1385063708 d:\work\sod\sodlib\include\muparsertoken.h
+	<cassert>
+	<string>
+	<stack>
+	<vector>
+	<memory>
+	"muParserError.h"
+	"muParserCallback.h"
+
+1385063708 d:\work\sod\sodlib\include\muparsercallback.h
+	"muParserDef.h"
+
+1385063708 d:\work\sod\sodlib\include\muparsertokenreader.h
+	<cassert>
+	<cstdio>
+	<cstring>
+	<list>
+	<map>
+	<memory>
+	<stack>
+	<string>
+	"muParserDef.h"
+	"muParserToken.h"
+
+1385063708 d:\work\sod\sodlib\include\muparserbytecode.h
+	<cassert>
+	<string>
+	<stack>
+	<vector>
+	"muParserDef.h"
+	"muParserError.h"
+	"muParserToken.h"
+
+1385063708 d:\work\sod\sodlib\include\muparsertemplatemagic.h
+	<cmath>
+	"muParserError.h"
+
+1385236000 d:\work\sod\sodlib\include\effectprototype.h
+	<SoDlib.h>
+
+1385603456 d:\work\sod\sodlib\include\effect.h
+	<SoDlib.h>
+
+1384979514 d:\work\sod\sodlib\include\platform.h
+	<SoDlib.h>
+
+1384979514 d:\work\sod\sodlib\include\mapanimation.h
+	<SoDlib.h>
+
+1385602749 d:\work\sod\sodlib\include\effectaction.h
+	<SoDlib.h>
+
+1385605041 d:\work\sod\sodlib\include\conditionprototype.h
+	<SoDlib.h>
+
+1385605118 d:\work\sod\sodlib\include\condition.h
 	<SoDlib.h>
 

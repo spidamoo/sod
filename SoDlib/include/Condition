@@ -1,0 +1,22 @@
+#include "Condition.h"
+
+Condition::Condition(ConditionPrototype* prototype, Character* inflictor)
+{
+    this->prototype = prototype;
+    this->inflictor = inflictor;
+
+    totalTime = 0.0f;
+    tickTime = 0.0f;
+}
+
+Condition::~Condition()
+{
+    //dtor
+}
+
+void Condition::initialize()
+{
+    prototype->setParamsFromCharacter(inflictor);
+
+    totalTime = prototype->getDuration();
+}

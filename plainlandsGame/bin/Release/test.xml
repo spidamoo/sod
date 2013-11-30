@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<body animation="b.xml" x="-0.422" y="-0.00399995" angle="0">
+    <shape type="polygon">
+        <vertex x="-0.508" y="-0.066" />
+        <vertex x="0.5" y="-0.062" />
+        <vertex x="0.5" y="0.048" />
+        <vertex x="-0.506" y="0.046" />
+    </shape>
+</body>
+<body animation="b.xml" x="0.0829999" y="0.383" angle="1.38">
+    <shape type="polygon">
+        <vertex x="-0.412" y="-0.114" />
+        <vertex x="0.496" y="-0.052" />
+        <vertex x="0.49" y="0.056" />
+        <vertex x="-0.432" y="0.094" />
+        <vertex x="-0.516" y="-0.00600004" />
+    </shape>
+</body>
+<body animation="b.xml" x="-0.415" y="-0.135" angle="2.827">
+    <shape type="polygon">
+        <vertex x="-0.405" y="-0.115" />
+        <vertex x="0.49" y="-0.045" />
+        <vertex x="0.5" y="0.035" />
+        <vertex x="-0.4" y="0.095" />
+        <vertex x="-0.505" y="-0.00999999" />
+    </shape>
+</body>
+<joint type="revolute" bodyA="0" bodyB="1" x="0.00799996" y="-0.0139999" />
+<joint type="revolute" bodyB="0" bodyA="2" x="-0.825" y="-0.00499974" />

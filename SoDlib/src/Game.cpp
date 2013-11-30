@@ -19,6 +19,10 @@ Game::Game(HGE * hge)
 	mapAnimationsCount = 0;
 	characters = new Character*[100];
 	charactersCount = 0;
+
+	effects = new Effect*[SETTING_MAX_EFFECTS];
+	effectsCount = 0;
+
 	effectPrototypesCount = 0;
 
 	timeStep = 1.0f / 60.0f;
@@ -36,8 +40,16 @@ Game::Game(HGE * hge)
 	gravity = b2Vec2(0, 20);
 
 	mapWidth = 10; mapHeight = 10;
+	counters = new float[COUNTERS_COUNT];
+	displayedCounters = new float[COUNTERS_COUNT];
 
-	exprtkParser = new exprtk::parser<float>();
+	animationNames = new char*[1000];
+	animations = new hgeAnimation*[1000];
+	animationsCount = 0;
+
+	textureNames = new char*[1000];
+	textures = new HTEXTURE[1000];
+	texturesCount = 0;
 
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
@@ -84,6 +96,8 @@ bool Game::preload()
 			whiteTriple.v[1].z = 1;
 			whiteTriple.v[2].z = 1;
 
+			defaultFont = new hgeFont("font1.fnt");
+
 			return true;
     	} else {
     		char * error = strdup(hge->System_GetErrorMessage());
@@ -96,36 +110,6 @@ bool Game::preload()
         error->print();
     }
     return false;
-}
-
-
-bool Game::loadEffectPrototypes(char* fileName)
-{
-	printf("loading effect prototypes %s ... \n", fileName);
-    TiXmlDocument doc(fileName);
-    bool loadOkay = doc.LoadFile();
-    if (loadOkay) {
-    	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
-
-		effectPrototypesCount = atoi(root->Attribute("count"));
-		effectPrototypes = new EffectPrototype*[effectPrototypesCount];
-
-        TiXmlElement* element = root->FirstChildElement("prototype");
-        int i = 0;
-        while (element) {
-			EffectPrototype* newObject = new EffectPrototype();
-            newObject->loadFromXml(element);
-
-			i++;
-            element = element->NextSiblingElement("prototype");
-        }
-        effectPrototypesCount = i;
-		return true;
-    } else {
-        printf("failed\n");
-        return false;
-    }
-
 }
 
 void Game::loop()
@@ -148,6 +132,7 @@ bool Game::update()
 }
 bool Game::update(bool withPhysics)
 {
+    clock_t startT = clock();
 	// Get the time elapsed since last call of FrameFunc().
 	// This will help us to synchronize on different
 	// machines and video modes.
@@ -157,12 +142,14 @@ bool Game::update(bool withPhysics)
 	if (withPhysics) updateWorld(dt);
 	updateGui(dt);
 
+    clock_t endT = clock();
+    counters[COUNTER_UPDATE] += (float)(endT - startT);
+    counters[COUNTER_TOTAL] = (counters[COUNTER_UPDATE] + counters[COUNTER_DRAW]);
 	return updateControls();
 }
 
 void Game::updateGui(float dt)
 {
-
 	gui->Update(dt);
 }
 void Game::updateWorld(float dt)
@@ -175,13 +162,38 @@ void Game::updateWorld(float dt)
 	for (int i = 0; i < platformsCount; i++) {
         platforms[i]->update(dt);
 	}
+	int* effectsToRemove = new int[effectsCount];
+	int effectsToRemoveCount = 0;
+    clock_t eus = clock();
+	for (int i = 0; i < effectsCount; i++) {
+        effects[i]->update(dt);
+        if ( effects[i]->getTime() < 0 ) {
+            effectsToRemove[effectsToRemoveCount] = i;
+            effectsToRemoveCount++;
+        }
+	}
+	for (int i = effectsToRemoveCount - 1; i >= 0 ; i--) {
+	    removeEffect( effectsToRemove[i] );
+	}
+	delete effectsToRemove;
+	clock_t eue = clock();
+	counters[COUNTER_EFFECTS_UPDATE] += (float)(eue - eus);
 	cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
 }
 bool Game::updateControls()
 {
 	/// Process keys
 	if (hge->Input_GetKeyState(HGEK_ESCAPE)) return true;
-	if (hge->Input_KeyDown(HGEK_TAB))        schematicDrawMode = !schematicDrawMode;
+	if (hge->Input_KeyDown(HGEK_TAB)) {
+        schematicDrawMode = !schematicDrawMode;
+	}
+	if (hge->Input_KeyDown(HGEK_D)) {
+        drawPerformanceInfo = (drawPerformanceInfo + 1) % 3;
+        for (int i = 0; i < COUNTERS_COUNT; i++) {
+            counters[i] = 0;
+        }
+        timer = hge->Timer_GetTime();
+	}
 	//if (hge->Input_KeyDown(HGEK_SPACE))      loadConstruction("box.xml", b2Vec2(10 + hge->Random_Float(-1, 1), 0));
 	return false;
 }
@@ -208,25 +220,118 @@ void Game::endDraw()
 
 void Game::drawGame()
 {
-	for (int i = 0; i < charactersCount; i++) {
-		characters[i]->draw(schematicDrawMode);
-	}
-	for (int i = 0; i < mapAnimationsCount; i++) {
-        mapAnimations[i]->draw(schematicDrawMode);
-	}
-	if (schematicDrawMode) {
+    clock_t st = clock();
+    if (schematicDrawMode) {
 		for (int i = 0; i < groundLinesCount; i++) {
 			groundLines[i]->debugDraw();
 		}
 		//world->DrawDebugData();
 	}
+	clock_t et = clock();
+	updateCounter(COUNTER_DRAW_GL, et - st);
+	st = clock();
+	for (int i = 0; i < charactersCount; i++) {
+		characters[i]->draw(schematicDrawMode);
+	}
+	et = clock();
+	updateCounter(COUNTER_DRAW_CHARACTERS, et - st);
+	st = clock();
+	for (int i = 0; i < mapAnimationsCount; i++) {
+        mapAnimations[i]->draw(schematicDrawMode);
+	}
+	et = clock();
+	updateCounter(COUNTER_DRAW_MAP, et - st);
+	st = clock();
+	for (int i = 0; i < effectsCount; i++) {
+        effects[i]->draw(schematicDrawMode);
+	}
+	et = clock();
+	updateCounter(COUNTER_DRAW_EFFECTS, et - st);
+	st = clock();
+
+	if (drawPerformanceInfo) {
+        int i = 0;
+        float totalTime = (displayedCounters[COUNTER_TOTAL]) / CLOCKS_PER_SEC;
+        float secondLength = 200 / totalTime;
+        int currentLevel = 0;
+        float* offsets = new float[5];
+        float currentOffset = 0;
+        float prevOffset = 0;
+        for (i = 1; i < COUNTERS_COUNT; i++) {
+            int level = countSpaces(COUNTER_NAMES[i]);
+            if (level > currentLevel) {
+                offsets[currentLevel] = currentOffset;
+                currentOffset = prevOffset;
+            }
+            if (level < currentLevel) {
+                currentOffset = offsets[level];
+            }
+            currentLevel = level;
+
+            float time = displayedCounters[i] / CLOCKS_PER_SEC;
+
+            drawRect( (currentOffset) * secondLength, 0, (currentOffset + time) * secondLength, 50 - 10 * currentLevel, 0xFF333333, COUNTER_COLORS[i] );
+            prevOffset = currentOffset;
+            currentOffset += time;
+            defaultFont->SetColor(COUNTER_COLORS[i]);
+            defaultFont->printf(0, 60 + i * 20, HGETEXT_LEFT, "%s: %f", COUNTER_NAMES[i], time);
+        }
+        delete offsets;
+        defaultFont->SetColor(0xFFFFFFFF);
+        float fps = 1.0f / dt;
+        if (fps < 50) {
+            defaultFont->SetColor(0xFFFF0000);
+        }
+        float fullTime = 1.0f;
+        if (drawPerformanceInfo == 1) {
+            fullTime = ( hge->Timer_GetTime() - timer );
+        }
+        defaultFont->printf(200, 0, HGETEXT_LEFT, "dt: %f fps: %f busy/total time: %f/%f=%02.0f%%", dt, fps, displayedCounters[COUNTER_TOTAL] / CLOCKS_PER_SEC, fullTime, 100 * (displayedCounters[COUNTER_TOTAL] / CLOCKS_PER_SEC) / fullTime );
+        defaultFont->SetColor(0xFFFFFFFF);
+        i++;
+        if (effectsCount < 200) {
+            defaultFont->SetColor(0xFFFFFFFF);
+        } else if (effectsCount < 500) {
+            defaultFont->SetColor(0xFF00FF00 + ( ( ( effectsCount - 200 ) * 255 / 300 ) << 16 ) );
+        } else if (effectsCount < 800) {
+            defaultFont->SetColor(0xFFFF0000 + ( ( ( 800 - effectsCount ) * 255 / 300 ) << 8 ) );
+        } else {
+            defaultFont->SetColor(0xFFFF0000);
+        }
+        defaultFont->printf(200, 20, HGETEXT_LEFT, "effects: %d", effectsCount);
+	}
+	et = clock();
+	updateCounter(COUNTER_DRAW_PERFORMANCE_INFO, et - st);
+
+    if (drawPerformanceInfo == 1) {
+        for (int i = 0; i < COUNTERS_COUNT; i++) {
+            displayedCounters[i] = counters[i];
+        }
+    }
+	if (drawPerformanceInfo == 2) {
+        if ( (hge->Timer_GetTime() - timer) > 1 ) {
+            for (int i = 0; i < COUNTERS_COUNT; i++) {
+                displayedCounters[i] = counters[i];
+                counters[i] = 0;
+            }
+            timer = hge->Timer_GetTime();
+        }
+	}
 }
 
 bool Game::draw()
 {
+    clock_t startT = clock();
 	startDraw();
+	//updateCounter(COUNTER_DRAW_START, clock() - startT);
+	clock_t mt = clock();
 	drawGame();
+	updateCounter(COUNTER_DRAW_GAME, clock() - mt);
+	mt = clock();
 	endDraw();
+	clock_t endT = clock();
+	counters[COUNTER_DRAW_END] += (float)(endT - mt);
+	counters[COUNTER_DRAW] += (float)(endT - startT);
 	return false;
 }
 
@@ -442,14 +547,22 @@ void Game::drawCircle(float x, float y, float r, DWORD color, DWORD bgcolor)
 
 hgeAnimation* Game::loadAnimation(char * fn)
 {
-	printf("loading animation %s ...\n", fn);
+//    printf("loading animation %s ...\n", fn);
+
+    for ( int i = 0; i < animationsCount; i++ ) {
+        if ( compareStrings(fn, animationNames[i]) ) {
+            return new hgeAnimation(*animations[i]);
+        }
+    }
+
+
 	TiXmlDocument doc(fn);
     bool loadOkay = doc.LoadFile();
     if (loadOkay) {
     	printf("load okay... ");
     	TiXmlElement* element = doc.FirstChildElement("animation");
-		HTEXTURE tex = hge->Texture_Load(element->Attribute("texture"));
-		printf("texture %s loaded... ", element->Attribute("texture"));
+    	printf("texture %s ", element->Attribute("texture"));
+		HTEXTURE tex = loadTexture((char*)element->Attribute("texture"));
 		int nframes = atoi(element->Attribute("nframes"));
 		float fps = atof(element->Attribute("fps"));
 		float x = atof(element->Attribute("x"));
@@ -457,19 +570,50 @@ hgeAnimation* Game::loadAnimation(char * fn)
 		float w = atof(element->Attribute("w"));
 		float h = atof(element->Attribute("h"));
 		printf("creating animation... ");
-		hgeAnimation* newObject = new hgeAnimation(tex, nframes, fps, x, y, w, h);
-		newObject->SetHotSpot(w / 2, h / 2);\
+		hgeAnimation* anim = new hgeAnimation(tex, nframes, fps, x, y, w, h);
+		anim->SetHotSpot(w / 2, h / 2);
 		//newObject->SetBlendMode(BLEND_COLORMUL | BLEND_ALPHABLEND | BLEND_ZWRITE);
 		//newObject->SetZ(0.5f);
 		printf("done\n");
+		animationNames[animationsCount] = copyString(fn);
+		animations[animationsCount] = anim;
+		animationsCount++;
 		printf("animation loaded\n");
-		return newObject;
+
+		hgeAnimation* newAnim = new hgeAnimation(*anim);
+        return newAnim;
     } else {
         char * error = strdup("Can't load animation: ");
         strcat(error, fn);
         Exception * e = new Exception(error);
         throw e;
     }
+}
+
+HTEXTURE Game::loadTexture(char* fn)
+{
+    for ( int i = 0; i < texturesCount; i++ ) {
+        if ( compareStrings(fn, textureNames[i]) ) {
+            printf("cloned\n");
+            return textures[i];
+        }
+    }
+    printf("loaded\n");
+    HTEXTURE newTexture = hge->Texture_Load(fn);
+    textureNames[texturesCount] = copyString(fn);
+    textures[texturesCount] = newTexture;
+    texturesCount++;
+    return newTexture;
+}
+
+hgeAnimation* Game::cloneAnimation(hgeAnimation* source)
+{
+    float x, y, w, h;
+    source->GetTextureRect(&x, &y, &w, &h);
+    hgeAnimation* newObject = new hgeAnimation( source->GetTexture(), source->GetFrames(), source->GetSpeed(), x, y, w, h );
+    newObject->SetHotSpot(w / 2, h / 2);
+//    printf("animation cloned\n");
+    return newObject;
 }
 
 Character * Game::loadPlayerCharacter(char * fn, b2Vec2 origin)
@@ -567,6 +711,26 @@ void Game::addPlatform(Platform* newPlatform)
 	platforms[platformsCount] = newPlatform;
 	platformsCount++;
 }
+void Game::addEffect(Effect* newEffect)
+{
+    newEffect->initialize();
+	effects[effectsCount] = newEffect;
+	effectsCount++;
+}
+
+void Game::removeEffect(int index)
+{
+    if (index == effectsCount - 1) {
+        delete effects[index];
+        //effects[index] = NULL;
+        effectsCount--;
+    } else {
+        delete effects[index];
+        effects[index] = effects[effectsCount - 1];
+        //effects[effectsCount - 1] = NULL;
+        effectsCount--;
+    }
+}
 
 int Game::getCharactersCount()
 {
@@ -612,6 +776,32 @@ MapAnimation* Game::getMapAnimation(int index)
 {
 	if (index < mapAnimationsCount) {
 		return mapAnimations[index];
+	} else {
+		return NULL;
+	}
+}
+
+int Game::getEffectPrototypesCount()
+{
+	return effectPrototypesCount;
+}
+EffectPrototype* Game::getEffectPrototype(int index)
+{
+	if (index < effectPrototypesCount) {
+		return effectPrototypes[index];
+	} else {
+		return NULL;
+	}
+}
+
+int Game::getConditionPrototypesCount()
+{
+	return conditionPrototypesCount;
+}
+ConditionPrototype* Game::getConditionPrototype(int index)
+{
+	if (index < conditionPrototypesCount) {
+		return conditionPrototypes[index];
 	} else {
 		return NULL;
 	}
@@ -797,6 +987,71 @@ void Game::loadMap(char* fn)
 
 }
 
+bool Game::loadEffectPrototypes(char* fileName)
+{
+	printf("loading effect prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
+
+		effectPrototypesCount = atoi(root->Attribute("count"));
+		effectPrototypes = new EffectPrototype*[effectPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			EffectPrototype* newObject = new EffectPrototype(this);
+            newObject->loadFromXml(element);
+            effectPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        effectPrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+
+}
+
+bool Game::loadConditionPrototypes(char* fileName)
+{
+	printf("loading condition prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("condition_prototypes");
+
+		conditionPrototypesCount = atoi(root->Attribute("count"));
+		conditionPrototypes = new ConditionPrototype*[conditionPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			ConditionPrototype* newObject = new ConditionPrototype();
+            newObject->loadFromXml(element);
+            conditionPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        conditionPrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+
+}
+
+void Game::updateCounter(int index, float value)
+{
+    counters[index] += value;
+}
+
 b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
 	// Store the values for fast access and easy
 	// equations-to-code conversion
@@ -853,7 +1108,43 @@ float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, fl
     return sqrt(diffX * diffX + diffY * diffY);
 }
 
-exprtk::parser<float>* Game::getExprtkParser()
+float frand(float from, float to)
 {
-    return exprtkParser;
+    return from + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(to-from)));
+}
+
+char* copyString(const char* original)
+{
+    char* newString = new char[256];
+    int i = 0;
+    while (i < 256 && original[i] != '\0') {
+        newString[i] = original[i];
+        i++;
+    }
+    newString[i] = '\0';
+
+    return newString;
+}
+
+bool compareStrings(char* first, char* second)
+{
+    int i = 0;
+    while (i < 256) {
+        if ( first[i] != second[i] )
+            return false;
+        if ( first[i] == '\0' )
+            return true;
+        i++;
+    }
+    return true;
+}
+
+int countSpaces(const char* str) {
+    int i = 0;
+    while (i < 256) {
+        if (str[i] != ' ')
+            return i;
+        i++;
+    }
+    return i;
 }

@@ -1,6 +1,6 @@
 #include "CharacterActionCause.h"
 
-CharacterActionCause::CharacterActionCause(int type, int param)
+CharacterActionCause::CharacterActionCause(int type, float param)
 {
 	this->type = type;
 	this->param = param;
@@ -10,7 +10,7 @@ CharacterActionCause::CharacterActionCause(TiXmlElement* elem)
 {
 	printf("cause\n");
 	type = atoi(elem->Attribute("type"));
-	param = atoi(elem->Attribute("param"));
+	param = atof(elem->Attribute("param"));
 }
 
 CharacterActionCause::~CharacterActionCause()
@@ -21,7 +21,7 @@ CharacterActionCause::~CharacterActionCause()
 void CharacterActionCause::save(TiXmlElement* elem)
 {
 	elem->SetAttribute("type", type);
-	elem->SetAttribute("param", param);
+	elem->SetDoubleAttribute("param", param);
 }
 
 bool CharacterActionCause::test(Game* game, Character* character)
@@ -52,5 +52,11 @@ bool CharacterActionCause::test(Game* game, Character* character)
 				return (character->getOnGround() == -1);
 			}
 			break;
+        case ACTIONCAUSE_TYPE_ANIM_TIME_PASSED:
+            return ( character->getAnimTime() >= param );
+            break;
+        case ACTIONCAUSE_TYPE_ANIM_TIME_IS:
+            return ( character->getAnimTime() == param );
+            break;
 	}
 }

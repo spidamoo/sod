@@ -3,9 +3,10 @@
 #ifndef PLAYERCHARACTER_H
 #define PLAYERCHARACTER_H
 
-const int CHARACTER_KEY_BACK = 1;
-const int CHARACTER_KEY_FORTH = 2;
-const int CHARACTER_KEY_JUMP = 3;
+const int CHARACTER_KEY_BACK   = 1;
+const int CHARACTER_KEY_FORTH  = 2;
+const int CHARACTER_KEY_JUMP   = 3;
+const int CHARACTER_KEY_ATTACK = 4;
 
 class PlayerCharacter : public Character
 {
