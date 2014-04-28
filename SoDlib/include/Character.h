@@ -80,8 +80,8 @@ class Character
 		int* framesCounts;
 		float** framesLengths;
 		int currentFrame, nextFrame;
-		int animationsCount;
-		int currentAnimation;
+		int movesCount;
+		int currentMove;
 		float currentTime;
 		int prevAngle, nextAngle;
 		float frameProgress, angleProgress;

@@ -57,8 +57,6 @@ $resultImage->ReadImage('canvas:transparent');
 open (ANIMATIONS_FILE, '>' . $path . ".xml") || die;
 print ANIMATIONS_FILE "<?xml version=\"1.0\" ?>\n";
 for my $image(@placedImages) {
-	# copy a 25x25 pixel region from $srcImage to
-	# the rectangle starting at (10,10) in $myImage
 	$resultImage->Composite(
 		image => $image->{image}, 
 		x => $image->{x}, 

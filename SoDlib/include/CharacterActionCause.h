@@ -28,6 +28,11 @@ class CharacterActionCause
 		void save(TiXmlElement* elem);
 
 		bool test(Game* game, Character* character);
+
+		int   getType();
+		void  setType(int type);
+		float getParam();
+		void  setParam(float param);
 	protected:
 		int type;
 		float param;

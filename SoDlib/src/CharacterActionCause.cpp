@@ -24,8 +24,7 @@ void CharacterActionCause::save(TiXmlElement* elem)
 	elem->SetDoubleAttribute("param", param);
 }
 
-bool CharacterActionCause::test(Game* game, Character* character)
-{
+bool CharacterActionCause::test(Game* game, Character* character) {
 	switch (type) {
 		case ACTIONCAUSE_TYPE_KEYHIT:
 			return ((PlayerCharacter*)character)->isKeyHit(param);
@@ -59,4 +58,17 @@ bool CharacterActionCause::test(Game* game, Character* character)
             return ( character->getAnimTime() == param );
             break;
 	}
+}
+
+int CharacterActionCause::getType() {
+    return type;
+}
+float CharacterActionCause::getParam() {
+    return param;
+}
+void CharacterActionCause::setType(int _type) {
+    type = _type;
+}
+void CharacterActionCause::setParam(float _param) {
+    param = _param;
 }

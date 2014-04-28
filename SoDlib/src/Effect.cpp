@@ -18,6 +18,8 @@ Effect::Effect(Game* game, EffectPrototype* prototype)
                 break;
         }
     }
+
+    owner = NULL;
 }
 
 Effect::~Effect()
@@ -69,6 +71,8 @@ void Effect::update(float dt)
     prototype->setParam(EFFECT_PARAM_YSPEED, componentSpeed.y);
     prototype->setParam(EFFECT_PARAM_TIME, time);
     prototype->setParam(EFFECT_PARAM_ANGLE, angle);
+    prototype->setParam(EFFECT_PARAM_SCALE, scale);
+    prototype->setParam(EFFECT_PARAM_DT, dt);
 
     if ( prototype->getExpressionExists(EFFECT_FUNCTION_R) ) {
         r = prototype->evalExpression(EFFECT_FUNCTION_R);
@@ -121,8 +125,10 @@ void Effect::update(float dt)
             }
             break;
         case EFFECT_POSITION_TYPE_HOTSPOT:
-            position.x = owner->getHotSpotX(prototype->getHotSpotIndex());
-            position.y = owner->getHotSpotY(prototype->getHotSpotIndex());
+            if (owner) {
+                position.x = owner->getHotSpotX(prototype->getHotSpotIndex());
+                position.y = owner->getHotSpotY(prototype->getHotSpotIndex());
+            }
             break;
     }
 
@@ -155,9 +161,9 @@ void Effect::update(float dt)
                     case EFFECTACTION_TYPE_INFLICT_CONDITION:
                         //printf("trying to apply condition\n");
                         for (int j = 0; j < game->getCharactersCount(); j++) {
-                            if (
-                                (action->getTargets() & EFFECTACTION_TARGET_FRIEND) && owner->getType() == game->getCharacter(j)->getType()
-                                || (action->getTargets() & EFFECTACTION_TARGET_ENEMY) && owner->getType() != game->getCharacter(j)->getType()
+                            if ( !owner ||
+                                ( (action->getTargets() & EFFECTACTION_TARGET_FRIEND) && owner->getType() == game->getCharacter(j)->getType() )
+                                || ( (action->getTargets() & EFFECTACTION_TARGET_ENEMY) && owner->getType() != game->getCharacter(j)->getType() )
                             ) {
                                 //printf("character %d counts as target\n", i);
                                 if ( characterCrosses( game->getCharacter(j) ) && actionInteractions[i][j] < action->getMaxInteractions() ) {

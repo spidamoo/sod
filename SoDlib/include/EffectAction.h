@@ -15,13 +15,13 @@ const int EFFECTACTION_CONDITION_CROSS_FRIEND_BODY = 3;
 const int EFFECTACTION_TARGET_FRIEND = 1;
 const int EFFECTACTION_TARGET_ENEMY  = 2;
 
-class EffectAction
-{
+class EffectAction {
     public:
         EffectAction();
         virtual ~EffectAction();
 
         void loadFromXml(TiXmlElement* xml);
+        void saveToXml(TiXmlElement* xml);
         float getStartTime();
         float getInterval();
         int getCondition();

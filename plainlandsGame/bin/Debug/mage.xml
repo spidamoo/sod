@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<character bodies="9" hotspots="1" height="1.75" width="0.75" animations="4">
+<character bodies="9" hotspots="1" height="1.75" width="0.75" moves="4">
     <body animation="mage/staff.png.xml" x="6" y="79" angle="1.22144e-038" />
     <body animation="mage/body.png.xml" x="4" y="129" angle="1.22213e-038" />
     <body animation="mage/head.png.xml" x="0" y="86" angle="0" />
@@ -10,7 +10,7 @@
     <body animation="mage/open_hand2.png.xml" x="0.632202" y="23.6212" angle="-2.77161" />
     <body animation="mage/fist.png.xml" x="34" y="142" angle="0" />
     <hotspot shape="box" x="0" y="150" angle="1.69949e-041" w="0.18125" h="0.18125" />
-    <animation frames="1" angles="1">
+    <move frames="1" angles="1" name="idle">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -83,8 +83,8 @@
                 </do>
             </action>
         </actions>
-    </animation>
-    <animation frames="4" angles="1">
+    </move>
+    <move frames="4" angles="1" name="walk">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -190,8 +190,8 @@
                 </do>
             </action>
         </actions>
-    </animation>
-    <animation frames="1" angles="1">
+    </move>
+    <move frames="1" angles="1" name="midair">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -251,8 +251,8 @@
                 </do>
             </action>
         </actions>
-    </animation>
-    <animation frames="3" angles="1">
+    </move>
+    <move frames="3" angles="1" name="attack">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -320,5 +320,5 @@
                 </do>
             </action>
         </actions>
-    </animation>
+    </move>
 </character>

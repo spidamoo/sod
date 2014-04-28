@@ -49,7 +49,10 @@ public:
 	virtual bool	KeyClick(int key, int chr) { return false; }
 
 	virtual void	SetColor(DWORD _color) { color=_color; }
-	
+
+	void Hide() {bVisible = false;bEnabled = false;};
+    void Show() {bVisible = true;bEnabled = true;};
+
 	int				id;
 	bool			bStatic;
 	bool			bVisible;
@@ -91,7 +94,7 @@ public:
 	void			SetColor(DWORD color);
 	void			SetFocus(int id);
 	int				GetFocus() const;
-	
+
 	void			Enter();
 	void			Leave();
 	void			Reset();

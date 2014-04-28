@@ -1,17 +1,13 @@
 #include "EffectAction.h"
 
-EffectAction::EffectAction()
-{
+EffectAction::EffectAction() {
     //ctor
 }
-
-EffectAction::~EffectAction()
-{
+EffectAction::~EffectAction() {
     //dtor
 }
 
-void EffectAction::loadFromXml(TiXmlElement* xml)
-{
+void EffectAction::loadFromXml(TiXmlElement* xml) {
 
     if ( xml->Attribute("type") ) {
         type = atoi( xml->Attribute("type") );
@@ -50,6 +46,17 @@ void EffectAction::loadFromXml(TiXmlElement* xml)
     }
 
 }
+void EffectAction::saveToXml(TiXmlElement* xml)
+{
+    xml->SetAttribute("type", type);
+    xml->SetAttribute("param", param);
+    xml->SetDoubleAttribute("interval", interval);
+    xml->SetAttribute("condition", condition);
+    xml->SetAttribute("targets", targets);
+    xml->SetDoubleAttribute("start_time", startTime);
+    xml->SetAttribute("max_interactions", maxInteractions);
+}
+
 
 float EffectAction::getStartTime() {
     return startTime;

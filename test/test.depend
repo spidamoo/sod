@@ -1,0 +1,35 @@
+# depslib dependency file v1.0
+1397655475 source:d:\work\my\sod\test\hgefont.cpp
+	"hgefont.h"
+	<stdlib.h>
+	<stdio.h>
+
+1396800288 d:\work\my\sod\hge181\include\hgefont.h
+	"hge.h"
+	"hgesprite.h"
+
+1396800288 d:\work\my\sod\hge181\include\hge.h
+	<windows.h>
+
+1396800288 d:\work\my\sod\hge181\include\hgesprite.h
+	"hge.h"
+	"hgerect.h"
+
+1396800288 d:\work\my\sod\hge181\include\hgerect.h
+
+1397665804 source:d:\work\my\sod\test\main.cpp
+	<iostream>
+	<hge.h>
+	<hgesprite.h>
+	<hgefont.h>
+	<math.h>
+	<windows.h>
+
+1397655515 source:d:\work\my\sod\test\hgesprite.cpp
+	"hgesprite.h"
+	<math.h>
+
+1397655555 source:d:\work\my\sod\test\hgerect.cpp
+	"hgerect.h"
+	<math.h>
+

@@ -13,6 +13,12 @@ class CharacterAction
 		void save(TiXmlElement* elem);
 
 		bool take(Game* game, Character* character);
+
+		int getEffectsCount();
+		CharacterActionEffect* getEffect(int index);
+
+		int getCausesCount();
+		CharacterActionCause* getCause(int index);
 	protected:
 		int causesCount;
 		CharacterActionCause** causes;

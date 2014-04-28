@@ -1,12 +1,10 @@
 #include "CharacterAction.h"
 
-CharacterAction::CharacterAction()
-{
+CharacterAction::CharacterAction() {
 	//ctor
 }
 
-CharacterAction::CharacterAction(TiXmlElement* elem)
-{
+CharacterAction::CharacterAction(TiXmlElement* elem) {
 	TiXmlElement* causesRoot = elem->FirstChildElement("on");
 	causesCount = atoi(causesRoot->Attribute("causes"));
 	causes = new CharacterActionCause*[causesCount];
@@ -30,13 +28,11 @@ CharacterAction::CharacterAction(TiXmlElement* elem)
 	}
 }
 
-CharacterAction::~CharacterAction()
-{
+CharacterAction::~CharacterAction() {
 	//dtor
 }
 
-void CharacterAction::save(TiXmlElement* elem)
-{
+void CharacterAction::save(TiXmlElement* elem) {
 	TiXmlElement* causesRoot = new TiXmlElement( "on" );
 	causesRoot->SetAttribute("causes", causesCount);
 	for (int i = 0; i < causesCount; i++) {
@@ -56,8 +52,7 @@ void CharacterAction::save(TiXmlElement* elem)
 	elem->LinkEndChild(effectsRoot);
 }
 
-bool CharacterAction::take(Game* game, Character* character)
-{
+bool CharacterAction::take(Game* game, Character* character) {
 	bool fulfilled = true;
 	for (int i = 0; i < causesCount; i++) {
 		fulfilled &= causes[i]->test(game, character);
@@ -70,4 +65,26 @@ bool CharacterAction::take(Game* game, Character* character)
 		return true;
 	}
 	return false;
+}
+
+int CharacterAction::getEffectsCount() {
+    return effectsCount;
+}
+
+CharacterActionEffect* CharacterAction::getEffect(int index) {
+    if (index >= effectsCount)
+        return NULL;
+
+    return effects[index];
+}
+
+int CharacterAction::getCausesCount() {
+    return causesCount;
+}
+
+CharacterActionCause* CharacterAction::getCause(int index) {
+    if (index >= causesCount)
+        return NULL;
+
+    return causes[index];
 }

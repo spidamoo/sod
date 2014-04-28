@@ -8,5 +8,7 @@
 			<Depends filename="SoDlib/SoDlib.cbp" />
 		</Project>
 		<Project filename="mapEditor/mapEditor.cbp" />
+		<Project filename="test/test.cbp" />
+		<Project filename="effectEditor/effectEditor.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

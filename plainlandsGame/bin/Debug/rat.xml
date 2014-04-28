@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<character bodies="7" hotspots="0" height="0.387497" width="1.25" animations="2">
+<character bodies="7" hotspots="0" height="0.387497" width="1.25" moves="2">
     <body animation="rat/tail2.png.xml" x="83.0554" y="93.9396" angle="0.411389" />
     <body animation="rat/body.png.xml" x="7" y="137" angle="1.15785e-038" />
     <body animation="rat/leg.png.xml" x="2" y="120" angle="0" />
@@ -7,7 +7,7 @@
     <body animation="rat/head2.png.xml" x="58" y="124" angle="0" />
     <body animation="rat/head.png.xml" x="1" y="95" angle="0" />
     <body animation="rat/arm.png.xml" x="0" y="138" angle="0" />
-    <animation frames="1" angles="1">
+    <move frames="1" angles="1">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -34,8 +34,8 @@
             <body x="0" y="0" angle="0" show="0" />
         </angle>
         <actions count="0" />
-    </animation>
-    <animation frames="2" angles="1">
+    </move>
+    <move frames="2" angles="1">
         <body rotating="0" />
         <body rotating="0" />
         <body rotating="0" />
@@ -71,5 +71,5 @@
             <body x="0" y="0" angle="0" show="0" />
         </angle>
         <actions count="0" />
-    </animation>
+    </move>
 </character>

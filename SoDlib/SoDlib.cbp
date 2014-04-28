@@ -20,10 +20,6 @@
 					<Add directory=".." />
 					<Add directory="../hge181/include" />
 				</Compiler>
-				<Linker>
-					<Add library="..\hge181\lib\gcc\libhge.a" />
-					<Add library="..\Box2D\libBox2D.a" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="SoDlib" prefix_auto="1" extension_auto="1" />
@@ -33,19 +29,20 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-Wall" />
 					<Add option="-O2" />
+					<Add option="-Wall" />
 					<Add directory="include" />
 					<Add directory=".." />
 					<Add directory="../hge181/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\hge181\lib\gcc\libhge.a" />
-					<Add library="..\Box2D\libBox2D.a" />
 				</Linker>
 			</Target>
 		</Build>
+		<Linker>
+			<Add library="..\hge181\lib\gcc\libhge.a" />
+		</Linker>
 		<Unit filename="hgeanim.cpp" />
 		<Unit filename="hgecolor.cpp" />
 		<Unit filename="hgefont.cpp" />
@@ -75,7 +72,9 @@
 		<Unit filename="include/Platform.h" />
 		<Unit filename="include/PlayerCharacter.h" />
 		<Unit filename="include/SoDlib.h" />
+		<Unit filename="include/hgeGUIEditableLabel.h" />
 		<Unit filename="include/hgeGUIMenuItem.h" />
+		<Unit filename="include/hgegui.h" />
 		<Unit filename="include/muParser.h" />
 		<Unit filename="include/muParserBase.h" />
 		<Unit filename="include/muParserBytecode.h" />
@@ -113,6 +112,7 @@
 		<Unit filename="src/NonPlayerCharacter.cpp" />
 		<Unit filename="src/Platform.cpp" />
 		<Unit filename="src/PlayerCharacter.cpp" />
+		<Unit filename="src/hgeGUIEditableLabel.cpp" />
 		<Unit filename="src/hgeGUIMenuItem.cpp" />
 		<Unit filename="src/muParser.cpp" />
 		<Unit filename="src/muParserBase.cpp" />

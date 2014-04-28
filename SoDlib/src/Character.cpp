@@ -1,7 +1,6 @@
 #include "Character.h"
 
-Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin)
-{
+Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin) {
 	this->game = game;
 
 	height = 2.0f;
@@ -14,7 +13,7 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin)
 
 	loadFromXml(xml, origin);
 
-    currentAnimation = 0;
+    currentMove = 0;
     currentFrame = 0;
     currentTime = 0;
     turnedRight = false;
@@ -30,13 +29,11 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin)
     printf("character loaded\n");
 }
 
-Character::~Character()
-{
+Character::~Character() {
     //dtor
 }
 
-bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
-{
+bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin) {
 	if (xml->Attribute("height")) {
 		height = atof(xml->Attribute("height"));
 		halfHeight = height * 0.5f;
@@ -79,42 +76,42 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
 	}
 	hotSpotsCount = i;
 
-	TiXmlElement* animationElem = xml->FirstChildElement("animation");
+	TiXmlElement* animationElem = xml->FirstChildElement("move");
 
-	animationsCount = atoi(xml->Attribute("animations"));
-	printf("%i animations\n", animationsCount);
-	frameAnimAngle = new float**[animationsCount];
-	frameAnimLayer = new int**[animationsCount];
-	frameAnimShow = new bool**[animationsCount];
-	frameAnimX = new float**[animationsCount];
-	frameAnimY = new float**[animationsCount];
-	framesCounts = new int[animationsCount];
-	framesLengths = new float*[animationsCount];
+	movesCount = atoi(xml->Attribute("moves"));
+	printf("%i animations\n", movesCount);
+	frameAnimAngle = new float**[movesCount];
+	frameAnimLayer = new int**[movesCount];
+	frameAnimShow = new bool**[movesCount];
+	frameAnimX = new float**[movesCount];
+	frameAnimY = new float**[movesCount];
+	framesCounts = new int[movesCount];
+	framesLengths = new float*[movesCount];
 
-	frameHotSpotAngle = new float**[animationsCount];
-	frameHotSpotShow = new bool**[animationsCount];
-	frameHotSpotX = new float**[animationsCount];
-	frameHotSpotY = new float**[animationsCount];
+	frameHotSpotAngle = new float**[movesCount];
+	frameHotSpotShow = new bool**[movesCount];
+	frameHotSpotX = new float**[movesCount];
+	frameHotSpotY = new float**[movesCount];
 
-	angleAnimAngle = new float**[animationsCount];
-	angleAnimShow = new bool**[animationsCount];
-	angleAnimX = new float**[animationsCount];
-	angleAnimY = new float**[animationsCount];
-	angleCounts = new int[animationsCount];
-	angles = new float*[animationsCount];
+	angleAnimAngle = new float**[movesCount];
+	angleAnimShow = new bool**[movesCount];
+	angleAnimX = new float**[movesCount];
+	angleAnimY = new float**[movesCount];
+	angleCounts = new int[movesCount];
+	angles = new float*[movesCount];
 
-	angleHotSpotAngle = new float**[animationsCount];
-	angleHotSpotShow = new bool**[animationsCount];
-	angleHotSpotX = new float**[animationsCount];
-	angleHotSpotY = new float**[animationsCount];
+	angleHotSpotAngle = new float**[movesCount];
+	angleHotSpotShow = new bool**[movesCount];
+	angleHotSpotX = new float**[movesCount];
+	angleHotSpotY = new float**[movesCount];
 
-	actionsCounts = new int[animationsCount];
-	actions = new CharacterAction**[animationsCount];
+	actionsCounts = new int[movesCount];
+	actions = new CharacterAction**[movesCount];
 
-	animRotating = new bool*[animationsCount];
+	animRotating = new bool*[movesCount];
 	i = 0;
 	while (animationElem) {
-		printf("animation\n");
+		printf("move\n");
 		framesCounts[i] = atoi(animationElem->Attribute("frames"));
 
 		frameAnimAngle[i] = new float*[framesCounts[i]];
@@ -253,15 +250,14 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin)
 			actions[i] = 0;
 		}
 		i++;
-		animationElem = animationElem->NextSiblingElement("animation");
+		animationElem = animationElem->NextSiblingElement("move");
 	}
-	animationsCount = i;
+	movesCount = i;
 
 	position = origin;
 }
 
-void Character::draw(bool schematicMode)
-{
+void Character::draw(bool schematicMode) {
 
 	if (schematicMode) {
 		game->drawRect(
@@ -277,24 +273,24 @@ void Character::draw(bool schematicMode)
 
 	int offset = turnedRight ? -1 : 1;
 	for (int index = 0; index < bodiesCount; index++) {
-		int i = frameAnimLayer[currentAnimation][currentFrame][index];
-		if (!animRotating[currentAnimation][i]) {
-			if (frameAnimShow[currentAnimation][currentFrame][i]) {
+		int i = frameAnimLayer[currentMove][currentFrame][index];
+		if (!animRotating[currentMove][i]) {
+			if (frameAnimShow[currentMove][currentFrame][i]) {
 				animations[i]->SetFlip(turnedRight, false, true);
 				animations[i]->RenderEx(
-					game->screenX(position.x + offset * animatedValue(frameAnimX[currentAnimation][currentFrame][i], frameAnimX[currentAnimation][nextFrame][i])),
-					game->screenY(position.y + animatedValue(frameAnimY[currentAnimation][currentFrame][i], frameAnimY[currentAnimation][nextFrame][i])),
-					offset * animatedValue(frameAnimAngle[currentAnimation][currentFrame][i], frameAnimAngle[currentAnimation][nextFrame][i]),
+					game->screenX(position.x + offset * animatedValue(frameAnimX[currentMove][currentFrame][i], frameAnimX[currentMove][nextFrame][i])),
+					game->screenY(position.y + animatedValue(frameAnimY[currentMove][currentFrame][i], frameAnimY[currentMove][nextFrame][i])),
+					offset * animatedValue(frameAnimAngle[currentMove][currentFrame][i], frameAnimAngle[currentMove][nextFrame][i]),
 					game->getScaleFactor(),
 					game->getScaleFactor()
 				);
 			}
 		} else {
-			if (angleAnimShow[currentAnimation][currentFrame][i]) {
+			if (angleAnimShow[currentMove][currentFrame][i]) {
 				animations[i]->RenderEx(
-					game->screenX(position.x + midanglePosition(angleAnimX[currentAnimation][prevAngle][i], angleAnimX[currentAnimation][nextAngle][i])),
-					game->screenY(position.y + midanglePosition(angleAnimY[currentAnimation][prevAngle][i], angleAnimY[currentAnimation][nextAngle][i])),
-					midangleAngle(angleAnimAngle[currentAnimation][prevAngle][i], angleAnimAngle[currentAnimation][nextAngle][i]),
+					game->screenX(position.x + midanglePosition(angleAnimX[currentMove][prevAngle][i], angleAnimX[currentMove][nextAngle][i])),
+					game->screenY(position.y + midanglePosition(angleAnimY[currentMove][prevAngle][i], angleAnimY[currentMove][nextAngle][i])),
+					midangleAngle(angleAnimAngle[currentMove][prevAngle][i], angleAnimAngle[currentMove][nextAngle][i]),
 					game->getScaleFactor(),
 					game->getScaleFactor()
 				);
@@ -320,33 +316,30 @@ void Character::draw(bool schematicMode)
     }
 }
 
-void Character::update(float dt)
-{
+void Character::update(float dt) {
 	currentTime += dt;
 	float time = 0;
 	int frame = 0;
-	for (int i = 0; i < framesCounts[currentAnimation]; i++) {
+	for (int i = 0; i < framesCounts[currentMove]; i++) {
 		if (currentTime > time) {
 			frame = i;
-			frameProgress = (currentTime - time) / framesLengths[currentAnimation][i];
+			frameProgress = (currentTime - time) / framesLengths[currentMove][i];
 		}
-		time += framesLengths[currentAnimation][i];
+		time += framesLengths[currentMove][i];
 	}
 	currentFrame = frame;
-	if (currentFrame > framesCounts[currentAnimation] - 2)
+	if (currentFrame > framesCounts[currentMove] - 2)
 		nextFrame = 0;
 	else
 		nextFrame = currentFrame + 1;
-	if (currentTime > time)
-		currentTime = 0;
 
 	angle = atan2(game->getWorldMouseY() - position.y, game->getWorldMouseX() - position.x);
 	prevAngle = 0; nextAngle = 0;
 	float prevDiff = - M_PI * 2;
 	float nextDiff = M_PI * 2;
-	for (int i = 0; i < angleCounts[currentAnimation]; i++) {
-		float nAngle = angles[currentAnimation][i];
-		float pAngle = angles[currentAnimation][i];
+	for (int i = 0; i < angleCounts[currentMove]; i++) {
+		float nAngle = angles[currentMove][i];
+		float pAngle = angles[currentMove][i];
 		while (nAngle < angle) {
 			nAngle += M_PI * 2;
 		}
@@ -367,7 +360,7 @@ void Character::update(float dt)
 
 	int offset = turnedRight ? -1 : 1;
 	for (int i = 0; i < hotSpotsCount; i++) {
-		if (frameHotSpotShow[currentAnimation][currentFrame][i]) {
+		if (frameHotSpotShow[currentMove][currentFrame][i]) {
 
 		} else {
 
@@ -383,10 +376,13 @@ void Character::update(float dt)
 		position += (dt * speed);
 	}
 
-    for (int i = 0; i < actionsCounts[currentAnimation]; i++) {
-		if (actions[currentAnimation][i]->take(game, this)) {
+    for (int i = 0; i < actionsCounts[currentMove]; i++) {
+		if (actions[currentMove][i]->take(game, this)) {
 		}
 	}
+
+	if (currentTime > time)
+		currentTime = 0;
 
 	float h = position.y;
 	for (int i = 0; i < game->getGroundLinesCount(); i++) {///Обработаем все стены
@@ -485,16 +481,14 @@ void Character::update(float dt)
 	control(dt);
 }
 
-void Character::turn()
-{
+void Character::turn() {
 	turnedRight = !turnedRight;
 //	for (int i = 0; i < bodiesCount; i++) {
 ////		animations[i]->SetFlip(turnedRight, false, true);
 //	}
 }
 
-void Character::run(float speed)
-{
+void Character::run(float speed) {
 	if (onGround > -1) {
 		speed = speed * (turnedRight ? 1 : -1);
 		float speedX = game->getGroundLine(onGround)->getCosA() * speed;
@@ -510,8 +504,7 @@ void Character::run(float speed)
 	}
 }
 
-void Character::jump(b2Vec2 speed)
-{
+void Character::jump(b2Vec2 speed) {
 	onGround = -1;
 	speed.x *=  (turnedRight ? 1 : -1);
 	this->speed = speed;
@@ -521,97 +514,79 @@ void Character::jump(b2Vec2 speed)
 
 }
 
-void Character::move(float dx, float dy)
-{
+void Character::move(float dx, float dy) {
     position.x += dx; position.y += dy;
 }
 
 
-void Character::doDamage(int amount)
-{
+void Character::doDamage(int amount) {
     currentHitPoints -= amount;
     if ( currentHitPoints < 0)
         currentHitPoints = 0;
 }
 
-void Character::setAnim(int anim)
-{
-	currentAnimation = anim;
+void Character::setAnim(int anim) {
+	currentMove = anim;
 	currentFrame = 0;
 	nextFrame = 0;
 	currentTime = 0;
 }
 
-float Character::animatedValue(float prev, float next)
-{
+float Character::animatedValue(float prev, float next) {
 	return prev + (next - prev) * frameProgress;
 }
-float Character::midanglePosition(float prev, float next)
-{
+float Character::midanglePosition(float prev, float next) {
 	return prev + (next - prev) * angleProgress;
 }
-float Character::midangleAngle(float prev, float next)
-{
+float Character::midangleAngle(float prev, float next) {
 	if (next < prev) {
 		next += 2 * M_PI;
 	}
 	return prev + (next - prev) * angleProgress;
 }
 
-b2Vec2 Character::getPosition()
-{
+b2Vec2 Character::getPosition() {
 	return position;
 }
-void Character::setPosition(b2Vec2 newPos)
-{
+void Character::setPosition(b2Vec2 newPos) {
 	position = newPos;
 }
 
-float Character::getX()
-{
+float Character::getX() {
 	return position.x;
 }
-float Character::getY()
-{
+float Character::getY() {
 	return position.y;
 }
-float Character::getHalfHeight()
-{
+float Character::getHalfHeight() {
 	return halfHeight;
 }
-float Character::getHalfWidth()
-{
+float Character::getHalfWidth() {
 	return halfWidth;
 }
 
-int Character::getOnGround()
-{
+int Character::getOnGround() {
 	return onGround;
 }
 
-float Character::getHotSpotX(int index)
-{
+float Character::getHotSpotX(int index) {
     int offset = turnedRight ? -1 : 1;
-    return position.x + offset * animatedValue( frameHotSpotX[currentAnimation][currentFrame][index], frameHotSpotX[currentAnimation][nextFrame][index] );
+    return position.x + offset * animatedValue( frameHotSpotX[currentMove][currentFrame][index], frameHotSpotX[currentMove][nextFrame][index] );
 }
-float Character::getHotSpotY(int index)
-{
-    return position.y + animatedValue( frameHotSpotY[currentAnimation][currentFrame][index], frameHotSpotY[currentAnimation][nextFrame][index] );
+float Character::getHotSpotY(int index) {
+    return position.y + animatedValue( frameHotSpotY[currentMove][currentFrame][index], frameHotSpotY[currentMove][nextFrame][index] );
 }
 
-float Character::getAnimTime()
-{
+float Character::getAnimTime() {
     return currentTime;
 }
 
-void Character::addCondition(Condition* condition)
-{
+void Character::addCondition(Condition* condition) {
     conditions[conditionsCount] = condition;
     conditionsCount++;
 }
 
-void Character::removeCondition(int index)
-{
+void Character::removeCondition(int index) {
     if (index == conditionsCount - 1) {
         delete conditions[index];
         conditions[index] = NULL;
@@ -624,7 +599,6 @@ void Character::removeCondition(int index)
     }
 }
 
-int Character::getDamage()
-{
+int Character::getDamage() {
     return 1;
 }

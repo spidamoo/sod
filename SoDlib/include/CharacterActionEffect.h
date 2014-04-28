@@ -4,7 +4,7 @@
 #include <SoDlib.h>
 
 const int ACTIONEFFECT_TYPE_TURN = 1;
-const int ACTIONEFFECT_TYPE_CHANGEANIM = 2;
+const int ACTIONEFFECT_TYPE_CHANGEMOVE = 2;
 const int ACTIONEFFECT_TYPE_RUN = 3;
 const int ACTIONEFFECT_TYPE_JUMP = 4;
 const int ACTIONEFFECT_TYPE_SPAWN_EFFECT = 5;
@@ -19,6 +19,12 @@ class CharacterActionEffect
 		void save(TiXmlElement* elem);
 
 		void perform(Game* game, Character* character);
+
+		int getType();
+		void setType(int type);
+
+		float getParam(int index = 1);
+		void setParam(float param, int index = 1);
 	protected:
 		int type;
 		float param;

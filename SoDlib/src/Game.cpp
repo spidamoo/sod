@@ -1,7 +1,6 @@
 #include "Game.h"
 
-Game::Game(HGE * hge)
-{
+Game::Game(HGE * hge) {
 	this->world = world;
 	this->hge = hge;
 
@@ -55,13 +54,11 @@ Game::Game(HGE * hge)
 	//world->SetDebugDraw((b2Draw*)debugDraw);
 }
 
-Game::~Game()
-{
+Game::~Game() {
 
 }
 
-bool Game::preload()
-{
+bool Game::preload() {
     //printf("foo");
     try
     {
@@ -112,8 +109,7 @@ bool Game::preload()
     return false;
 }
 
-void Game::loop()
-{
+void Game::loop() {
 	// Let's rock now!
 	hge->System_Start();
 
@@ -126,12 +122,10 @@ void Game::loop()
 	hge->Release();
 }
 
-bool Game::update()
-{
+bool Game::update() {
 	return update(true);
 }
-bool Game::update(bool withPhysics)
-{
+bool Game::update(bool withPhysics) {
     clock_t startT = clock();
 	// Get the time elapsed since last call of FrameFunc().
 	// This will help us to synchronize on different
@@ -148,12 +142,10 @@ bool Game::update(bool withPhysics)
 	return updateControls();
 }
 
-void Game::updateGui(float dt)
-{
+void Game::updateGui(float dt) {
 	gui->Update(dt);
 }
-void Game::updateWorld(float dt)
-{
+void Game::updateWorld(float dt) {
     timeStep = dt;
 	//world->Step(timeStep, velocityIterations, positionIterations);
 	for (int i = 0; i < charactersCount; i++) {
@@ -178,10 +170,11 @@ void Game::updateWorld(float dt)
 	delete effectsToRemove;
 	clock_t eue = clock();
 	counters[COUNTER_EFFECTS_UPDATE] += (float)(eue - eus);
-	cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
+	if (charactersCount > 0) {
+        cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
+	}
 }
-bool Game::updateControls()
-{
+bool Game::updateControls() {
 	/// Process keys
 	if (hge->Input_GetKeyState(HGEK_ESCAPE)) return true;
 	if (hge->Input_KeyDown(HGEK_TAB)) {
@@ -198,8 +191,7 @@ bool Game::updateControls()
 	return false;
 }
 
-void Game::startDraw()
-{
+void Game::startDraw() {
 	hge->Gfx_BeginScene();
 
 	/// Clear screen with skyblue color
@@ -209,17 +201,14 @@ void Game::startDraw()
 	}
 	hge->Gfx_Clear(color);
 }
-
-void Game::endDraw()
-{
+void Game::endDraw() {
 
 	gui->Render();
 	/// End rendering and update the screen
 	hge->Gfx_EndScene();
 }
 
-void Game::drawGame()
-{
+void Game::drawGame() {
     clock_t st = clock();
     if (schematicDrawMode) {
 		for (int i = 0; i < groundLinesCount; i++) {
@@ -318,9 +307,7 @@ void Game::drawGame()
         }
 	}
 }
-
-bool Game::draw()
-{
+bool Game::draw() {
     clock_t startT = clock();
 	startDraw();
 	//updateCounter(COUNTER_DRAW_START, clock() - startT);
@@ -335,17 +322,13 @@ bool Game::draw()
 	return false;
 }
 
-void Game::drawLine(float x1, float y1, float x2, float y2, DWORD color)
-{
+void Game::drawLine(float x1, float y1, float x2, float y2, DWORD color) {
 	getHge()->Gfx_RenderLine(x1, y1, x2, y2, color);
 }
-void Game::drawLine(b2Vec2 p1, b2Vec2 p2, DWORD color)
-{
+void Game::drawLine(b2Vec2 p1, b2Vec2 p2, DWORD color) {
 	this->drawLine(p1.x, p1.y, p2.x, p2.y, color);
 }
-
-void Game::drawRect(float left, float top, float right, float bottom, DWORD color, DWORD bgcolor)
-{
+void Game::drawRect(float left, float top, float right, float bottom, DWORD color, DWORD bgcolor) {
 	whiteQuad.v[0].x = left;  whiteQuad.v[0].y = top;    whiteQuad.v[0].col = bgcolor;
 	whiteQuad.v[1].x = right; whiteQuad.v[1].y = top;    whiteQuad.v[1].col = bgcolor;
 	whiteQuad.v[2].x = right; whiteQuad.v[2].y = bottom; whiteQuad.v[2].col = bgcolor;
@@ -357,9 +340,7 @@ void Game::drawRect(float left, float top, float right, float bottom, DWORD colo
 	getHge()->Gfx_RenderLine(right, bottom, left, bottom, color);
 	getHge()->Gfx_RenderLine(left, bottom, left, top, color);
 }
-
-void Game::drawRect(float centerX, float centerY, float hw, float hh, float angle, DWORD color, DWORD bgcolor)
-{
+void Game::drawRect(float centerX, float centerY, float hw, float hh, float angle, DWORD color, DWORD bgcolor) {
 	float cornerAngle1 = atan2(hh, hw) + angle;
 	float cornerAngle2 = atan2(hh, -hw) + angle;
 	float length = sqrtf(powf(hw, 2) + powf(hh, 2));
@@ -378,9 +359,7 @@ void Game::drawRect(float centerX, float centerY, float hw, float hh, float angl
 	getHge()->Gfx_RenderLine(whiteQuad.v[2].x, whiteQuad.v[2].y, whiteQuad.v[3].x, whiteQuad.v[3].y, color);
 	getHge()->Gfx_RenderLine(whiteQuad.v[3].x, whiteQuad.v[3].y, whiteQuad.v[0].x, whiteQuad.v[0].y, color);
 }
-
-void Game::drawArc(float x, float y, float r, float start, float end, DWORD color, DWORD bgcolor)
-{
+void Game::drawArc(float x, float y, float r, float start, float end, DWORD color, DWORD bgcolor) {
 	int steps = r * (end - start) * 0.1;
 	if (steps < 10)
 		steps = 10;
@@ -407,8 +386,7 @@ void Game::drawArc(float x, float y, float r, float start, float end, DWORD colo
 		prevX = nextX; prevY = nextY;
 	}
 }
-void Game::drawPoly(b2PolygonShape* poly, b2Transform transform, b2Vec2 origin, float scale, DWORD color, DWORD bgcolor)
-{
+void Game::drawPoly(b2PolygonShape* poly, b2Transform transform, b2Vec2 origin, float scale, DWORD color, DWORD bgcolor) {
 	b2Vec2 prev = b2Mul(transform, poly->GetVertex(0));
 	b2Vec2 first = prev;
 	whiteTriple.v[0].col = bgcolor; whiteTriple.v[1].col = bgcolor; whiteTriple.v[2].col = bgcolor;
@@ -437,9 +415,7 @@ void Game::drawPoly(b2PolygonShape* poly, b2Transform transform, b2Vec2 origin, 
 		color
 	);
 }
-
-void 	Game::DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor)
-{
+void Game::DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor) {
 	b2Vec2 first = getPixelsPerMeter() * getScaleFactor() * (vertices[0] - cameraPos);
 	b2Vec2 prev = first;
 	whiteTriple.v[0].col = bgcolor; whiteTriple.v[1].col = bgcolor; whiteTriple.v[2].col = bgcolor;
@@ -468,8 +444,7 @@ void 	Game::DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color,
 		color
 	);
 }
-void 	Game::DrawPolygonScreen (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor)
-{
+void Game::DrawPolygonScreen (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor) {
 	b2Vec2 first = vertices[0];
 	b2Vec2 prev = first;
 	whiteTriple.v[0].col = bgcolor; whiteTriple.v[1].col = bgcolor; whiteTriple.v[2].col = bgcolor;
@@ -498,21 +473,16 @@ void 	Game::DrawPolygonScreen (const b2Vec2 *vertices, int32 vertexCount, DWORD 
 		color
 	);
 }
-
-void Game::DrawCircle (const b2Vec2 &center, float32 radius, DWORD color, DWORD bgcolor)
-{
+void Game::DrawCircle (const b2Vec2 &center, float32 radius, DWORD color, DWORD bgcolor) {
 	b2Vec2 screenCenter = getPixelsPerMeter() * getScaleFactor() * (center - cameraPos);
 	drawCircle(screenCenter.x, screenCenter.y, getPixelsPerMeter() * getScaleFactor() * radius, color, bgcolor);
 }
-
-void 	Game::DrawSegment (const b2Vec2 &p1, const b2Vec2 &p2, DWORD color)
-{
+void Game::DrawSegment (const b2Vec2 &p1, const b2Vec2 &p2, DWORD color) {
 	b2Vec2 screenP1 = getPixelsPerMeter() * getScaleFactor() * (p1 - cameraPos);
 	b2Vec2 screenP2 = getPixelsPerMeter() * getScaleFactor() * (p2 - cameraPos);
 	hge->Gfx_RenderLine(screenP1.x, screenP1.y, screenP2.x, screenP2.y, color);
 }
-void 	Game::DrawTransform (const b2Transform &xf)
-{
+void Game::DrawTransform (const b2Transform &xf) {
 	b2Vec2 p1 = xf.p, p2;
 	b2Vec2 screenP1 = getPixelsPerMeter() * getScaleFactor() * (p1 - cameraPos);
 	const float32 k_axisScale = 0.4f;
@@ -534,19 +504,15 @@ void 	Game::DrawTransform (const b2Transform &xf)
 
 	//glEnd();
 }
-
-void Game::drawCircle(float x, float y, float r, DWORD color)
-{
+void Game::drawCircle(float x, float y, float r, DWORD color) {
 	drawArc(x, y, r, 0, M_PI * 2, color, 0);
 }
-void Game::drawCircle(float x, float y, float r, DWORD color, DWORD bgcolor)
-{
+void Game::drawCircle(float x, float y, float r, DWORD color, DWORD bgcolor) {
 	drawArc(x, y, r, 0, M_PI * 2, color, bgcolor);
 }
 
 
-hgeAnimation* Game::loadAnimation(char * fn)
-{
+hgeAnimation* Game::loadAnimation(char * fn) {
 //    printf("loading animation %s ...\n", fn);
 
     for ( int i = 0; i < animationsCount; i++ ) {
@@ -590,8 +556,7 @@ hgeAnimation* Game::loadAnimation(char * fn)
     }
 }
 
-HTEXTURE Game::loadTexture(char* fn)
-{
+HTEXTURE Game::loadTexture(char* fn) {
     for ( int i = 0; i < texturesCount; i++ ) {
         if ( compareStrings(fn, textureNames[i]) ) {
             printf("cloned\n");
@@ -606,8 +571,7 @@ HTEXTURE Game::loadTexture(char* fn)
     return newTexture;
 }
 
-hgeAnimation* Game::cloneAnimation(hgeAnimation* source)
-{
+hgeAnimation* Game::cloneAnimation(hgeAnimation* source) {
     float x, y, w, h;
     source->GetTextureRect(&x, &y, &w, &h);
     hgeAnimation* newObject = new hgeAnimation( source->GetTexture(), source->GetFrames(), source->GetSpeed(), x, y, w, h );
@@ -616,8 +580,7 @@ hgeAnimation* Game::cloneAnimation(hgeAnimation* source)
     return newObject;
 }
 
-Character * Game::loadPlayerCharacter(char * fn, b2Vec2 origin)
-{
+Character * Game::loadPlayerCharacter(char * fn, b2Vec2 origin) {
 	printf("loading player character %s ... \n", fn);
     TiXmlDocument doc(fn);
     bool loadOkay = doc.LoadFile();
@@ -633,9 +596,7 @@ Character * Game::loadPlayerCharacter(char * fn, b2Vec2 origin)
 		return newObject;
     }
 }
-
-Character * Game::loadNonPlayerCharacter(char * fn, b2Vec2 origin)
-{
+Character * Game::loadNonPlayerCharacter(char * fn, b2Vec2 origin) {
 	printf("loading player character %s ... \n", fn);
     TiXmlDocument doc(fn);
     bool loadOkay = doc.LoadFile();
@@ -651,75 +612,69 @@ Character * Game::loadNonPlayerCharacter(char * fn, b2Vec2 origin)
     }
 }
 
-b2Fixture* Game::loadFixture(b2Body* body, TiXmlElement* elem)
-{
-	printf("  %s shape ", elem->Attribute("type"));
-	if (strcmp(elem->Attribute("type"), "polygon") == 0) {
-		TiXmlElement* vertexElem = elem->FirstChildElement("vertex");
-		int k = 0;
-		while (vertexElem) {
-			k++;
-			vertexElem = vertexElem->NextSiblingElement("vertex");
-		}
-		b2Vec2 vertices[k];
-		vertexElem = elem->FirstChildElement("vertex");
-		k = 0;
-		while (vertexElem) {
+//b2Fixture* Game::loadFixture(b2Body* body, TiXmlElement* elem) {
+//	printf("  %s shape ", elem->Attribute("type"));
+//	if (strcmp(elem->Attribute("type"), "polygon") == 0) {
+//		TiXmlElement* vertexElem = elem->FirstChildElement("vertex");
+//		int k = 0;
+//		while (vertexElem) {
+//			k++;
+//			vertexElem = vertexElem->NextSiblingElement("vertex");
+//		}
+//		b2Vec2 vertices[k];
+//		vertexElem = elem->FirstChildElement("vertex");
+//		k = 0;
+//		while (vertexElem) {
+//
+//			float x = atof(vertexElem->Attribute("x"));
+//			float y = atof(vertexElem->Attribute("y"));
+//			printf("vertex %.2f %.2f ", x, y);
+//			vertices[k].Set(x, y);
+//			k++;
+//			vertexElem = vertexElem->NextSiblingElement("vertex");
+//		}
+//		b2PolygonShape polygon;
+//		polygon.Set(vertices, k);
+//		b2FixtureDef fixtureDef;
+//		fixtureDef.shape = &polygon;
+//		fixtureDef.density = 1.0f;
+//		fixtureDef.friction = 100.0f;
+//		return body->CreateFixture(&fixtureDef);
+//	}
+//	if (strcmp(elem->Attribute("type"), "box") == 0) {
+//		float hx = atof(elem->Attribute("hx"));
+//		float hy = atof(elem->Attribute("hy"));
+//		printf("with width %.2f and height %.2f ", hx, hy);
+//		b2PolygonShape dynamicBox;
+//		dynamicBox.SetAsBox(hx, hy);
+//		b2FixtureDef fixtureDef;
+//		fixtureDef.shape = &dynamicBox;
+//		fixtureDef.density = 1.0f;
+//		fixtureDef.friction = 1.0f;
+//		printf("added\n");
+//		return body->CreateFixture(&fixtureDef);
+//	}
+//}
 
-			float x = atof(vertexElem->Attribute("x"));
-			float y = atof(vertexElem->Attribute("y"));
-			printf("vertex %.2f %.2f ", x, y);
-			vertices[k].Set(x, y);
-			k++;
-			vertexElem = vertexElem->NextSiblingElement("vertex");
-		}
-		b2PolygonShape polygon;
-		polygon.Set(vertices, k);
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &polygon;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 100.0f;
-		return body->CreateFixture(&fixtureDef);
-	}
-	if (strcmp(elem->Attribute("type"), "box") == 0) {
-		float hx = atof(elem->Attribute("hx"));
-		float hy = atof(elem->Attribute("hy"));
-		printf("with width %.2f and height %.2f ", hx, hy);
-		b2PolygonShape dynamicBox;
-		dynamicBox.SetAsBox(hx, hy);
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &dynamicBox;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 1.0f;
-		printf("added\n");
-		return body->CreateFixture(&fixtureDef);
-	}
-}
-
-void Game::addGroundLine(GroundLine* newGL)
-{
+void Game::addGroundLine(GroundLine* newGL) {
 	groundLines[groundLinesCount] = newGL;
 	groundLinesCount++;
 }
-void Game::addMapAnimation(MapAnimation* newMA)
-{
+void Game::addMapAnimation(MapAnimation* newMA) {
 	mapAnimations[mapAnimationsCount] = newMA;
 	mapAnimationsCount++;
 }
-void Game::addPlatform(Platform* newPlatform)
-{
+void Game::addPlatform(Platform* newPlatform) {
 	platforms[platformsCount] = newPlatform;
 	platformsCount++;
 }
-void Game::addEffect(Effect* newEffect)
-{
+void Game::addEffect(Effect* newEffect) {
     newEffect->initialize();
 	effects[effectsCount] = newEffect;
 	effectsCount++;
 }
 
-void Game::removeEffect(int index)
-{
+void Game::removeEffect(int index) {
     if (index == effectsCount - 1) {
         delete effects[index];
         //effects[index] = NULL;
@@ -732,35 +687,28 @@ void Game::removeEffect(int index)
     }
 }
 
-int Game::getCharactersCount()
-{
+int Game::getCharactersCount() {
 	return charactersCount;
 }
-Character* Game::getCharacter(int index)
-{
+Character* Game::getCharacter(int index) {
 	return characters[index];
 }
 
-HGE* Game::getHge()
-{
+HGE* Game::getHge() {
 	return hge;
 }
-b2World* Game::getWorld()
-{
+b2World* Game::getWorld() {
 	return world;
 }
 
-hgeGUI* Game::getGUI()
-{
+hgeGUI* Game::getGUI() {
 	return gui;
 }
 
-int Game::getGroundLinesCount()
-{
+int Game::getGroundLinesCount() {
 	return groundLinesCount;
 }
-GroundLine* Game::getGroundLine(int index)
-{
+GroundLine* Game::getGroundLine(int index) {
 	if (index < groundLinesCount) {
 		return groundLines[index];
 	} else {
@@ -768,12 +716,10 @@ GroundLine* Game::getGroundLine(int index)
 	}
 }
 
-int Game::getMapAnimationsCount()
-{
+int Game::getMapAnimationsCount() {
 	return mapAnimationsCount;
 }
-MapAnimation* Game::getMapAnimation(int index)
-{
+MapAnimation* Game::getMapAnimation(int index) {
 	if (index < mapAnimationsCount) {
 		return mapAnimations[index];
 	} else {
@@ -781,12 +727,10 @@ MapAnimation* Game::getMapAnimation(int index)
 	}
 }
 
-int Game::getEffectPrototypesCount()
-{
+int Game::getEffectPrototypesCount() {
 	return effectPrototypesCount;
 }
-EffectPrototype* Game::getEffectPrototype(int index)
-{
+EffectPrototype* Game::getEffectPrototype(int index) {
 	if (index < effectPrototypesCount) {
 		return effectPrototypes[index];
 	} else {
@@ -794,12 +738,10 @@ EffectPrototype* Game::getEffectPrototype(int index)
 	}
 }
 
-int Game::getConditionPrototypesCount()
-{
+int Game::getConditionPrototypesCount() {
 	return conditionPrototypesCount;
 }
-ConditionPrototype* Game::getConditionPrototype(int index)
-{
+ConditionPrototype* Game::getConditionPrototype(int index) {
 	if (index < conditionPrototypesCount) {
 		return conditionPrototypes[index];
 	} else {
@@ -807,110 +749,86 @@ ConditionPrototype* Game::getConditionPrototype(int index)
 	}
 }
 
-float Game::worldX(float screenX)
-{
+float Game::worldX(float screenX) {
     return (screenX / (pixelsPerMeter * scaleFactor)) + cameraPos.x;
 }
-float Game::worldY(float screenY)
-{
+float Game::worldY(float screenY) {
     return (screenY / (pixelsPerMeter * scaleFactor)) + cameraPos.y;
 }
 
-float Game::screenX(float worldX)
-{
+float Game::screenX(float worldX) {
     return (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor);
 }
-float Game::screenY(float worldY)
-{
+float Game::screenY(float worldY) {
     return (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor);
 }
-b2Vec2 Game::screenPos(b2Vec2 worldPos)
-{
+b2Vec2 Game::screenPos(b2Vec2 worldPos) {
     return b2Vec2(this->screenX(worldPos.x), this->screenY(worldPos.y));
 }
 
-float Game::getScaleFactor()
-{
+float Game::getScaleFactor() {
     return scaleFactor;
 }
-float Game::getPixelsPerMeter()
-{
+float Game::getPixelsPerMeter() {
     return pixelsPerMeter;
 }
-float Game::getFullScale()
-{
+float Game::getFullScale() {
     return scaleFactor * pixelsPerMeter;
 }
 
-void Game::setScale(float scale)
-{
+void Game::setScale(float scale) {
 	scaleFactor = scale;
 }
-void Game::moveCamera(b2Vec2 diff)
-{
+void Game::moveCamera(b2Vec2 diff) {
 	cameraPos += diff;
 }
-void Game::setCamera(b2Vec2 pos)
-{
+void Game::setCamera(b2Vec2 pos) {
 	cameraPos = pos;
 }
-b2Vec2 Game::getCameraPos()
-{
+b2Vec2 Game::getCameraPos() {
 	return cameraPos;
 }
-float Game::getWorldMouseX()
-{
+float Game::getWorldMouseX() {
 	return worldMouseX;
 }
-float Game::getWorldMouseY()
-{
+float Game::getWorldMouseY() {
 	return worldMouseY;
 }
-void Game::moveScreen(b2Vec2 diff)
-{
+void Game::moveScreen(b2Vec2 diff) {
 	float scale = 1 / (scaleFactor * pixelsPerMeter);
 	diff *= scale;
 	cameraPos += diff;
 }
 
-b2Vec2 Game::getGravity()
-{
+b2Vec2 Game::getGravity() {
 	return gravity;
 }
 
-float Game::getTimeStep()
-{
+float Game::getTimeStep() {
 	return timeStep;
 }
 
-int Game::getScreenWidth()
-{
+int Game::getScreenWidth() {
 	return screenWidth;
 }
-int Game::getScreenHeight()
-{
+int Game::getScreenHeight() {
 	return screenHeight;
 }
-float Game::getMapWidth()
-{
+float Game::getMapWidth() {
 	return mapWidth;
 }
-float Game::getMapHeight()
-{
+float Game::getMapHeight() {
 	return mapHeight;
 }
 
-float Game::getWorldScreenWidth()
-{
+float Game::getWorldScreenWidth() {
 	return screenWidth / (scaleFactor * pixelsPerMeter);
 }
-float Game::getWorldScreenHeight()
-{
+float Game::getWorldScreenHeight() {
 	return screenHeight / (scaleFactor * pixelsPerMeter);
 }
 
-void Game::loadMap(char* fn)
-{
+void Game::loadMap(char* fn) {
 	//mapAnimations = new hgeAnimation*[256];
 
 	//animationsCount = 0;
@@ -987,8 +905,7 @@ void Game::loadMap(char* fn)
 
 }
 
-bool Game::loadEffectPrototypes(char* fileName)
-{
+bool Game::loadEffectPrototypes(char* fileName) {
 	printf("loading effect prototypes %s ... \n", fileName);
     TiXmlDocument doc(fileName);
     bool loadOkay = doc.LoadFile();
@@ -1017,8 +934,7 @@ bool Game::loadEffectPrototypes(char* fileName)
 
 }
 
-bool Game::loadConditionPrototypes(char* fileName)
-{
+bool Game::loadConditionPrototypes(char* fileName) {
 	printf("loading condition prototypes %s ... \n", fileName);
     TiXmlDocument doc(fileName);
     bool loadOkay = doc.LoadFile();
@@ -1047,8 +963,7 @@ bool Game::loadConditionPrototypes(char* fileName)
 
 }
 
-void Game::updateCounter(int index, float value)
-{
+void Game::updateCounter(int index, float value) {
     counters[index] += value;
 }
 
@@ -1078,8 +993,7 @@ b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
 	return ret;
 }
 
-float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, float pointY)
-{
+float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, float pointY) {
     float diffX = x2 - x1;
     float diffY = y2 - y1;
     if ((diffX == 0) && (diffY == 0)) {
@@ -1108,13 +1022,11 @@ float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, fl
     return sqrt(diffX * diffX + diffY * diffY);
 }
 
-float frand(float from, float to)
-{
+float frand(float from, float to) {
     return from + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(to-from)));
 }
 
-char* copyString(const char* original)
-{
+char* copyString(const char* original) {
     char* newString = new char[256];
     int i = 0;
     while (i < 256 && original[i] != '\0') {
@@ -1126,8 +1038,7 @@ char* copyString(const char* original)
     return newString;
 }
 
-bool compareStrings(char* first, char* second)
-{
+bool compareStrings(char* first, char* second) {
     int i = 0;
     while (i < 256) {
         if ( first[i] != second[i] )

@@ -19,9 +19,11 @@ class EffectAction;
 class EffectPrototype;
 class Effect;
 class Game;
+class hgeGUIObject;
 class hgeGUIMenuItem;
+class hgeGUIEditableLabel;
 
-typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
+typedef bool (*guiCallback)(hgeGUIObject* sender);
 
 #include <string>
 #include <time.h>
@@ -60,5 +62,6 @@ typedef bool (*menuCallback)(hgeGUIMenuItem* sender);
 
 #include <GUIWindow.h>
 #include <hgeGUIMenuItem.h>
+#include <hgeGUIEditableLabel.h>
 
 #endif // SODLIB_H_INCLUDED

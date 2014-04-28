@@ -46,11 +46,12 @@ const int EFFECT_PARAM_Y        = 10;
 const int EFFECT_PARAM_XSPEED   = 11;
 const int EFFECT_PARAM_YSPEED   = 12;
 const int EFFECT_PARAM_SCALE    = 13;
+const int EFFECT_PARAM_DT       = 14;
 
-const int EFFECT_PARAMS_COUNT = 14;
+const int EFFECT_PARAMS_COUNT = 15;
 
 static const char* EFFECT_PARAM_NAMES[EFFECT_PARAMS_COUNT] = {
-    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale"
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "dt"
 };
 
 
@@ -61,6 +62,7 @@ class EffectPrototype
 		virtual ~EffectPrototype();
 
 		void loadFromXml(TiXmlElement* xml);
+		void saveToXml(TiXmlElement* elem);
 
 		Effect* spawnEffect(Character* character);
 		Effect* spawnEffect(Effect* effect);
@@ -72,10 +74,24 @@ class EffectPrototype
         float evalStartExpression(int ident);
 		float evalExpression(int ident);
 		bool getExpressionExists(int ident);
+		void setExpressionExists(int ident, bool exists);
+		const char* getFunction(int ident);
+		const char* getStartFunction(int ident);
+		void setFunction(int ident, const char* expression);
+		void setStartFunction(int ident, const char* expression);
 
 		void setParam(int index, float value);
+		void setName(const char* name);
+		char* getName();
+
+		const char* getAnimation(int index);
+		int getAnimationsCount();
+
+		int getBlendMode();
 	protected:
 	    Game* game;
+
+	    char* name;
 
         mu::Parser* expressionParsers;
         mu::Parser* startExpressionParsers;

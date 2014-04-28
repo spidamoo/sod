@@ -2,15 +2,13 @@
 
 
 
-CharacterActionEffect::CharacterActionEffect(float type, float param)
-{
+CharacterActionEffect::CharacterActionEffect(float type, float param) {
 	this->type = type;
 	this->param = param;
 	this->param2 = 0;
 }
 
-CharacterActionEffect::CharacterActionEffect(TiXmlElement* elem)
-{
+CharacterActionEffect::CharacterActionEffect(TiXmlElement* elem) {
 	printf("effect\n");
 
 	type = atof(elem->Attribute("type"));
@@ -18,25 +16,22 @@ CharacterActionEffect::CharacterActionEffect(TiXmlElement* elem)
 	if (elem->Attribute("param2")) param2 = atof(elem->Attribute("param2"));
 }
 
-CharacterActionEffect::~CharacterActionEffect()
-{
+CharacterActionEffect::~CharacterActionEffect() {
 	//dtor
 }
 
-void CharacterActionEffect::save(TiXmlElement* elem)
-{
+void CharacterActionEffect::save(TiXmlElement* elem) {
 	elem->SetAttribute("type", type);
 	elem->SetDoubleAttribute("param", param);
 	elem->SetDoubleAttribute("param2", param2);
 }
 
-void CharacterActionEffect::perform(Game* game, Character* character)
-{
+void CharacterActionEffect::perform(Game* game, Character* character) {
 	switch (type) {
 		case ACTIONEFFECT_TYPE_TURN:
 			character->turn();
 			break;
-		case ACTIONEFFECT_TYPE_CHANGEANIM:
+		case ACTIONEFFECT_TYPE_CHANGEMOVE:
 			character->setAnim(param);
 			break;
 		case ACTIONEFFECT_TYPE_RUN:
@@ -50,4 +45,23 @@ void CharacterActionEffect::perform(Game* game, Character* character)
             //printf("effect spawn\n");
             break;
 	}
+}
+
+int CharacterActionEffect::getType() {
+    return type;
+}
+void CharacterActionEffect::setType(int _type) {
+    type = _type;
+}
+
+float CharacterActionEffect::getParam(int index) {
+    if (index == 2)
+        return param2;
+    return param;
+}
+void CharacterActionEffect::setParam(float _param, int index) {
+    if (index == 2)
+        param2 = _param;
+    else
+        param = _param;
 }
