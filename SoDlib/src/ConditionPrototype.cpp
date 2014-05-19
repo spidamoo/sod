@@ -5,6 +5,8 @@ ConditionPrototype::ConditionPrototype()
     type = CONDITION_TYPE_DAMAGE;
 
     params = new float[CONDITION_PROTOTYPE_PARAMS_COUNT];
+
+    name = "<condition>";
 }
 
 ConditionPrototype::~ConditionPrototype()
@@ -55,6 +57,10 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml)
 	    type = CONDITION_TYPE_DAMAGE;
 	}
 
+	if (xml->Attribute("name")) {
+        name = copyString(xml->Attribute("name"));
+	}
+
 	printf(" done\n");
 
 }
@@ -84,6 +90,14 @@ float ConditionPrototype::getDuration()
 float ConditionPrototype::getInterval()
 {
     return intervalParser.Eval();
+}
+char* ConditionPrototype::getName() {
+    return name;
+}
+void ConditionPrototype::setName(const char* _name) {
+    if (name)
+        delete name;
+    name = copyString(_name);
 }
 
 

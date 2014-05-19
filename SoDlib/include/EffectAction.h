@@ -28,11 +28,16 @@ class EffectAction {
         int getTargets();
         int getType(); int getParam();
         int getMaxInteractions();
+
+        void setType(int type); void setParam(int param);
+        void setInterval(float interval); void setStartTime(float startTime);
+        void setCondition(int condition);
+        void setTargets(int targets); void setTarget(int target, bool active);
+        void setMaxInteractions(int maxInteractions);
     protected:
         int type; int param;
-        float interval;
+        float interval; float startTime;
         int condition;
-        float startTime;
         int targets;
         int maxInteractions;
     private:

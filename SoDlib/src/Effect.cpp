@@ -211,10 +211,10 @@ bool Effect::characterCrosses(Character* character)
     switch ( prototype->getAreaType() ) {
         case EFFECT_AREA_TYPE_POINT:
             if (
-                abs( position.x - character->getX() ) < character->getHalfWidth()
-                && abs( position.y - character->getY() ) < character->getHalfHeight()
+                fabs( position.x - character->getX() ) < character->getHalfWidth()
+                && fabs( position.y - character->getY() ) < character->getHalfHeight()
             ) {
-//                printf("is in characters box\n");
+//                printf("%f - %f < %f and %f - %f < %f\n", position.x, character->getX(), character->getHalfWidth(), position.y, character->getY(), character->getHalfHeight());
                 return true;
             }
             break;

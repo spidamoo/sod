@@ -16,9 +16,11 @@ class CharacterAction
 
 		int getEffectsCount();
 		CharacterActionEffect* getEffect(int index);
+		void addEffect(), removeEffect(int index);
 
 		int getCausesCount();
 		CharacterActionCause* getCause(int index);
+		void addCause(), removeCause(int index);
 	protected:
 		int causesCount;
 		CharacterActionCause** causes;

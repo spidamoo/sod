@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<character bodies="2" hotspots="0" height="2" width="0.5" moves="1">
+    <body animation="E:\Over Fox\character editor\Release\1\Layer_4.png.xml" x="12" y="142" angle="7.53079e-039" />
+    <body animation="E:\Over Fox\character editor\Release\1\Layer_10.png.xml" x="14" y="137" angle="7.54483e-039" />
+    <move frames="1" angles="1" name="&lt;title&gt;">
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="0.0499992" y="-0.175" scale_x="1" scale_y="1" angle="7.53079e-039" show="1" layer="0" />
+            <body x="0.200001" y="0.575" scale_x="1" scale_y="1" angle="7.54483e-039" show="1" layer="1" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="0" />
+    </move>
+</character>

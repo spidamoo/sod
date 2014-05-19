@@ -1,7 +1,10 @@
 #include "CharacterAction.h"
 
 CharacterAction::CharacterAction() {
-	//ctor
+    causesCount = 0;
+	causes = new CharacterActionCause*[causesCount];
+	effectsCount = 0;
+	effects = new CharacterActionEffect*[effectsCount];
 }
 
 CharacterAction::CharacterAction(TiXmlElement* elem) {
@@ -29,7 +32,14 @@ CharacterAction::CharacterAction(TiXmlElement* elem) {
 }
 
 CharacterAction::~CharacterAction() {
-	//dtor
+    for (int i = 0; i < causesCount; i++) {
+        delete causes[i];
+    }
+    delete causes;
+    for (int i = 0; i < effectsCount; i++) {
+        delete effects[i];
+    }
+    delete effects;
 }
 
 void CharacterAction::save(TiXmlElement* elem) {
@@ -70,21 +80,56 @@ bool CharacterAction::take(Game* game, Character* character) {
 int CharacterAction::getEffectsCount() {
     return effectsCount;
 }
-
 CharacterActionEffect* CharacterAction::getEffect(int index) {
     if (index >= effectsCount)
         return NULL;
 
     return effects[index];
 }
+void CharacterAction::addEffect() {
+    CharacterActionEffect** _effects = new CharacterActionEffect*[effectsCount + 1];
+    for (int i = 0; i < effectsCount; i++) {
+        _effects[i] = effects[i];
+    }
+    _effects[effectsCount] = new CharacterActionEffect(ACTIONEFFECT_TYPE_TURN, 0.0f);
+
+    delete effects;
+    effects = _effects;
+    effectsCount++;
+}
+void CharacterAction::removeEffect(int index) {
+    delete effects[index];
+    for (int i = index; i < effectsCount - 1; i++) {
+        effects[i] = effects[i + 1];
+    }
+    effectsCount--;
+}
 
 int CharacterAction::getCausesCount() {
     return causesCount;
 }
-
 CharacterActionCause* CharacterAction::getCause(int index) {
     if (index >= causesCount)
         return NULL;
 
     return causes[index];
 }
+void CharacterAction::addCause() {
+    CharacterActionCause** _causes = new CharacterActionCause*[causesCount + 1];
+    for (int i = 0; i < causesCount; i++) {
+        _causes[i] = causes[i];
+    }
+    _causes[causesCount] = new CharacterActionCause(ACTIONCAUSE_TYPE_NONE, 0.0f);
+
+    delete causes;
+    causes = _causes;
+    causesCount++;
+}
+void CharacterAction::removeCause(int index) {
+    delete causes[index];
+    for (int i = index; i < causesCount - 1; i++) {
+        causes[i] = causes[i + 1];
+    }
+    causesCount--;
+}
+

@@ -68,8 +68,10 @@ class EffectPrototype
 		Effect* spawnEffect(Effect* effect);
 
 		int getPositionType(), getAreaType(), getHotSpotIndex();
+		void setPositionType(int type), setAreaType(int type);
 
 		int getActionsCount(); EffectAction* getAction(int index);
+		void addAction(), removeAction(int index);
 
         float evalStartExpression(int ident);
 		float evalExpression(int ident);
@@ -86,8 +88,9 @@ class EffectPrototype
 
 		const char* getAnimation(int index);
 		int getAnimationsCount();
+		void addAnimation(const char* filename), removeAnimation(int index);
 
-		int getBlendMode();
+		int getBlendMode(); void setBlendMode(int mode);
 	protected:
 	    Game* game;
 

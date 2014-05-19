@@ -24,6 +24,8 @@ class ConditionPrototype
 
         void setParam(int index, float value);
         void setParamsFromCharacter(Character* character);
+        void setName(const char* name);
+		char* getName();
 
         int getType();
         float getValue(), getDuration(), getInterval();
@@ -33,6 +35,7 @@ class ConditionPrototype
         int type;
         float* params;
         mu::Parser valueParser, durationParser, intervalParser;
+        char* name;
     private:
 };
 

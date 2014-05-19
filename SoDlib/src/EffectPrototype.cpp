@@ -33,7 +33,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
             expressionParsers[i].DefineFun("rand", frand);
 
             expressionExists[i] = true;
-            printf("%s formula is %s\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(formulaAttribName));
+            printf("%s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(formulaAttribName));
         } else {
             expressionParsers[i].SetExpr("0");
             expressionExists[i] = false;
@@ -45,7 +45,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
         if ( xml->Attribute(startFormulaAttribName) ) {
             startExpressionParsers[i].SetExpr( xml->Attribute(startFormulaAttribName) );
             startExpressionParsers[i].DefineFun("rand", frand);
-            printf("start %s formula is %s\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(startFormulaAttribName));
+            printf("start %s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(startFormulaAttribName));
         } else {
             startExpressionParsers[i].SetExpr("0");
         }
@@ -121,13 +121,17 @@ void EffectPrototype::saveToXml(TiXmlElement* xml) {
         sprintf( formulaAttribName, "%s_formula", EFFECT_FUNCTION_NAMES[i] );
 
         if (expressionExists[i]) {
-            xml->SetAttribute(formulaAttribName, getFunction(i));
+            char* f = copyString(getFunction(i));
+            xml->SetAttribute(formulaAttribName, f);
+            delete f;
         }
 
         char startFormulaAttribName[30];
         sprintf( startFormulaAttribName, "start_%s_formula", EFFECT_FUNCTION_NAMES[i] );
 
-        xml->SetAttribute(startFormulaAttribName, getStartFunction(i));
+        char* sf = copyString(getStartFunction(i));
+        xml->SetAttribute(startFormulaAttribName, sf);
+        delete sf;
     }
 
     xml->SetAttribute("name", name);
@@ -178,11 +182,39 @@ int EffectPrototype::getHotSpotIndex() {
     return hotSpotIndex;
 }
 
+void EffectPrototype::setPositionType(int _type) {
+    positionType = _type;
+}
+void EffectPrototype::setAreaType(int _type) {
+    areaType = _type;
+}
+
 int EffectPrototype::getActionsCount() {
     return actionsCount;
 }
 EffectAction* EffectPrototype::getAction(int index) {
     return actions[index];
+}
+void EffectPrototype::addAction() {
+    EffectAction** _actions = new EffectAction*[actionsCount + 1];
+    for (int i = 0; i < actionsCount; i++) {
+        _actions[i] = actions[i];
+    }
+
+    delete actions;
+    actions = _actions;
+
+    actions[actionsCount] = new EffectAction();
+    actionsCount++;
+}
+void EffectPrototype::removeAction(int index) {
+    delete actions[index];
+
+    for (int i = index; i < actionsCount - 1; i++) {
+        actions[i] = actions[i + 1];
+    }
+
+    actionsCount--;
 }
 
 float EffectPrototype::evalExpression(int ident) {
@@ -220,6 +252,7 @@ void EffectPrototype::setName(const char* _name) {
 const char* EffectPrototype::getFunction(int ident) {
     if (!expressionExists[ident])
         return NULL;
+    printf("<%s>\n", expressionParsers[ident].GetExpr().data());
     return expressionParsers[ident].GetExpr().data();
 }
 const char* EffectPrototype::getStartFunction(int ident) {
@@ -239,6 +272,27 @@ const char* EffectPrototype::getAnimation(int index) {
 int EffectPrototype::getAnimationsCount() {
     return animationsCount;
 }
+void EffectPrototype::addAnimation(const char* filename) {
+    char** _animations = new char*[animationsCount + 1];
+    for (int i = 0; i < animationsCount; i++) {
+        _animations[i] = animations[i];
+    }
+    _animations[animationsCount] = copyString(filename);
+    delete animations;
+    animations = _animations;
+    animationsCount++;
+
+}
+void EffectPrototype::removeAnimation(int index) {
+    delete animations[index];
+    for (int i = index; i < animationsCount - 1; i++) {
+        animations[i] = animations[i + 1];
+    }
+    animationsCount--;
+}
 int EffectPrototype::getBlendMode() {
     return blendMode;
+}
+void EffectPrototype::setBlendMode(int mode) {
+    blendMode = mode;
 }

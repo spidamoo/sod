@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1398626562 source:d:\work\my\sod\effecteditor\main.cpp
+1400525044 source:d:\work\my\sod\effecteditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -333,19 +333,19 @@
 	<stdio.h>
 	<string.h>
 
-1396800264 d:\work\my\sod\sodlib\include\game.h
+1400522925 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\conditionprototype.h
+1400522996 d:\work\my\sod\sodlib\include\conditionprototype.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\condition.h
 	<SoDlib.h>
 
-1398624612 d:\work\my\sod\sodlib\include\effectaction.h
+1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1398623915 d:\work\my\sod\sodlib\include\effectprototype.h
+1400524712 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\effect.h
@@ -357,7 +357,7 @@
 1397805132 d:\work\my\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1397130343 d:\work\my\sod\sodlib\include\characteraction.h
+1400438363 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\characterhotspot.h
@@ -393,4 +393,9 @@
 
 1398288343 d:\work\my\sod\sodlib\include\hgeguieditablelabel.h
 	<SoDlib.h>
+
+1397730036 d:\work\my\sod\sodlib\include\hgegui.h
+	"hge.h"
+	"hgesprite.h"
+	"hgerect.h"
 

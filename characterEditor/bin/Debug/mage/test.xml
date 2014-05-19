@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<character bodies="1" hotspots="0" height="2" width="0.5" moves="1">
+    <body animation="D:\work\my\sod\characterEditor\bin\Debug\mage\body.png.xml" x="1" y="83" angle="1.23062e-038" />
+    <move frames="1" angles="1" name="12">
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="0.5" y="-0.275" scale_x="1" scale_y="1" angle="1.23062e-038" show="1" layer="0" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="0" />
+    </move>
+</character>

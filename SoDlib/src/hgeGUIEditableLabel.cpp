@@ -70,6 +70,7 @@ void hgeGUIEditableLabel::Leave() {
 
 void hgeGUIEditableLabel::Focus(bool bFocused) {
     isFocused = bFocused;
+    isEdited &= bFocused;
 }
 
 void hgeGUIEditableLabel::MouseOver(bool bOver) {

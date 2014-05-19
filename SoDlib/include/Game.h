@@ -91,10 +91,10 @@ class Game
 		void 	DrawTransform (const b2Transform &xf);
 
 		hgeAnimation* loadAnimation(char * fn); hgeAnimation* cloneAnimation(hgeAnimation* source);
-		HTEXTURE loadTexture(char* fn);
-		Character* loadPlayerCharacter(char * fn, b2Vec2 origin);
-		Character* loadNonPlayerCharacter(char * fn, b2Vec2 origin);
-		b2Fixture* loadFixture(b2Body* body, TiXmlElement* elem);
+		HTEXTURE      loadTexture(char* fn);
+		Character*    loadPlayerCharacter(char * fn, b2Vec2 origin);
+		Character*    loadNonPlayerCharacter(char * fn, b2Vec2 origin);
+		b2Fixture*    loadFixture(b2Body* body, TiXmlElement* elem);
 
 		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA); void addPlatform(Platform* newPlatform);
 		void addEffect(Effect* newEffect);
@@ -201,5 +201,6 @@ float frand(float from, float to);
 char* copyString(const char* original);
 bool compareStrings(char* first, char* second);
 int countSpaces(const char* str);
+char* getFileName(const char* path);
 #endif // GAME_H
 

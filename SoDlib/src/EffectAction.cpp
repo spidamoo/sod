@@ -1,7 +1,13 @@
 #include "EffectAction.h"
 
 EffectAction::EffectAction() {
-    //ctor
+    type = EFFECTACTION_TYPE_DESTRUCT;
+    param = 0;
+    interval = 0.0f;
+    startTime = 0.0f;
+    condition = EFFECTACTION_CONDITION_NONE;
+    targets = 0;
+    maxInteractions = 1;
 }
 EffectAction::~EffectAction() {
     //dtor
@@ -80,7 +86,36 @@ int EffectAction::getParam() {
     return param;
 }
 
-int EffectAction::getMaxInteractions()
-{
+int EffectAction::getMaxInteractions() {
     return maxInteractions;
+}
+
+void EffectAction::setType(int _type) {
+    type = _type;
+}
+void EffectAction::setParam(int _param) {
+    param = _param;
+}
+void EffectAction::setInterval(float _interval) {
+    interval = _interval;
+}
+void EffectAction::setStartTime(float _startTime) {
+    startTime = _startTime;
+}
+void EffectAction::setCondition(int _condition) {
+    condition = _condition;
+}
+void EffectAction::setTargets(int _targets) {
+    targets = _targets;
+}
+void EffectAction::setTarget(int _target, bool _active) {
+    if (_active) {
+        targets = (targets | _target);
+    }
+    else {
+        targets = (targets & ~_target);
+    }
+}
+void EffectAction::setMaxInteractions(int _maxInteractions) {
+    maxInteractions = _maxInteractions;
 }

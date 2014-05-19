@@ -2,3 +2,6 @@
 *.exe
 *.log
 *.layout
+*.dll
+*.zip
+*.rar

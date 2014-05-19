@@ -267,6 +267,15 @@ void Character::draw(bool schematicMode) {
 			halfHeight * game->getFullScale(),
 			0, 0xFFFFFFFF, 0
 		);
+		for (int i = 0; i < hotSpotsCount; i++) {
+            game->drawRect(
+                game->screenX(getHotSpotX(i)),
+                game->screenY(getHotSpotY(i)),
+                2,
+                2,
+                0, 0xFF00FF00, 0xAA00FF00
+            );
+		}
 	} else {
 
 	}

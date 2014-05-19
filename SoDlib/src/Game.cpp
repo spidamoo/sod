@@ -691,7 +691,12 @@ int Game::getCharactersCount() {
 	return charactersCount;
 }
 Character* Game::getCharacter(int index) {
-	return characters[index];
+    if (index > -1 && index < charactersCount) {
+        return characters[index];
+    }
+    else {
+		return NULL;
+	}
 }
 
 HGE* Game::getHge() {
@@ -709,7 +714,7 @@ int Game::getGroundLinesCount() {
 	return groundLinesCount;
 }
 GroundLine* Game::getGroundLine(int index) {
-	if (index < groundLinesCount) {
+	if (index > -1 && index < groundLinesCount) {
 		return groundLines[index];
 	} else {
 		return NULL;
@@ -720,7 +725,7 @@ int Game::getMapAnimationsCount() {
 	return mapAnimationsCount;
 }
 MapAnimation* Game::getMapAnimation(int index) {
-	if (index < mapAnimationsCount) {
+	if (index > -1 && index < mapAnimationsCount) {
 		return mapAnimations[index];
 	} else {
 		return NULL;
@@ -731,7 +736,7 @@ int Game::getEffectPrototypesCount() {
 	return effectPrototypesCount;
 }
 EffectPrototype* Game::getEffectPrototype(int index) {
-	if (index < effectPrototypesCount) {
+	if (index > -1 && index < effectPrototypesCount) {
 		return effectPrototypes[index];
 	} else {
 		return NULL;
@@ -742,7 +747,7 @@ int Game::getConditionPrototypesCount() {
 	return conditionPrototypesCount;
 }
 ConditionPrototype* Game::getConditionPrototype(int index) {
-	if (index < conditionPrototypesCount) {
+	if (index > -1 && index < conditionPrototypesCount) {
 		return conditionPrototypes[index];
 	} else {
 		return NULL;
@@ -1023,15 +1028,18 @@ float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, fl
 }
 
 float frand(float from, float to) {
-    return from + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(to-from)));
+    return from + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX / (to-from)));
 }
 
 char* copyString(const char* original) {
     char* newString = new char[256];
     int i = 0;
-    while (i < 256 && original[i] != '\0') {
+    while (i < 255 && original[i] != '\0') {
         newString[i] = original[i];
         i++;
+    }
+    if (original[i - 1] == ' ') {
+        i--;
     }
     newString[i] = '\0';
 
@@ -1058,4 +1066,25 @@ int countSpaces(const char* str) {
         i++;
     }
     return i;
+}
+
+char* getFileName(const char* path) {
+    char* fileName = new char[256];
+    int i = 0;
+    int start = 0; int finish = 255;
+    while (i < 255 && path[i] != '\0') {
+        if (path[i] == '\\' || path[i] == '/') {
+            start = i + 1;
+        }
+        if (path[i] == '.') {
+            finish = i;
+        }
+        i++;
+    }
+    for (int i = 0; i < finish - start; i++) {
+        fileName[i] = path[start + i];
+    }
+    fileName[i] = '\0';
+
+    return fileName;
 }
