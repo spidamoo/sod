@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/mapEditor" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="bin/Debug/" />
+				<Option output="../working folder/mapEditor_debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../working folder/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -25,7 +25,8 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/mapEditor" prefix_auto="1" extension_auto="1" />
+				<Option output="../working folder/mapEditor" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../working folder/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -45,11 +46,17 @@
 			<Add directory="../hge181/include" />
 		</Compiler>
 		<Linker>
+			<Add library="comdlg32" />
 			<Add library="..\hge181\lib\gcc\libhge.a" />
 			<Add library="..\Box2D\libBox2D.a" />
 			<Add library="..\SoDlib\libSoDlib.a" />
 		</Linker>
+		<Unit filename="ico over foxME64r.ico" />
 		<Unit filename="main.cpp" />
+		<Unit filename="resource.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

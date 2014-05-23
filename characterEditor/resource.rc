@@ -1,0 +1,6 @@
+#ifndef RESOURCE_RC_INCLUDED
+#define RESOURCE_RC_INCLUDED
+#include "resource.h"
+CE_ICON ICON "ico over foxCEr.ico"
+
+#endif//RESOURCE_RC_INCLUDED

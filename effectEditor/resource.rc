@@ -1,0 +1,6 @@
+#ifndef RESOURCE_RC_INCLUDED
+#define RESOURCE_RC_INCLUDED
+#include "resource.h"
+EE_ICON ICON "ico over foxEEr.ico"
+
+#endif//RESOURCE_RC_INCLUDED

@@ -14,8 +14,7 @@ ConditionPrototype::~ConditionPrototype()
     //dtor
 }
 
-void ConditionPrototype::loadFromXml(TiXmlElement* xml)
-{
+void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
     printf("loading condition ");
     if ( xml->Attribute("value_formula") ) {
         valueParser.SetExpr( xml->Attribute("value_formula") );
@@ -64,6 +63,22 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml)
 	printf(" done\n");
 
 }
+void ConditionPrototype::saveToXml(TiXmlElement* xml) {
+    char* f = copyString( getValueFormula() );
+    xml->SetAttribute("value_formula", f);
+    delete f;
+
+    f = copyString( getDurationFormula() );
+    xml->SetAttribute("duration_formula", f);
+    delete f;
+
+    f = copyString( getIntervalFormula() );
+    xml->SetAttribute("interval_formula", f);
+    delete f;
+
+    xml->SetAttribute("type", type);
+    xml->SetAttribute("name", name);
+}
 
 void ConditionPrototype::setParam(int index, float value)
 {
@@ -74,23 +89,42 @@ void ConditionPrototype::setParamsFromCharacter(Character* character)
     setParam( CONDITION_PROTOTYPE_PARAM_DAMAGE, character->getDamage() );
 }
 
-int ConditionPrototype::getType()
-{
+int ConditionPrototype::getType() {
     return type;
 }
+void ConditionPrototype::setType(int _type) {
+    type = _type;
+}
 
-float ConditionPrototype::getValue()
-{
+float ConditionPrototype::getValue() {
     return valueParser.Eval();
 }
-float ConditionPrototype::getDuration()
-{
+float ConditionPrototype::getDuration() {
     return durationParser.Eval();
 }
-float ConditionPrototype::getInterval()
-{
+float ConditionPrototype::getInterval() {
     return intervalParser.Eval();
 }
+const char* ConditionPrototype::getValueFormula() {
+    return valueParser.GetExpr().data();
+}
+const char* ConditionPrototype::getDurationFormula() {
+    return durationParser.GetExpr().data();
+}
+const char* ConditionPrototype::getIntervalFormula() {
+    return intervalParser.GetExpr().data();
+}
+
+void ConditionPrototype::setValueFormula(char* formula) {
+    valueParser.SetExpr( formula );
+}
+void ConditionPrototype::setDurationFormula(char* formula) {
+    durationParser.SetExpr( formula );
+}
+void ConditionPrototype::setIntervalFormula(char* formula) {
+    intervalParser.SetExpr( formula );
+}
+
 char* ConditionPrototype::getName() {
     return name;
 }

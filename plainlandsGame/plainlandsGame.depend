@@ -1458,13 +1458,14 @@
 1385605118 d:\work\sod\sodlib\include\condition.h
 	<SoDlib.h>
 
-1396800313 source:d:\work\my\sod\plainlandsgame\main.cpp
+1400711605 source:d:\work\my\sod\plainlandsgame\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
 	<hgeanim.h>
 	<Box2D/Box2D.h>
 	<SoDlib.h>
+	"resource.h"
 
 1396800288 d:\work\my\sod\hge181\include\hge.h
 	<windows.h>
@@ -1790,10 +1791,10 @@
 	<stdio.h>
 	<string.h>
 
-1400346723 d:\work\my\sod\sodlib\include\game.h
+1400870836 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\conditionprototype.h
+1400622720 d:\work\my\sod\sodlib\include\conditionprototype.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\condition.h
@@ -1802,10 +1803,10 @@
 1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1400015454 d:\work\my\sod\sodlib\include\effectprototype.h
+1400538047 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\effect.h
+1400533750 d:\work\my\sod\sodlib\include\effect.h
 	<SoDlib.h>
 
 1397717394 d:\work\my\sod\sodlib\include\characteractioncause.h
@@ -1814,13 +1815,13 @@
 1397805132 d:\work\my\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1400435083 d:\work\my\sod\sodlib\include\characteraction.h
+1400438363 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\characterhotspot.h
+1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1397406927 d:\work\my\sod\sodlib\include\character.h
+1400534014 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
@@ -1835,7 +1836,7 @@
 1396800264 d:\work\my\sod\sodlib\include\platform.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\mapanimation.h
+1400871091 d:\work\my\sod\sodlib\include\mapanimation.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\debugdraw.h
@@ -1855,4 +1856,9 @@
 	"hge.h"
 	"hgesprite.h"
 	"hgerect.h"
+
+1400711538 d:\work\my\sod\plainlandsgame\resource.h
+
+1400711545 source:d:\work\my\sod\plainlandsgame\resource.rc
+	"resource.h"
 

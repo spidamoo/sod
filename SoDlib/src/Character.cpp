@@ -447,16 +447,16 @@ void Character::update(float dt) {
 		}
 	}
 
-	if (position.x > game->getMapWidth()) {
-        position.x = game->getMapWidth();
+	if (position.x > game->getHalfMapWidth()) {
+        position.x = game->getHalfMapWidth();
         speed.x = 0;
 	}
-	if (position.x < 0) {
-        position.x = 0;
+	if (position.x < -game->getHalfMapWidth()) {
+        position.x = -game->getHalfMapWidth();
         speed.x = 0;
 	}
-	if (position.y > game->getMapHeight()) {
-        position.y = game->getMapHeight();
+	if (position.y > game->getHalfMapHeight()) {
+        position.y = game->getHalfMapHeight();
         speed.y = 0;
 	}
 //	if (position.y < 0) {
@@ -584,6 +584,14 @@ float Character::getHotSpotX(int index) {
 }
 float Character::getHotSpotY(int index) {
     return position.y + animatedValue( frameHotSpotY[currentMove][currentFrame][index], frameHotSpotY[currentMove][nextFrame][index] );
+}
+int Character::getHotSpotIndex(char* name) {
+    for (int i = 0; i < hotSpotsCount; i++) {
+        if ( compareStrings( name, hotSpots[i]->getName() ) ) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 float Character::getAnimTime() {

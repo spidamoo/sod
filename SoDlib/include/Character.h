@@ -38,7 +38,7 @@ class Character
 		float getHalfWidth();
 		int getOnGround();
 
-		float getHotSpotX(int index), getHotSpotY(int index);
+		float getHotSpotX(int index), getHotSpotY(int index); int getHotSpotIndex(char* name);
 
 		float getAnimTime();
 

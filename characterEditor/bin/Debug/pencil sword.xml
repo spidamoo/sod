@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<character bodies="2" hotspots="0" height="2" width="0.5" moves="1">
+    <body animation="D:\work\my\sod\plainlandsGame\bin\Debug\pencil man\forearm.png.xml" name="forearm.png" x="6" y="81" angle="4.68388e-039" />
+    <body animation="D:\work\my\sod\plainlandsGame\bin\Debug\pencil man\sword.png.xml" name="sword.png" x="1" y="89" angle="4.69119e-039" />
+    <move frames="1" angles="8" name="&lt;title&gt;">
+        <body rotating="1" />
+        <body rotating="1" />
+        <frame length="0.5">
+            <body x="0.0249996" y="0.15" scale_x="1" scale_y="1" angle="4.68388e-039" show="1" layer="0" />
+            <body x="0.25" y="-1.925" scale_x="1" scale_y="1" angle="4.69119e-039" show="1" layer="1" />
+        </frame>
+        <angle value="0">
+            <body x="0.183318" y="0.440491" scale_x="1" scale_y="1" angle="2.71252" show="1" />
+            <body x="1.73351" y="0.884855" scale_x="1" scale_y="1" angle="1.44548" show="1" />
+        </angle>
+        <angle value="-0.810709">
+            <body x="0.420177" y="0.27706" scale_x="1" scale_y="1" angle="1.87751" show="1" />
+            <body x="1.72244" y="-0.42543" scale_x="1" scale_y="1" angle="0.665289" show="1" />
+        </angle>
+        <angle value="-1.55764">
+            <body x="0.541939" y="0.0148993" scale_x="1" scale_y="1" angle="1.14748" show="1" />
+            <body x="1.31115" y="-1.46115" scale_x="1" scale_y="1" angle="0.0327902" show="1" />
+        </angle>
+        <angle value="-2.33398">
+            <body x="0.519758" y="-0.475404" scale_x="1" scale_y="1" angle="0.433758" show="1" />
+            <body x="0.125337" y="-2.03374" scale_x="1" scale_y="1" angle="-0.7541" show="1" />
+        </angle>
+        <angle value="-3.13474">
+            <body x="0.0891857" y="-0.701026" scale_x="1" scale_y="1" angle="-0.358771" show="1" />
+            <body x="-1.42068" y="-1.26215" scale_x="1" scale_y="1" angle="-1.57791" show="1" />
+        </angle>
+        <angle value="2.44465">
+            <body x="-0.467062" y="-0.545499" scale_x="1" scale_y="1" angle="-1.41951" show="1" />
+            <body x="-1.74993" y="0.380401" scale_x="1" scale_y="1" angle="-2.62891" show="1" />
+        </angle>
+        <angle value="1.55141">
+            <body x="-0.727335" y="0.00609493" scale_x="1" scale_y="1" angle="-1.97823" show="1" />
+            <body x="-1.36674" y="1.56034" scale_x="1" scale_y="1" angle="3.12098" show="1" />
+        </angle>
+        <angle value="0.835131">
+            <body x="-0.535935" y="0.520155" scale_x="1" scale_y="1" angle="-2.77526" show="1" />
+            <body x="0.282743" y="1.85756" scale_x="1" scale_y="1" angle="2.17876" show="1" />
+        </angle>
+        <actions count="0" />
+    </move>
+</character>

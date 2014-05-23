@@ -1,9 +1,22 @@
 #include "Effect.h"
 
-Effect::Effect(Game* game, EffectPrototype* prototype)
-{
+Effect::Effect(Game* game, EffectPrototype* prototype) {
 	this->game = game;
 	this->prototype = prototype;
+
+    if (prototype->getAnimationsCount() > 0) {
+        setAnimation(
+            game->loadAnimation(
+                (char*)prototype->getAnimation(
+                    game->getHge()->Random_Int(1, prototype->getAnimationsCount()) - 1
+                )
+            ),
+            prototype->getBlendMode()
+        );
+    }
+    else {
+        animation = NULL;
+    }
 
 	actionTimes = new float[prototype->getActionsCount()];
 	actionInteractions = new int*[prototype->getActionsCount()];
@@ -22,23 +35,19 @@ Effect::Effect(Game* game, EffectPrototype* prototype)
     owner = NULL;
 }
 
-Effect::~Effect()
-{
+Effect::~Effect() {
 	delete animation;
 	delete actionTimes;
 }
 
-void Effect::setOwner(Character* owner)
-{
+void Effect::setOwner(Character* owner) {
     this->owner = owner;
 }
-Character* Effect::getOwner()
-{
+Character* Effect::getOwner() {
     return owner;
 }
 
-void Effect::initialize()
-{
+void Effect::initialize() {
     time = prototype->evalStartExpression(EFFECT_FUNCTION_TIME);
     componentSpeed.x = prototype->evalStartExpression(EFFECT_FUNCTION_XSPEED);
     componentSpeed.y = prototype->evalStartExpression(EFFECT_FUNCTION_YSPEED);
@@ -56,8 +65,11 @@ void Effect::draw(bool schematicMode)
 {
     if (schematicMode) {
         game->drawRect( game->screenX(position.x), game->screenY(position.y), 3, 3, 0, 0xFFFFAA00, 0xAAFFAA00 );
-    } else {
-        animation->RenderEx( game->screenX(position.x), game->screenY(position.y), angle, scale, scale );
+    }
+    else {
+        if (animation) {
+            animation->RenderEx( game->screenX(position.x), game->screenY(position.y), angle, scale, scale );
+        }
     }
 }
 
@@ -74,27 +86,29 @@ void Effect::update(float dt)
     prototype->setParam(EFFECT_PARAM_SCALE, scale);
     prototype->setParam(EFFECT_PARAM_DT, dt);
 
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_R) ) {
-        r = prototype->evalExpression(EFFECT_FUNCTION_R);
-    }
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_G) ) {
-        g = prototype->evalExpression(EFFECT_FUNCTION_G);
-    }
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_B) ) {
-        b = prototype->evalExpression(EFFECT_FUNCTION_B);
-    }
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_A) ) {
-        a = prototype->evalExpression(EFFECT_FUNCTION_A);
-    }
-    animation->SetColor( (a << 24) + (r << 16) + (g << 8) + b  );
+    if (animation) {
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_R) ) {
+            r = prototype->evalExpression(EFFECT_FUNCTION_R);
+        }
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_G) ) {
+            g = prototype->evalExpression(EFFECT_FUNCTION_G);
+        }
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_B) ) {
+            b = prototype->evalExpression(EFFECT_FUNCTION_B);
+        }
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_A) ) {
+            a = prototype->evalExpression(EFFECT_FUNCTION_A);
+        }
+        animation->SetColor( (a << 24) + (r << 16) + (g << 8) + b  );
 
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_SCALE) ) {
-        scale = prototype->evalExpression(EFFECT_FUNCTION_SCALE);
-    }
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_SCALE) ) {
+            scale = prototype->evalExpression(EFFECT_FUNCTION_SCALE);
+        }
 
-    if ( prototype->getExpressionExists(EFFECT_FUNCTION_ANGLE) ) {
-        angle = prototype->evalExpression(EFFECT_FUNCTION_ANGLE);
-//                printf("angle evaluated to %f \n", angle);
+        if ( prototype->getExpressionExists(EFFECT_FUNCTION_ANGLE) ) {
+            angle = prototype->evalExpression(EFFECT_FUNCTION_ANGLE);
+    //                printf("angle evaluated to %f \n", angle);
+        }
     }
 
     switch ( prototype->getPositionType() ) {
@@ -126,8 +140,8 @@ void Effect::update(float dt)
             break;
         case EFFECT_POSITION_TYPE_HOTSPOT:
             if (owner) {
-                position.x = owner->getHotSpotX(prototype->getHotSpotIndex());
-                position.y = owner->getHotSpotY(prototype->getHotSpotIndex());
+                position.x = owner->getHotSpotX(hotSpotIndex);
+                position.y = owner->getHotSpotY(hotSpotIndex);
             }
             break;
     }
@@ -198,6 +212,9 @@ void Effect::setPosition(b2Vec2 position) {
 }
 b2Vec2 Effect::getPosition() {
     return position;
+}
+void Effect::setHotSpotIndex(int index) {
+    hotSpotIndex = index;
 }
 
 void Effect::setAnimation(hgeAnimation* animation, int blendMode) {

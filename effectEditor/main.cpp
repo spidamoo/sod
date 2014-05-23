@@ -7,6 +7,10 @@
 #include <windows.h>
 #include <list>
 
+#include "resource.h"
+
+LPTSTR icon;
+
 Game* game;
 
 hgeFont* fnt;
@@ -52,6 +56,8 @@ void setSelectedEffect(int selected) {
     game->getGUI()->GetCtrl(91)->selected = game->getEffectPrototype(selectedEffect)->getBlendMode() & BLEND_COLORADD;
     game->getGUI()->GetCtrl(92)->selected = game->getEffectPrototype(selectedEffect)->getBlendMode() & BLEND_ALPHABLEND;
     game->getGUI()->GetCtrl(93)->selected = game->getEffectPrototype(selectedEffect)->getBlendMode() & BLEND_ZWRITE;
+
+    ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(95) )->setTitle(game->getEffectPrototype(selectedEffect)->getHotSpotName());
 }
 void setSelectedAction(int selected) {
     selectedAction = selected;
@@ -87,6 +93,17 @@ void setSelectedAction(int selected) {
 
     actionDetailsWindow->Show();
     actionDetailsWindow->Move(1090.0f, 58 + 12 * selected);
+}
+
+void addEffect() {
+    game->addEffectPrototype();
+    setSelectedEffect( game->getEffectPrototypesCount() - 1 );
+}
+void removeEffect(int index) {
+    game->removeEffectPrototype(index);
+    if ( selectedEffect >= game->getEffectPrototypesCount() ) {
+        setSelectedEffect( game->getEffectPrototypesCount() - 1 );
+    }
 }
 
 bool effectNameChange(hgeGUIObject* sender) {
@@ -168,19 +185,15 @@ bool effectBlendModeClick(hgeGUIObject* sender) {
     }
     sender->selected = !sender->selected;
 }
+bool hotSpotNameChange(hgeGUIObject* sender) {
+    game->getEffectPrototype(selectedEffect)->setHotSpotName( ( (hgeGUIEditableLabel*)(sender) )->getTitle() );
+}
 
 bool testEffectClick(hgeGUIObject* sender) {
     Effect* newObject = new Effect(game, game->getEffectPrototype(selectedEffect));
     newObject->setPosition(b2Vec2_zero);
-    newObject->setAnimation(
-        game->loadAnimation(
-            (char*)game->getEffectPrototype(selectedEffect)->getAnimation(
-                game->getHge()->Random_Int(1, game->getEffectPrototype(selectedEffect)->getAnimationsCount()) - 1
-            )
-        ),
-        game->getEffectPrototype(selectedEffect)->getBlendMode()
-    );
     game->addEffect( newObject );
+    printf("foo");
 }
 
 void save(const char* filename) {
@@ -213,9 +226,21 @@ bool FrameFunc() {
 	float worldX = game->worldX(x);
 	float worldY = game->worldY(y);
 
-	for (int i = 0; i < game->getEffectPrototypesCount(); i++) {
-        if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && x > 1 && x < 195 && y > 1 + i * 16 && y < i * 16 + 17) {
-            setSelectedEffect(i);
+    if (!actionDetailsWindow->bVisible && game->getHge()->Input_KeyDown(HGEK_LBUTTON) && x > 190 && x < 200
+        && y > 1 + game->getEffectPrototypesCount() * 16 && y < game->getEffectPrototypesCount() * 16 + 17
+    ) {
+        addEffect();
+    }
+    else {
+        for (int i = 0; i < game->getEffectPrototypesCount(); i++) {
+            if (!actionDetailsWindow->bVisible && game->getHge()->Input_KeyDown(HGEK_LBUTTON) && y > 1 + i * 16 && y < i * 16 + 17) {
+                if (x > 1 && x < 190) {
+                    setSelectedEffect(i);
+                }
+                else if (x > 190 && x < 200) {
+                    removeEffect(i);
+                }
+            }
         }
     }
 
@@ -274,16 +299,29 @@ bool RenderFunc() {
     game->drawRect(0, 0, 200, 900, 0xFF000000, 0xFFFFFFFF);
     for (int i = 0; i < game->getEffectPrototypesCount(); i++) {
         DWORD color = 0xFF000000;
-        if (x > 1 && x < 195 && y > 1 + i * 16 && y < i * 16 + 17) {
+        if (x > 1 && x < 190 && y > 1 + i * 16 && y < i * 16 + 17) {
             color = 0xFF0000FF;
         }
         if (i == selectedEffect) {
             color = 0xFF0000FF;
             game->drawRect(1, 1 + i * 16, 199, i * 16 + 17, color, 0);
         }
+        if (x > 190 && x < 200 && y > 1 + i * 16 && y < i * 16 + 17) {
+            color = 0xFFFF0000;
+            game->drawRect(1, 1 + i * 16, 199, i * 16 + 17, color, 0);
+        }
         arial12->SetColor(color);
         arial12->printf( 1, 1 + i * 16, HGETEXT_LEFT, "%d: %s", i, game->getEffectPrototype(i)->getName() );
+        arial12->printf( 191, 1 + i * 16, HGETEXT_LEFT, "-" );
     }
+
+    DWORD color = 0xFF000000;
+    if (x > 190 && x < 200 && y > 1 + game->getEffectPrototypesCount() * 16 && y < game->getEffectPrototypesCount() * 16 + 17) {
+        color = 0xFF00AA00;
+        game->drawRect(1, 1 + game->getEffectPrototypesCount() * 16, 199, game->getEffectPrototypesCount() * 16 + 17, color, 0);
+    }
+    arial12->SetColor(color);
+    arial12->printf( 190, 1 + game->getEffectPrototypesCount() * 16, HGETEXT_LEFT, "+" );
 
     game->drawRect(1080, 0, 1300, 500, 0xFF000000, 0xFFFFFFFF);
     fnt->SetColor(0xFF000000);
@@ -343,7 +381,7 @@ bool RenderFunc() {
         arial12->Render(1090, 42 + i * 12, HGETEXT_LEFT, text);
         arial12->Render(1291, 42 + i * 12, HGETEXT_LEFT, "-");
 	}
-	DWORD color = 0xFF000000;
+	color = 0xFF000000;
 	if (!actionDetailsWindow->bVisible && x > 1290 && x < 1300
         && y > 46 + game->getEffectPrototype(selectedEffect)->getActionsCount() * 12 && y < 58 + game->getEffectPrototype(selectedEffect)->getActionsCount() * 12
     ) {
@@ -380,6 +418,7 @@ bool RenderFunc() {
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+    icon = MAKEINTRESOURCE(EE_ICON);
 	// Get HGE interface
 	HGE * hge = hgeCreate(HGE_VERSION);
 	hge->System_SetState(HGE_USESOUND, false);
@@ -390,6 +429,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "SoD effects editor");
+
+	hge->System_SetState(HGE_ICON,         icon);
 
 	game = new Game(hge);
 
@@ -467,6 +508,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(91, arial12, 380.0f, 420.0f, "coloradd", effectBlendModeClick) );
         effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(92, arial12, 460.0f, 420.0f, "alphablend", effectBlendModeClick) );
         effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(93, arial12, 540.0f, 420.0f, "zwrite", effectBlendModeClick) );
+
+        hgeGUIMenuItem* hotSpotNameLabel = new hgeGUIMenuItem(94, arial12, 300.0f, 440.0f, "hotspot:", NULL);
+        hotSpotNameLabel->bEnabled = false;
+        effectDetailsWindow->AddCtrl( hotSpotNameLabel );
+
+        hgeGUIEditableLabel* hotSpotNameInput = new hgeGUIEditableLabel(game, 95, arial12, 350.0f, 440.0f, 100.0f, 19.0f, "");
+        hotSpotNameInput->setOnChange(hotSpotNameChange);
+        effectDetailsWindow->AddCtrl( hotSpotNameInput );
 
         actionDetailsWindow = new GUIWindow(game, 190, 1100, 50, 200.0f, 180.0f);
         game->getGUI()->AddCtrl(actionDetailsWindow);

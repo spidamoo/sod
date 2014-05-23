@@ -16,6 +16,7 @@ class Effect
 
 		float getTime();
 		void setPosition(b2Vec2 position); b2Vec2 getPosition();
+		void setHotSpotIndex(int index);
 
 		void setAnimation(hgeAnimation* animation, int blendMode);
 
@@ -27,6 +28,7 @@ class Effect
 		float time;
 		int r, g, b, a;
 		float scale;
+		int hotSpotIndex;
 
 		EffectPrototype* prototype;
 

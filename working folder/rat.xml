@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<character bodies="7" hotspots="0" height="0.387497" width="1.25" moves="2">
+    <body animation="rat/tail2.png.xml" name="tail2" x="83.0554" y="93.9396" angle="0.411389" />
+    <body animation="rat/body.png.xml" name="body" x="7" y="137" angle="1.15785e-038" />
+    <body animation="rat/leg.png.xml" name="leg" x="2" y="120" angle="0" />
+    <body animation="rat/tail.png.xml" name="tail1" x="34.4814" y="50.0438" angle="-0.570997" />
+    <body animation="rat/head2.png.xml" name="bite head" x="38" y="59" angle="0" />
+    <body animation="rat/head.png.xml" name="head" x="1" y="95" angle="0" />
+    <body animation="rat/arm.png.xml" name="arm" x="0" y="138" angle="0" />
+    <move frames="1" angles="1" name="idle">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="-0.181248" y="-0.0249988" scale_x="1" scale_y="1" angle="1.15785e-038" show="1" layer="3" />
+            <body x="-0.00937366" y="0.100001" scale_x="1" scale_y="1" angle="0" show="1" layer="1" />
+            <body x="0.406251" y="-0.0187488" scale_x="1" scale_y="1" angle="0" show="1" layer="2" />
+            <body x="1358" y="574" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="-0.640624" y="-0.0124987" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
+            <body x="-0.434373" y="0.112501" scale_x="1" scale_y="1" angle="0" show="1" layer="6" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="2">
+            <action>
+                <on causes="1">
+                    <cause type="101" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="1" param="0" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="102" param="2" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="1" param2="1" />
+                </do>
+            </action>
+        </actions>
+    </move>
+    <move frames="2" angles="1" name="run">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.2">
+            <body x="0.725052" y="-0.242408" scale_x="1" scale_y="1" angle="-0.411464" show="1" layer="0" />
+            <body x="-0.0187488" y="0.0125012" scale_x="1" scale_y="1" angle="1.15785e-038" show="1" layer="3" />
+            <body x="0.1595" y="0.174984" scale_x="1" scale_y="1" angle="-0.766821" show="1" layer="1" />
+            <body x="0.52963" y="-0.162363" scale_x="1" scale_y="1" angle="-0.570997" show="0" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="-0.509374" y="0.0250013" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
+            <body x="-0.327882" y="0.0742991" scale_x="1" scale_y="1" angle="0.805342" show="1" layer="6" />
+        </frame>
+        <frame length="0.2">
+            <body x="0.762674" y="0.187311" scale_x="1" scale_y="1" angle="0.411389" show="0" layer="0" />
+            <body x="-0.0187488" y="0.0125012" scale_x="1" scale_y="1" angle="1.15785e-038" show="1" layer="3" />
+            <body x="0.147086" y="0.0844449" scale_x="1" scale_y="1" angle="0.556476" show="1" layer="1" />
+            <body x="0.588234" y="0.10745" scale_x="1" scale_y="1" angle="0.238931" show="1" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="-0.509374" y="0.0250013" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
+            <body x="-0.262432" y="0.172201" scale_x="1" scale_y="1" angle="-0.530415" show="1" layer="6" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="3">
+            <action>
+                <on causes="1">
+                    <cause type="101" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="0" param2="1" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="201" param="0" />
+                </on>
+                <do effects="1">
+                    <effect type="3" param="5" param2="0" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="103" param="1" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="0" param2="1" />
+                </do>
+            </action>
+        </actions>
+    </move>
+</character>

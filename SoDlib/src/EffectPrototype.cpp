@@ -4,7 +4,7 @@
 EffectPrototype::EffectPrototype(Game* game) {
 	this->game = game;
 
-	animationsCount = actionsCount = positionType = areaType = hotSpotIndex = 0;
+	animationsCount = actionsCount = positionType = areaType = 0;
 
 	name = "<effect>";
 
@@ -12,11 +12,60 @@ EffectPrototype::EffectPrototype(Game* game) {
     startExpressionParsers = new mu::Parser[EFFECT_FUNCTIONS_COUNT];
     expressionExists = new bool[EFFECT_FUNCTIONS_COUNT];
 
+    for ( int i = 0; i < EFFECT_FUNCTIONS_COUNT; i++ ) {
+        expressionParsers[i].DefineFun("rand", frand);
+        expressionExists[i] = false;
+        startExpressionParsers[i].DefineFun("rand", frand);
+    }
+
+    startExpressionParsers[EFFECT_FUNCTION_TIME].SetExpr("1");
+    startExpressionParsers[EFFECT_FUNCTION_XSPEED].SetExpr("0");
+    startExpressionParsers[EFFECT_FUNCTION_YSPEED].SetExpr("0");
+    startExpressionParsers[EFFECT_FUNCTION_ANGLE].SetExpr("0");
+
+    startExpressionParsers[EFFECT_FUNCTION_R].SetExpr("255");
+    startExpressionParsers[EFFECT_FUNCTION_G].SetExpr("255");
+    startExpressionParsers[EFFECT_FUNCTION_B].SetExpr("255");
+    startExpressionParsers[EFFECT_FUNCTION_A].SetExpr("255");
+
+    startExpressionParsers[EFFECT_FUNCTION_SCALE].SetExpr("1");
+
     params = new float[EFFECT_PARAMS_COUNT];
+
+    hotSpotName = "";
+
+    positionType = EFFECT_POSITION_TYPE_STATIC;
+    areaType = EFFECT_AREA_TYPE_POINT;
+    blendMode = BLEND_DEFAULT;
+
+    animationsCount = 0;
+    animations = new char*[animationsCount];
+
+    actionsCount = 0;
+    actions = new EffectAction*[actionsCount];
+
 }
 
 EffectPrototype::~EffectPrototype() {
-	//dtor
+    delete name;
+
+	delete expressionParsers;
+	delete startExpressionParsers;
+	delete expressionExists;
+
+	delete params;
+
+	delete hotSpotName;
+
+	for (int i = 0; i < animationsCount; i++) {
+        delete animations[i];
+	}
+	delete animations;
+
+	for (int i = 0; i < actionsCount; i++) {
+        delete actions[i];
+	}
+	delete actions;
 }
 
 void EffectPrototype::loadFromXml(TiXmlElement* xml) {
@@ -36,6 +85,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
             printf("%s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(formulaAttribName));
         } else {
             expressionParsers[i].SetExpr("0");
+            expressionParsers[i].DefineFun("rand", frand);
             expressionExists[i] = false;
         }
 
@@ -48,6 +98,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
             printf("start %s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(startFormulaAttribName));
         } else {
             startExpressionParsers[i].SetExpr("0");
+            startExpressionParsers[i].DefineFun("rand", frand);
         }
     }
 
@@ -65,10 +116,10 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
 	} else {
 	    areaType = EFFECT_AREA_TYPE_POINT;
 	}
-	if (xml->Attribute("hot_spot_index")) {
-        hotSpotIndex = atoi(xml->Attribute("hot_spot_index"));
+	if (xml->Attribute("hot_spot_name")) {
+        hotSpotName = copyString(xml->Attribute("hot_spot_name"));
 	} else {
-	    hotSpotIndex = -1;
+	    hotSpotName = "";
 	}
 
 	if (xml->Attribute("blend_mode")) {
@@ -137,7 +188,7 @@ void EffectPrototype::saveToXml(TiXmlElement* xml) {
     xml->SetAttribute("name", name);
     xml->SetAttribute("position_type", positionType);
     xml->SetAttribute("area_type", areaType);
-    xml->SetAttribute("hot_spot_index", hotSpotIndex);
+    xml->SetAttribute("hot_spot_name", hotSpotName);
     xml->SetAttribute("blend_mode", blendMode);
     xml->SetAttribute("animations_count", animationsCount);
     for (int i = 0; i < animationsCount; i++) {
@@ -157,7 +208,7 @@ Effect* EffectPrototype::spawnEffect(Character* character) {
     Effect* newObject = new Effect(game, this);
     newObject->setOwner(character);
     newObject->setPosition( character->getPosition() );
-    newObject->setAnimation( game->loadAnimation(animations[game->getHge()->Random_Int(1, animationsCount) - 1]), blendMode );
+    newObject->setHotSpotIndex( character->getHotSpotIndex(hotSpotName) );
     return newObject;
 }
 Effect* EffectPrototype::spawnEffect(Effect* effect) {
@@ -165,7 +216,6 @@ Effect* EffectPrototype::spawnEffect(Effect* effect) {
     Effect* newObject = new Effect(game, this);
     newObject->setOwner( effect->getOwner() );
     newObject->setPosition( effect->getPosition() );
-    newObject->setAnimation( game->loadAnimation( animations[game->getHge()->Random_Int(1, animationsCount) - 1] ), blendMode );
     //printf("new effect position is %f %f\n", effect->getPosition().x, effect->getPosition().y);
     clock_t et = clock();
     game->updateCounter(COUNTER_EFFECTS_SPAWN, (float)(et - st));
@@ -178,8 +228,8 @@ int EffectPrototype::getPositionType() {
 int EffectPrototype::getAreaType() {
     return areaType;
 }
-int EffectPrototype::getHotSpotIndex() {
-    return hotSpotIndex;
+char* EffectPrototype::getHotSpotName() {
+    return hotSpotName;
 }
 
 void EffectPrototype::setPositionType(int _type) {
@@ -187,6 +237,10 @@ void EffectPrototype::setPositionType(int _type) {
 }
 void EffectPrototype::setAreaType(int _type) {
     areaType = _type;
+}
+void EffectPrototype::setHotSpotName(char* name) {
+    delete hotSpotName;
+    hotSpotName = copyString(name);
 }
 
 int EffectPrototype::getActionsCount() {

@@ -1234,7 +1234,7 @@
 1384979514 d:\work\sod\sodlib\include\mapanimation.h
 	<SoDlib.h>
 
-1400526043 source:d:\work\my\sod\charactereditor\main.cpp
+1400623972 source:d:\work\my\sod\charactereditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1243,6 +1243,7 @@
 	<SoDlib.h>
 	<windows.h>
 	<list>
+	"resource.h"
 
 1396800288 d:\work\my\sod\hge181\include\hge.h
 	<windows.h>
@@ -1568,10 +1569,10 @@
 	<stdio.h>
 	<string.h>
 
-1400522925 d:\work\my\sod\sodlib\include\game.h
+1400836331 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
-1400522996 d:\work\my\sod\sodlib\include\conditionprototype.h
+1400622720 d:\work\my\sod\sodlib\include\conditionprototype.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\condition.h
@@ -1580,10 +1581,10 @@
 1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1400524712 d:\work\my\sod\sodlib\include\effectprototype.h
+1400538047 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\effect.h
+1400533750 d:\work\my\sod\sodlib\include\effect.h
 	<SoDlib.h>
 
 1397717394 d:\work\my\sod\sodlib\include\characteractioncause.h
@@ -1595,10 +1596,10 @@
 1400438363 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\characterhotspot.h
+1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1397406927 d:\work\my\sod\sodlib\include\character.h
+1400534014 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
@@ -1633,4 +1634,9 @@
 	"hge.h"
 	"hgesprite.h"
 	"hgerect.h"
+
+1400623976 d:\work\my\sod\charactereditor\resource.h
+
+1400623981 source:d:\work\my\sod\charactereditor\resource.rc
+	"resource.h"
 

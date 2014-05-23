@@ -7,14 +7,19 @@
 #include <windows.h>
 #include <list>
 
+#include "resource.h"
+
+LPTSTR icon;
+
 using namespace std;
 
 Game* game;
 
 GUIWindow* mainWindow;
-GUIWindow* animsWindow;
+GUIWindow* layerWindow;
 
 hgeFont* fnt;
+hgeFont* arial12;
 hgeAnimation* disabledIcon;
 
 hgeAnimation* beingInsertedAnim;
@@ -39,9 +44,10 @@ const int MODE_MOVING_PLATFORMS = 10;
 
 int mode = MODE_DEFAULT;
 
-float width = 20; float height = 10;
+float width = 100.0f; float height = 30.0f;
+float halfWidth = width * 0.5f; float halfHeight = height * 0.5f;
 int animationsCount = 0; char** animationNames = new char*[256]; hgeAnimation** animations = new hgeAnimation*[256];
-float* animationX = new float[256]; float* animationY = new float[256]; float* animationAngle = new float[256];
+float* animationX = new float[256]; float* animationY = new float[256]; float* animationAngle = new float[256]; int* animationLayer = new int[256];
 int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
 
 int platformsCount = 0; int* platformGroundLinesCounts = new int[256]; int* platformAnimsCounts = new int[256];
@@ -54,19 +60,24 @@ float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
 int selectedAnim = -1; int selectedGroundLine = -1;
 float currentTime = 0;
 
-void resetMode()
-{
+float gridSizes[7] = {0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f, 20.0f};
+int currentGridSize = 2;
+
+int layerOrders[16] = {0, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8};
+float layerRatios[16] = {1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+int layersCount = 1;
+int currentLayer = 0;
+
+void resetMode() {
 	mode = MODE_DEFAULT;
 	mainWindow->Show();
-	animsWindow->Hide();
 	selectedAnim = -1;
 	selectedPlatform = -1;
 	selectedPlatformSpot = -1;
 	currentTime = 0;
 }
 
-int getPointedAnim(float x, float y)
-{
+int getPointedAnim(float x, float y) {
 	int selected = -1;
 	for (int i = 0; i < animationsCount; i++) {
         hgeRect* bb = new hgeRect();
@@ -85,8 +96,7 @@ int getPointedAnim(float x, float y)
 
 	return selected;
 }
-int getPointedGroundLine(float x, float y)
-{
+int getPointedGroundLine(float x, float y) {
 	int selected = -1;
 	for (int i = 0; i < groundLinesCount; i++) {
 		float distance = distanceToSegment(
@@ -152,8 +162,8 @@ float* getPlatformBounds(int platform) {
 	for (int j = 0; j < platformAnimsCounts[platform]; j++) {
 		hgeRect* bb = new hgeRect();
 		animations[platformAnims[platform][j]]->GetBoundingBoxEx(
-			game->screenX(animationX[platformAnims[platform][j]] + shiftX),
-			game->screenY(animationY[platformAnims[platform][j]] + shiftY),
+			game->screenX(animationX[platformAnims[platform][j]] + shiftX, layerRatios[animationLayer[j]]),
+			game->screenY(animationY[platformAnims[platform][j]] + shiftY, layerRatios[animationLayer[j]]),
 			animationAngle[platformAnims[platform][j]],
 			game->getScaleFactor(),
 			game->getScaleFactor(),
@@ -194,9 +204,47 @@ float* getPlatformBounds(int platform) {
 	return bounds;
 }
 
+float getAnimX(int index) {
+    return animationX[index] * layerRatios[ animationLayer[index] ];
+}
+float getAnimY(int index) {
+    return animationY[index] * layerRatios[ animationLayer[index] ];
+}
 
-bool saveMap(char* fn)
-{
+void selectLayer(int index) {
+    if (index < layersCount && index > -1)
+        currentLayer = index;
+
+    layerWindow->Show();
+    if (index == 0) {
+        layerWindow->Hide();
+    }
+
+    char buffer[16];
+
+    sprintf(buffer, "%d", layerOrders[currentLayer]);
+    ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(22)) )->setTitle( buffer );
+
+    sprintf(buffer, "%.2f", layerRatios[currentLayer]);
+    ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(24)) )->setTitle( buffer );
+}
+void addLayer() {
+    layersCount++;
+    selectLayer(layersCount - 1);
+}
+void removeLayer(int index) {
+    layersCount--;
+
+    for (int i = index; i < layersCount - 1; i++) {
+        layerRatios[i] = layerRatios[i + 1];
+        layerOrders[i] = layerOrders[i + 1];
+    }
+
+    if (currentLayer >= layersCount)
+        selectLayer(layersCount - 1);
+}
+
+bool saveMap(char* fn) {
 	TiXmlDocument doc;
 	TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
 	doc.LinkEndChild( decl );
@@ -204,9 +252,16 @@ bool saveMap(char* fn)
 	root->SetAttribute("animations", animationsCount);
 	root->SetAttribute("ground_lines", groundLinesCount);
 	root->SetAttribute("platforms", platformsCount);
+	root->SetAttribute("layers", layersCount);
 	root->SetDoubleAttribute("width", width);
 	root->SetDoubleAttribute("height", height);
 
+    for (int i = 0; i < layersCount; i++) {
+        TiXmlElement* element = new TiXmlElement( "layer" );
+        root->LinkEndChild( element );
+        element->SetAttribute("order", layerOrders[i]);
+        element->SetDoubleAttribute("ratio", layerRatios[i]);
+    }
 	for (int i = 0; i < animationsCount; i++) {
         TiXmlElement* element = new TiXmlElement( "animation" );
         root->LinkEndChild( element );
@@ -214,6 +269,7 @@ bool saveMap(char* fn)
         element->SetDoubleAttribute("x", animationX[i]);
         element->SetDoubleAttribute("y", animationY[i]);
         element->SetDoubleAttribute("angle", animationAngle[i]);
+        element->SetAttribute("layer", animationLayer[i]);
 	}
 	for (int i = 0; i < groundLinesCount; i++) {
         TiXmlElement* element = new TiXmlElement( "ground_line" );
@@ -253,8 +309,7 @@ bool saveMap(char* fn)
 	doc.SaveFile(fn);
 }
 
-bool loadMap(char* fn)
-{
+bool loadMap(char* fn) {
 	animations = new hgeAnimation*[256];
 
 	animationsCount = 0;
@@ -278,8 +333,18 @@ bool loadMap(char* fn)
 			height = atof(root->Attribute("height"));
 		}
 
-        TiXmlElement* element = root->FirstChildElement("animation");
+		TiXmlElement* element = root->FirstChildElement("layer");
         int i = 0;
+        while (element) {
+            layerOrders[i] = atoi( element->Attribute("order") );
+            layerRatios[i] = atof( element->Attribute("ratio") );
+            i++;
+            element = element->NextSiblingElement("layer");
+        }
+        layersCount = i;
+
+        element = root->FirstChildElement("animation");
+        i = 0;
         while (element) {
         	printf("loading animation...\n");
         	float x = atof(element->Attribute("x"));
@@ -294,6 +359,13 @@ bool loadMap(char* fn)
 			animationX[i] = x;
 			animationY[i] = y;
 			animationAngle[i] = angle;
+
+			if ( element->Attribute("layer") ) {
+                animationLayer[i] = atoi( element->Attribute("layer") );
+			}
+			else {
+                animationLayer[i] = 0;
+			}
 
 			animationNames[i] = new char[64];
 			int c = 0;
@@ -361,16 +433,15 @@ bool loadMap(char* fn)
         printf("failed\n");
     }
 	resetMode();
+	selectLayer(0);
 }
 
 
-bool saveMapButtonClick(hgeGUIMenuItem* sender)
-{
+bool saveMapButtonClick(hgeGUIObject* sender) {
 	saveMap("map.xml");
 }
 
-bool loadMapButtonClick(hgeGUIMenuItem* sender)
-{
+bool loadMapButtonClick(hgeGUIObject* sender) {
 	loadMap("map.xml");
 }
 
@@ -392,45 +463,78 @@ void deleteGroundLine(int index) {
 	groundLines[index] = groundLines[groundLinesCount];
 }
 
-bool insertAnimButtonClick(hgeGUIMenuItem* sender)
-{
+bool insertAnimButtonClick(hgeGUIObject* sender) {
 	mode = MODE_SELECT_ANIM;
-	//mainWindow->Hide();
-	animsWindow->Show();
+	OPENFILENAME ofn;
+    char szFile[512]="\0";
+    char szTemp[512];
+
+    ZeroMemory(&ofn, sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = game->getHge()->System_GetState(HGE_HWND);
+    ofn.lpstrFilter = "XML file\0*.xml\0All Files\0*.*\0\0";
+    ofn.lpstrFile= szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    ofn.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+    ofn.lpstrDefExt="xml";
+    if ( GetOpenFileName(&ofn) ) {
+        beingInsertedAnim = game->loadAnimation(szFile);
+        beingInsertedAnimName = copyString(szFile);
+//        game->getHge()->Input_SetMousePos(1450, 600);
+        mode = MODE_INSERT_ANIM;
+    }
 }
-bool animButtonClick(hgeGUIMenuItem* sender)
-{
+bool animButtonClick(hgeGUIObject* sender) {
 	mode = MODE_INSERT_ANIM;
 	//mainWindow->Show();
-	animsWindow->Hide();
-	beingInsertedAnimName = sender->getTitle();
-	beingInsertedAnim = game->loadAnimation(beingInsertedAnimName);
+//	beingInsertedAnimName = sender->getTitle();
+//	beingInsertedAnim = game->loadAnimation(beingInsertedAnimName);
 	//game->getHge()->Input_SetMousePos(1450, 600);
 }
-bool insertGroundLineButtonClick(hgeGUIMenuItem* sender)
-{
+bool insertGroundLineButtonClick(hgeGUIObject* sender) {
 	mode = MODE_INSERT_GL_STEP1;
 }
-bool spotModeButtonClick(hgeGUIMenuItem* sender)
-{
+bool spotModeButtonClick(hgeGUIObject* sender) {
 	mode = MODE_SELECT_PLATFORM;
 }
 
-bool FrameFunc()
-{
+bool orderChange(hgeGUIObject* sender) {
+    layerOrders[currentLayer] = atoi( ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(22)) )->getTitle() );
+}
+bool ratioChange(hgeGUIObject* sender) {
+    layerRatios[currentLayer] = atof( ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(24)) )->getTitle() );
+}
+
+bool FrameFunc() {
     float x, y;
 	game->getHge()->Input_GetMousePos(&x, &y);
-	float worldX = game->worldX(x);
-	float worldY = game->worldY(y);
+	float worldX = game->worldX(x, layerRatios[currentLayer]);
+	float worldY = game->worldY(y, layerRatios[currentLayer]);
+
+	float insertX = roundf(worldX / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+    float insertY = roundf(worldY / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+
 	float dt = game->getHge()->Timer_GetDelta();
 
 	if (game->getHge()->Input_GetMouseWheel() > 0) {
-		game->setScale(game->getScaleFactor() * 2);
-		game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
+        if (game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
+            if (currentGridSize < 6)
+                currentGridSize++;
+        }
+        else {
+            game->setScale(game->getScaleFactor() * 2);
+//            game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
+        }
 	}
 	if (game->getHge()->Input_GetMouseWheel() < 0) {
-		game->setScale(game->getScaleFactor() * 0.5);
-		game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
+        if (game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
+            if (currentGridSize > 0)
+                currentGridSize--;
+        }
+        else {
+            game->setScale(game->getScaleFactor() * 0.5);
+//            game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
+        }
 	}
 
 	if (game->getHge()->Input_GetKeyState(HGEK_RIGHT)) {
@@ -476,6 +580,22 @@ bool FrameFunc()
 				deleteGroundLine(selectedGroundLine);
 				selectedGroundLine = -1;
 			}
+
+            if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && x > 1590 && x < 1600 && y > 422 + layersCount * 16.0f && y < 438 + layersCount * 16.0f) {
+                addLayer();
+            }
+            else {
+                for (int i = 0; i < layersCount; i++) {
+                    if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && y > 422 + i * 16.0f && y < 438 + i * 16.0f) {
+                        if (x > 1590 && x < 1600) {
+                            removeLayer(i);
+                        }
+                        else if (x > 1300 && x < 1590) {
+                            selectLayer(i);
+                        }
+                    }
+                }
+            }
 			break;
 		case MODE_CAMERA_MOVE:
 			game->moveScreen(b2Vec2(dragOffsetX - x, dragOffsetY - y));
@@ -487,10 +607,13 @@ bool FrameFunc()
 			break;
 		case MODE_INSERT_ANIM:
 			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
-                && worldX > 0 && worldX < width && worldY > 0 && worldY < height) {
-				animationX[animationsCount] = worldX;
-				animationY[animationsCount] = worldY;
+                && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
+            ) {
+
+				animationX[animationsCount] = insertX;
+				animationY[animationsCount] = insertY;
 				animationAngle[animationsCount] = 0;
+				animationLayer[animationsCount] = currentLayer;
 
 				animationNames[animationsCount] = beingInsertedAnimName;
 				animations[animationsCount] = beingInsertedAnim;
@@ -506,7 +629,9 @@ bool FrameFunc()
 			if (selectedAnim != -1) {
 				float currentX = worldX - dragOffsetX;
 				float currentY = worldY - dragOffsetY;
-				if (currentX > 0 && currentX < width && currentY > 0 && currentY < height) {
+				currentX = roundf(currentX / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+                currentY = roundf(currentY / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+				if (currentX > -halfWidth && currentX < halfWidth && currentY > -halfHeight && currentY < halfHeight) {
                     animationX[selectedAnim] = currentX;
                     animationY[selectedAnim] = currentY;
 				}
@@ -549,19 +674,21 @@ bool FrameFunc()
 			break;
         case MODE_INSERT_GL_STEP1:
             if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
-                && worldX > 0 && worldX < width && worldY > 0 && worldY < height) {
-				dragOffsetX = worldX;
-				dragOffsetY = worldY;
+                && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight) {
+				dragOffsetX = insertX;
+				dragOffsetY = insertY;
 				mode = MODE_INSERT_GL_STEP2;
 			}
             break;
         case MODE_INSERT_GL_STEP2:
             if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
-                && worldX > 0 && worldX < width && worldY > 0 && worldY < height) {
-				groundLines[groundLinesCount] = new GroundLine(game, dragOffsetX, dragOffsetY, worldX, worldY);
+                && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
+            ) {
+
+				groundLines[groundLinesCount] = new GroundLine(game, dragOffsetX, dragOffsetY, insertX, insertY);
 				groundLinesCount++;
-				dragOffsetX = worldX;
-				dragOffsetY = worldY;
+				dragOffsetX = insertX;
+				dragOffsetY = insertY;
 			}
 			if (game->getHge()->Input_KeyUp(HGEK_RBUTTON)
                 && worldX > 0 && worldX < width && worldY > 0 && worldY < height) {
@@ -594,6 +721,9 @@ bool FrameFunc()
         	{///Скобки нужны чтобы иметь блок, а в нем объявлять переменные
             int c1 = 0;
             for (int i = 0; i < animationsCount; i++) {///Перебираем все картинки
+                if (animationLayer[i] != currentLayer) {/// Но не все, а только с этого же слоя
+                    continue;
+                }
                 bool occupied = false;///Проверяем, используется ли картинка уже в какой-то платформе
                 for (int j = 0; j < platformsCount; j++) {
                     for (int k = 0; k < platformAnimsCounts[j]; k++) {
@@ -607,8 +737,8 @@ bool FrameFunc()
                 }
                 hgeRect* bb = new hgeRect();
                 animations[i]->GetBoundingBoxEx(
-                    game->screenX(animationX[i]),
-                    game->screenY(animationY[i]),
+                    game->screenX(animationX[i], layerRatios[currentLayer]),
+                    game->screenY(animationY[i], layerRatios[currentLayer]),
                     animationAngle[i],
                     game->getScaleFactor(),
                     game->getScaleFactor(),
@@ -616,13 +746,13 @@ bool FrameFunc()
                 );
                 if (///Проверяем, умещается ли bb картинки целиком в выделенную область
                     (
-                        (bb->x1 > game->screenX(dragOffsetX) && bb->x2 < x)
+                        (bb->x1 > game->screenX(dragOffsetX, layerRatios[currentLayer]) && bb->x2 < x)
                         ||
-                        (bb->x2 < game->screenX(dragOffsetX) && bb->x1 > x)
+                        (bb->x2 < game->screenX(dragOffsetX, layerRatios[currentLayer]) && bb->x1 > x)
                     ) && (
-                        (bb->y1 > game->screenY(dragOffsetY) && bb->y2 < y)
+                        (bb->y1 > game->screenY(dragOffsetY, layerRatios[currentLayer]) && bb->y2 < y)
                         ||
-                        (bb->y2 < game->screenY(dragOffsetY) && bb->y1 > y)
+                        (bb->y2 < game->screenY(dragOffsetY, layerRatios[currentLayer]) && bb->y1 > y)
                     )
                 ) {///Если да, то запишем ее в платформу, следующую после крайней (еще не созданную)
                     platformAnims[platformsCount][c1] = i;
@@ -633,31 +763,33 @@ bool FrameFunc()
 
 			///Все то же самое для линий
             int c2 = 0;
-            for (int i = 0; i < groundLinesCount; i++) {
-                bool occupied = false;
-                for (int j = 0; j < platformsCount; j++) {
-                    for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
-                        if (platformGroundLines[j][k] == i) {
-                            occupied = true;
+            if (currentLayer == 0) { /// Все линии находятся на основном слое
+                for (int i = 0; i < groundLinesCount; i++) {
+                    bool occupied = false;
+                    for (int j = 0; j < platformsCount; j++) {
+                        for (int k = 0; k < platformGroundLinesCounts[j]; k++) {
+                            if (platformGroundLines[j][k] == i) {
+                                occupied = true;
+                            }
                         }
                     }
-                }
-                if (occupied) {
-                    continue;
-                }
-                if (
-                    (
-                        (groundLines[i]->getLeft()   > dragOffsetX && groundLines[i]->getRight()  < worldX)
-                        ||
-                        (groundLines[i]->getRight()  < dragOffsetX && groundLines[i]->getLeft()   > worldX)
-                    ) && (
-                        (groundLines[i]->getTop()    > dragOffsetY && groundLines[i]->getBottom() < worldY)
-                        ||
-                        (groundLines[i]->getBottom() < dragOffsetY && groundLines[i]->getTop()    > worldY)
-                    )
-                ) {
-                    platformGroundLines[platformsCount][c2] = i;
-                    c2++;
+                    if (occupied) {
+                        continue;
+                    }
+                    if (
+                        (
+                            (groundLines[i]->getLeft()   > dragOffsetX && groundLines[i]->getRight()  < worldX)
+                            ||
+                            (groundLines[i]->getRight()  < dragOffsetX && groundLines[i]->getLeft()   > worldX)
+                        ) && (
+                            (groundLines[i]->getTop()    > dragOffsetY && groundLines[i]->getBottom() < worldY)
+                            ||
+                            (groundLines[i]->getBottom() < dragOffsetY && groundLines[i]->getTop()    > worldY)
+                        )
+                    ) {
+                        platformGroundLines[platformsCount][c2] = i;
+                        c2++;
+                    }
                 }
             }
             platformGroundLinesCounts[platformsCount] = c2;
@@ -711,8 +843,8 @@ bool FrameFunc()
 							selectedPlatform = i;
 							if (selectedPlatformSpot > -1) {
 								mode = MODE_DRAG_PLATFORM;///Начинаем тащить
-								dragOffsetX = worldX;///Запоминаем откуда начали
-								dragOffsetY = worldY;
+								dragOffsetX = insertX;///Запоминаем откуда начали
+								dragOffsetY = insertY;
 							}
 						}
 						delete bounds;
@@ -737,10 +869,10 @@ bool FrameFunc()
 			}
 			break;
 		case MODE_DRAG_PLATFORM:
-			platformSpotX[selectedPlatform][selectedPlatformSpot] += (worldX - dragOffsetX);///Прибавляем сдвиг с последнего раза
-			platformSpotY[selectedPlatform][selectedPlatformSpot] += (worldY - dragOffsetY);
-			dragOffsetX = worldX;///И запоминаем текущее положение
-			dragOffsetY = worldY;
+			platformSpotX[selectedPlatform][selectedPlatformSpot] += (insertX - dragOffsetX);///Прибавляем сдвиг с последнего раза
+			platformSpotY[selectedPlatform][selectedPlatformSpot] += (insertY - dragOffsetY);
+			dragOffsetX = insertX;///И запоминаем текущее положение
+			dragOffsetY = insertY;
 			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
 				///Возвращаемся назад
 				mode = MODE_EDIT_PLATFORM;
@@ -758,92 +890,118 @@ bool FrameFunc()
 	return game->update(false);
 }
 
-// This function will be called by HGE when
-// the application window should be redrawn.
-// Put your rendering code here.
-bool RenderFunc()
-{
+bool RenderFunc() {
     float x, y;
     game->getHge()->Input_GetMousePos(&x, &y);
-    float worldX = game->worldX(x);
-	float worldY = game->worldY(y);
-	float insertX = x; float insertY = y;
+    float worldX = game->worldX(x, layerRatios[currentLayer]);
+	float worldY = game->worldY(y, layerRatios[currentLayer]);
+
+    float worldInsertX = roundf(worldX / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+    float worldInsertY = roundf(worldY / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
+
+	float insertX = game->screenX(worldInsertX, layerRatios[currentLayer]);
+    float insertY = game->screenY(worldInsertY, layerRatios[currentLayer]);
 	if (insertX > 1300) insertX = 1300;
 
 	// RenderFunc should always return false
 	game->startDraw();
 
-	for (int i = 0; i < animationsCount; i++) {
-		DWORD color = 0xFFFFFFFF;
-		DWORD bbColor = 0xFFAA0000;
-		float shiftX = 0;///Сдвиг на случай, если мы редактируем платформу
-		float shiftY = 0;
-		if (mode >= MODE_SELECT_PLATFORM) {
-			color = 0xAAFFFFFF;bbColor = 0xAAAA0000;
-			for (int j = 0; j < platformsCount; j++) {
-				for (int k = 0; k < platformAnimsCounts[j]; k++) {
-					if (platformAnims[j][k] == i) {
-						color = 0xAAAAAAAA;///Анимация относится к какой-то левой платформе
-						bbColor = 0xAA550000;
-					}
-				}
-			}
-			for (int k = 0; k < platformAnimsCounts[platformsCount]; k++) {
-                if (platformAnims[platformsCount][k] == i) {
-                    color = 0xFFFFFFFF;///Анимация относится к создаваемой платформе
-                    bbColor = 0xFFAA0000;
+	int orderedLayers[layersCount];
+	int minOrder = 100;
+	int maxOrder = -100;
+	for (int i = 0; i < layersCount; i++) {
+        if (layerOrders[i] < minOrder)
+            minOrder = layerOrders[i];
+        if (layerOrders[i] > maxOrder)
+            maxOrder = layerOrders[i];
+	}
+	int index = 0;
+	for (int order = minOrder; order <= maxOrder; order++) {
+        for (int i = 0; i < layersCount; i++) {
+            if (layerOrders[i] == order) {
+                orderedLayers[index] = i;
+                index++;
+            }
+        }
+	}
+    for (int j = 0; j < layersCount; j++) {
+        for (int i = 0; i < animationsCount; i++) {
+            if (animationLayer[i] != orderedLayers[j])
+                continue;
 
+            DWORD color = 0xFFFFFFFF;
+            DWORD bbColor = 0xFFAA0000;
+            float shiftX = 0;///Сдвиг на случай, если мы редактируем платформу
+            float shiftY = 0;
+            if (mode >= MODE_SELECT_PLATFORM) {
+                color = 0xAAAAAAAA;
+                bbColor = 0xAA550000;
+                for (int j = 0; j < platformsCount; j++) {
+                    for (int k = 0; k < platformAnimsCounts[j]; k++) {
+                        if (platformAnims[j][k] == i) {
+                            color = 0xAAAAAAAA;///Анимация относится к какой-то левой платформе
+                            bbColor = 0xAA550000;
+                            color = 0xAAFFFFFF;bbColor = 0xAAAA0000;
+                        }
+                    }
+                }
+                for (int k = 0; k < platformAnimsCounts[platformsCount]; k++) {
+                    if (platformAnims[platformsCount][k] == i) {
+                        color = 0xFFFFFFFF;///Анимация относится к создаваемой платформе
+                        bbColor = 0xFFAA0000;
+
+                    }
+                }
+                if (selectedPlatform > -1) {
+                    for (int k = 0; k < platformAnimsCounts[selectedPlatform]; k++) {
+                        if (platformAnims[selectedPlatform][k] == i) {
+                            color = 0xFFFFFFFF;///Анимация относится к редактируемой платформе
+                            bbColor = 0xFFAA0000;
+                            if (selectedPlatformSpot > -1) {
+                                shiftX = platformSpotX[selectedPlatform][selectedPlatformSpot];
+                                shiftY = platformSpotY[selectedPlatform][selectedPlatformSpot];
+                            }
+                        }
+                    }
                 }
             }
-            if (selectedPlatform > -1) {
-				for (int k = 0; k < platformAnimsCounts[selectedPlatform]; k++) {
-					if (platformAnims[selectedPlatform][k] == i) {
-						color = 0xFFFFFFFF;///Анимация относится к редактируемой платформе
-						bbColor = 0xFFAA0000;
-						if (selectedPlatformSpot > -1) {
-							shiftX = platformSpotX[selectedPlatform][selectedPlatformSpot];
-							shiftY = platformSpotY[selectedPlatform][selectedPlatformSpot];
-						}
-					}
-				}
+            if (mode == MODE_MOVING_PLATFORMS) {
+                for (int j = 0; j < platformsCount; j++) {
+                    for (int k = 0; k < platformAnimsCounts[j]; k++) {
+                        if (platformAnims[j][k] == i) {
+                            ///Нашли платформу, к которой относится эта анимация, получаем ее сдвиг
+                            b2Vec2 shift = getPlatformShift(j);
+                            shiftX = shift.x; shiftY = shift.y;
+                        }
+                    }
+                }
             }
-		}
-		if (mode == MODE_MOVING_PLATFORMS) {
-			for (int j = 0; j < platformsCount; j++) {
-				for (int k = 0; k < platformAnimsCounts[j]; k++) {
-					if (platformAnims[j][k] == i) {
-						///Нашли платформу, к которой относится эта анимация, получаем ее сдвиг
-						b2Vec2 shift = getPlatformShift(j);
-						shiftX = shift.x; shiftY = shift.y;
-					}
-				}
-			}
-		}
-		animations[i]->SetColor(color);
-        animations[i]->RenderEx(
-            game->screenX(animationX[i] + shiftX),
-            game->screenY(animationY[i] + shiftY),
-            animationAngle[i],
-            game->getScaleFactor(),
-            game->getScaleFactor()
-        );
+            animations[i]->SetColor(color);
+            animations[i]->RenderEx(
+                game->screenX(animationX[i] + shiftX, layerRatios[animationLayer[i]]),
+                game->screenY(animationY[i] + shiftY, layerRatios[animationLayer[i]]),
+                animationAngle[i],
+                game->getScaleFactor(),
+                game->getScaleFactor()
+            );
 
-        hgeRect* bb = new hgeRect();
-        animations[i]->GetBoundingBoxEx(
-            game->screenX(animationX[i] + shiftX),
-            game->screenY(animationY[i] + shiftY),
-            animationAngle[i],
-            game->getScaleFactor(),
-            game->getScaleFactor(),
-            bb
-        );
+            hgeRect* bb = new hgeRect();
+            animations[i]->GetBoundingBoxEx(
+                game->screenX(animationX[i] + shiftX, layerRatios[animationLayer[i]]),
+                game->screenY(animationY[i] + shiftY, layerRatios[animationLayer[i]]),
+                animationAngle[i],
+                game->getScaleFactor(),
+                game->getScaleFactor(),
+                bb
+            );
 
-        if (i == selectedAnim) {
-            bbColor = 0xFFFF0000;
+            if (i == selectedAnim) {
+                bbColor = 0xFFFF0000;
+            }
+            game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, bbColor, 0);
+
         }
-        game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, bbColor, 0);
-
-	}
+    }
 	for (int i = 0; i < groundLinesCount; i++) {
         DWORD alpha = 0xFF000000;
         DWORD rgb = 0x00FFFF00;
@@ -888,7 +1046,15 @@ bool RenderFunc()
 			}
 		}
         DWORD color = alpha + rgb;
-        game->drawLine(game->screenPos(groundLines[i]->getStartPoint() + shift), game->screenPos(groundLines[i]->getEndPoint() + shift), color);
+        game->drawRect(
+			game->screenX(0.5 * (groundLines[i]->getStartPoint().x + groundLines[i]->getEndPoint().x)),
+			game->screenY(0.5 * (groundLines[i]->getStartPoint().y + groundLines[i]->getEndPoint().y)),
+			groundLines[i]->getLength() * game->getFullScale() * 0.5f,
+			1.0f,
+			groundLines[i]->getAngle(),
+			color, color
+		);
+//        game->drawLine(game->screenPos(groundLines[i]->getStartPoint() + shift), game->screenPos(groundLines[i]->getEndPoint() + shift), color);
 	}
 	///Нарисуем рамочки вокруг платформ
 	for (int i = 0; i < platformsCount; i++) {
@@ -901,7 +1067,58 @@ bool RenderFunc()
         delete bounds;
 	}
 
-	game->drawRect(game->screenX(0), game->screenY(0), game->screenX(width), game->screenY(height), 0xFFAAAAAA, 0);
+    /// Границы карты
+	game->drawRect(
+        game->screenX(-halfWidth, layerRatios[currentLayer]),
+        game->screenY(-halfHeight, layerRatios[currentLayer]),
+        game->screenX(halfWidth, layerRatios[currentLayer]),
+        game->screenY(halfHeight, layerRatios[currentLayer]),
+        0xFFAAAAAA, 0
+    );
+    game->drawRect(
+        game->screenX(-halfWidth),
+        game->screenY(-halfHeight),
+        game->screenX(halfWidth),
+        game->screenY(halfHeight),
+        0xAAFF0000, 0
+    );
+    /// Сетка
+	float gx = 0;
+	while (gx < halfWidth) {
+        game->drawLine(
+            game->screenX(gx, layerRatios[currentLayer]),
+            game->screenY(-halfHeight, layerRatios[currentLayer]),
+            game->screenX(gx, layerRatios[currentLayer]),
+            game->screenY(halfHeight, layerRatios[currentLayer]),
+            0x44000000
+        );
+        game->drawLine(
+            game->screenX(-gx, layerRatios[currentLayer]),
+            game->screenY(-halfHeight, layerRatios[currentLayer]),
+            game->screenX(-gx, layerRatios[currentLayer]),
+            game->screenY(halfHeight, layerRatios[currentLayer]),
+            0x44000000
+        );
+        gx += gridSizes[currentGridSize];
+	}
+	float gy = 0;
+	while (gy < halfHeight) {
+        game->drawLine(
+            game->screenX(-halfWidth, layerRatios[currentLayer]),
+            game->screenY(gy, layerRatios[currentLayer]),
+            game->screenX(halfWidth, layerRatios[currentLayer]),
+            game->screenY(gy, layerRatios[currentLayer]),
+            0x44000000
+        );
+        game->drawLine(
+            game->screenX(-halfWidth, layerRatios[currentLayer]),
+            game->screenY(-gy, layerRatios[currentLayer]),
+            game->screenX(halfWidth, layerRatios[currentLayer]),
+            game->screenY(-gy, layerRatios[currentLayer]),
+            0x44000000
+        );
+        gy += gridSizes[currentGridSize];
+	}
 
 	if (selectedAnim > -1) {///Подсветим выбранную анимацию
 		hgeRect* bb = new hgeRect();
@@ -934,29 +1151,34 @@ bool RenderFunc()
 
     switch (mode) {
 		case MODE_INSERT_ANIM:
-			beingInsertedAnim->RenderEx(insertX, insertY, 0, game->getScaleFactor(), game->getScaleFactor());
+		    if (worldInsertX < -halfWidth || worldInsertX > halfWidth || worldInsertY < -halfHeight || worldInsertY > halfHeight) {
+                disabledIcon->Render(x, y);
+            }
+            else {
+                beingInsertedAnim->RenderEx(insertX, insertY, 0, game->getScaleFactor(), game->getScaleFactor());
+            }
             break;
         case MODE_ANIM_ROTATE:
 			game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, 0xFFffa500);
 			break;
         case MODE_INSERT_GL_STEP1:
-            if (worldX <= 0 || worldX >= width || worldY <= 0 || worldY >= height) {
+            if (worldInsertX < -halfWidth || worldInsertX > halfWidth || worldInsertY < -halfHeight || worldInsertY > halfHeight) {
                 disabledIcon->Render(x, y);
             }
 			break;
         case MODE_INSERT_GL_STEP2:
-            if (worldX <= 0 || worldX >= width || worldY <= 0 || worldY >= height) {
+            if (worldInsertX < -halfWidth || worldInsertX > halfWidth || worldInsertY < -halfHeight || worldInsertY > halfHeight) {
                 disabledIcon->Render(x, y);
             } else {
                 DWORD color = 0xFFFFFFAA;
-                if (abs(game->screenY(dragOffsetY) - y) > abs(game->screenX(dragOffsetX) - x)) {
+                if ( abs(dragOffsetY - worldInsertY) > abs(dragOffsetX - worldInsertX) ) {
                     color = 0xFF00FFAA;
                 }
-                game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, color);
+                game->getHge()->Gfx_RenderLine(game->screenX(dragOffsetX), game->screenY(dragOffsetY), insertX, insertY, color);
             }
 			break;
         case MODE_NEW_PLATFORM:
-            game->drawRect(game->screenX(dragOffsetX), game->screenY(dragOffsetY), x, y, 0xFF0000AA, 0);
+            game->drawRect(game->screenX(dragOffsetX, layerRatios[currentLayer]), game->screenY(dragOffsetY, layerRatios[currentLayer]), x, y, 0xFF0000AA, 0);
             break;
 	}
 
@@ -998,13 +1220,46 @@ bool RenderFunc()
 		game->drawRect(73 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 6, 77 + t * 50 + platformSpotsCounts[selectedPlatform] * 50, 44, 0xFF00AA00, 0xFF00AA00);
 	}
 
+	game->drawRect(1300, 422, 1600, 900, 0xFF000000, 0xFFFFFFFF);
+	for (int i = 0; i < layersCount; i++) {
+        DWORD color = 0xFF000000;
+        if (i == currentLayer) {
+            color = 0xFF0000FF;
+            game->drawRect(1301, 422 + i * 16, 1599, 438 + i * 16, color, 0);
+        }
+        if (y > 422 + i * 16.0f && y < 438 + i * 16.0f) {
+            if (x > 1590 && x < 1600) {
+                color = 0xFFFF0000;
+                game->drawRect(1301, 422 + i * 16, 1599, 438 + i * 16, color, 0);
+            }
+            else if (x > 1300 && x < 1590) {
+                color = 0xFF0000FF;
+            }
+        }
+        arial12->SetColor(color);
+        arial12->printf(1301, 422 + i * 16.0f, HGETEXT_LEFT, "%d order %d ratio %.2f", i, layerOrders[i], layerRatios[i]);
+        arial12->printf(1591, 422 + i * 16.0f, HGETEXT_LEFT, "-");
+	}
+	DWORD color = 0xFF000000;
+	if (x > 1590 && x < 1600 && y > 422 + layersCount * 16.0f && y < 438 + layersCount * 16.0f) {
+        color = 0xFF00AA00;
+        game->drawRect(1301, 422 + layersCount * 16, 1599, 438 + layersCount * 16, color, 0);
+    }
+    arial12->SetColor(color);
+	arial12->printf(1590, 422 + layersCount * 16.0f, HGETEXT_LEFT, "+");
+
+	game->drawRect(0.0f, 880.0f, 1300.0f, 900.0f, 0, 0xAACCCCCC);
+	arial12->SetColor(0xFF000000);
+	arial12->printf(10.0f, 882.0f, HGETEXT_LEFT, "zoom: %.1f%% grid: %.2f m", game->getScaleFactor() * 100.0f, gridSizes[currentGridSize]);
+
 	game->endDraw();
 	return false;
 }
 
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+    icon = MAKEINTRESOURCE(ME_ICON);
+
 	// Get HGE interface
 	HGE * hge = hgeCreate(HGE_VERSION);
 	hge->System_SetState(HGE_USESOUND, false);
@@ -1015,6 +1270,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "SoD map editor");
+
+	hge->System_SetState(HGE_ICON,         icon);
 
 	game = new Game(hge);
 
@@ -1035,24 +1292,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//bgTex = game->getHge()->Texture_Load("box.png");
 
 		fnt = new hgeFont("font1.fnt");
+		arial12 = new hgeFont("arial12.fnt");
+
         disabledIcon = game->loadAnimation("disabled_icon.xml");
 
 		mainWindow = new GUIWindow(game, 1, 1300, 1, 300, 420);
 		game->getGUI()->AddCtrl(mainWindow);
-		mainWindow->AddCtrl(new hgeGUIMenuItem(2, fnt, 120, 20, 0.0f, "save", saveMapButtonClick));
-		mainWindow->AddCtrl(new hgeGUIMenuItem(3, fnt, 180, 20, 0.0f, "load", loadMapButtonClick));
-		mainWindow->AddCtrl(new hgeGUIMenuItem(4, fnt, 150, 60, 0.0f, "insert anim", insertAnimButtonClick));
-		mainWindow->AddCtrl(new hgeGUIMenuItem(5, fnt, 150, 90, 0.0f, "insert line", insertGroundLineButtonClick));
-		mainWindow->AddCtrl(new hgeGUIMenuItem(6, fnt, 150, 120, 0.0f, "spot mode", spotModeButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(2, fnt, 120, 20, "save", saveMapButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(3, fnt, 180, 20, "load", loadMapButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(4, fnt, 150, 60, "insert anim", insertAnimButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(5, fnt, 150, 90, "insert line", insertGroundLineButtonClick));
+		mainWindow->AddCtrl(new hgeGUIMenuItem(6, fnt, 150, 120, "spot mode", spotModeButtonClick));
 
-		animsWindow = new GUIWindow(game, 100, 1000, 120, 600, 600);
-		game->getGUI()->AddCtrl(animsWindow);
-		for (int i = 0; i < game->getAnimationsCount(); i++) {
-			animsWindow->AddCtrl(new hgeGUIMenuItem(101 + i, fnt, 250, 10 + i * 20, 0.0f, game->getAnimationName(i), animButtonClick));
-		}
-		animsWindow->Hide();
+		layerWindow = new GUIWindow(game, 20, 1300, 820, 300, 80);
+		game->getGUI()->AddCtrl(layerWindow);
 
-		game->moveCamera(b2Vec2(-6.5, -4.5));
+		hgeGUIMenuItem* orderLabel = new hgeGUIMenuItem(21, arial12, 30.0f, 10.0f, "order", NULL);
+		orderLabel->bEnabled = false;
+		layerWindow->AddCtrl(orderLabel);
+
+		hgeGUIEditableLabel* orderInput = new hgeGUIEditableLabel(game, 22, arial12, 50.0f, 10.0f, 240.0f, 17.0f, "");
+		orderInput->setOnChange(orderChange);
+		layerWindow->AddCtrl(orderInput);
+
+		hgeGUIMenuItem* ratioLabel = new hgeGUIMenuItem(23, arial12, 30.0f, 30.0f, "ratio", NULL);
+		ratioLabel->bEnabled = false;
+		layerWindow->AddCtrl(ratioLabel);
+
+		hgeGUIEditableLabel* ratioInput = new hgeGUIEditableLabel(game, 24, arial12, 50.0f, 30.0f, 240.0f, 17.0f, "");
+		ratioInput->setOnChange(ratioChange);
+		layerWindow->AddCtrl(ratioInput);
+
+		selectLayer(0);
 
 		game->loop();
 

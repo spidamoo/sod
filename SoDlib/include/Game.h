@@ -114,11 +114,9 @@ class Game
 		int getMapAnimationsCount();
 		MapAnimation* getMapAnimation(int index);
 
-		int getEffectPrototypesCount();
-		EffectPrototype* getEffectPrototype(int index);
+		int getEffectPrototypesCount(); EffectPrototype* getEffectPrototype(int index); void addEffectPrototype(), removeEffectPrototype(int index);
 
-		int getConditionPrototypesCount();
-		ConditionPrototype* getConditionPrototype(int index);
+		int getConditionPrototypesCount(); ConditionPrototype* getConditionPrototype(int index); void addConditionPrototype(), removeConditionPrototype(int index);
 
 		HGE* getHge();
 		b2World* getWorld();
@@ -126,13 +124,13 @@ class Game
 		hgeGUI* getGUI();
 
 		int getScreenWidth(), getScreenHeight();
-		float getWorldScreenWidth(), getWorldScreenHeight();
-		float getMapWidth(), getMapHeight();
+		float getViewportWidth(), getViewportHeight(), getHalfViewportWidth(), getHalfViewportHeight();
+		float getMapWidth(), getMapHeight(), getHalfMapWidth(), getHalfMapHeight();
 
-		float worldX(float screenX);
-		float worldY(float screenY);
-        float screenX(float worldX);
-		float screenY(float worldY);
+		float worldX(float screenX); float worldX(float screenX, float ratio);
+		float worldY(float screenY); float worldY(float screenY, float ratio);
+        float screenX(float worldX); float screenX(float worldX, float ratio);
+		float screenY(float worldY); float screenY(float worldY, float ratio);
 		b2Vec2 screenPos(b2Vec2 worldPos);
 
 		float getScaleFactor(), getFullScale();
@@ -162,6 +160,9 @@ class Game
 
 		GroundLine** groundLines; int groundLinesCount;
 		MapAnimation** mapAnimations; int mapAnimationsCount;
+		int backLayersCount, frontLayersCount; float* backLayerRatios; float* frontLayerRatios;
+		int** backLayersMapAnimations; int** frontLayersMapAnimations; int* backLayersMapAnimationsCounts; int* frontLayersMapAnimationsCounts;
+
 		Platform** platforms; int platformsCount;
 		Character** characters; int charactersCount;
 		EffectPrototype** effectPrototypes; int effectPrototypesCount;
@@ -175,8 +176,8 @@ class Game
 		int32 velocityIterations;
 		int32 positionIterations;
 
-		int screenWidth, screenHeight;
-		float mapWidth, mapHeight;
+		int screenWidth, screenHeight; float viewportWidth, viewportHeight, halfViewportWidth, halfViewportHeight;
+		float mapWidth, mapHeight, halfMapWidth, halfMapHeight;
 
 		b2Vec2 cameraPos;
 		float mouseX, mouseY;

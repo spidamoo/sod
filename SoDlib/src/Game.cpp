@@ -4,14 +4,6 @@ Game::Game(HGE * hge) {
 	this->world = world;
 	this->hge = hge;
 
-	screenWidth = 1600; screenHeight = 900;
-	// Set up video mode
-	hge->System_SetState(HGE_WINDOWED, true);
-	hge->System_SetState(HGE_SCREENWIDTH, screenWidth);
-	hge->System_SetState(HGE_SCREENHEIGHT, screenHeight);
-	hge->System_SetState(HGE_SCREENBPP, 32);
-	hge->System_SetState(HGE_FPS, 60);
-
 	//groundLines = new GroundLine*[1000];
 	groundLinesCount = 0;
 	//mapAnimations = new MapAnimation*[1000];
@@ -39,6 +31,7 @@ Game::Game(HGE * hge) {
 	gravity = b2Vec2(0, 20);
 
 	mapWidth = 10; mapHeight = 10;
+	halfMapWidth = mapWidth * 0.5f; halfMapHeight = mapHeight * 0.5f;
 	counters = new float[COUNTERS_COUNT];
 	displayedCounters = new float[COUNTERS_COUNT];
 
@@ -49,6 +42,18 @@ Game::Game(HGE * hge) {
 	textureNames = new char*[1000];
 	textures = new HTEXTURE[1000];
 	texturesCount = 0;
+
+	screenWidth = 1600; screenHeight = 900;
+	viewportWidth = screenWidth / (pixelsPerMeter * scaleFactor);
+	viewportHeight = screenHeight / (pixelsPerMeter * scaleFactor);
+	halfViewportWidth = viewportWidth * 0.5f;
+	halfViewportHeight = viewportHeight * 0.5f;
+	// Set up video mode
+	hge->System_SetState(HGE_WINDOWED, true);
+	hge->System_SetState(HGE_SCREENWIDTH, screenWidth);
+	hge->System_SetState(HGE_SCREENHEIGHT, screenHeight);
+	hge->System_SetState(HGE_SCREENBPP, 32);
+	hge->System_SetState(HGE_FPS, 60);
 
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
@@ -171,7 +176,19 @@ void Game::updateWorld(float dt) {
 	clock_t eue = clock();
 	counters[COUNTER_EFFECTS_UPDATE] += (float)(eue - eus);
 	if (charactersCount > 0) {
-        cameraPos = characters[0]->getPosition() - b2Vec2(0.5 * screenWidth / pixelsPerMeter, 0.5 * screenHeight / pixelsPerMeter);
+        cameraPos = characters[0]->getPosition();
+        if (cameraPos.x - halfViewportWidth < -halfMapWidth) {
+            cameraPos.x = -halfMapWidth + halfViewportWidth;
+        }
+        if (cameraPos.x + halfViewportWidth > halfMapWidth) {
+            cameraPos.x = halfMapWidth - halfViewportWidth;
+        }
+        if (cameraPos.y - halfViewportHeight < -halfMapHeight) {
+            cameraPos.y = -halfMapHeight + halfViewportHeight;
+        }
+        if (cameraPos.y + halfViewportHeight > halfMapHeight) {
+            cameraPos.y = halfMapHeight - halfViewportHeight;
+        }
 	}
 }
 bool Game::updateControls() {
@@ -218,6 +235,18 @@ void Game::drawGame() {
 	}
 	clock_t et = clock();
 	updateCounter(COUNTER_DRAW_GL, et - st);
+
+	st = clock();
+
+	for (int i = 0; i < backLayersCount; i++) {
+        for (int j = 0; j < backLayersMapAnimationsCounts[i]; j++) {
+            mapAnimations[ backLayersMapAnimations[i][j] ]->draw(backLayerRatios[i], schematicDrawMode);
+        }
+	}
+
+	et = clock();
+	float map_t = et - st;
+
 	st = clock();
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->draw(schematicDrawMode);
@@ -225,11 +254,15 @@ void Game::drawGame() {
 	et = clock();
 	updateCounter(COUNTER_DRAW_CHARACTERS, et - st);
 	st = clock();
-	for (int i = 0; i < mapAnimationsCount; i++) {
-        mapAnimations[i]->draw(schematicDrawMode);
+
+	for (int i = 0; i < frontLayersCount; i++) {
+        for (int j = 0; j < frontLayersMapAnimationsCounts[i]; j++) {
+            mapAnimations[ frontLayersMapAnimations[i][j] ]->draw(frontLayerRatios[i], schematicDrawMode);
+        }
 	}
+
 	et = clock();
-	updateCounter(COUNTER_DRAW_MAP, et - st);
+	updateCounter(COUNTER_DRAW_MAP, map_t + et - st);
 	st = clock();
 	for (int i = 0; i < effectsCount; i++) {
         effects[i]->draw(schematicDrawMode);
@@ -742,6 +775,26 @@ EffectPrototype* Game::getEffectPrototype(int index) {
 		return NULL;
 	}
 }
+void Game::addEffectPrototype() {
+    EffectPrototype** _effectPrototypes = new EffectPrototype*[effectPrototypesCount + 1];
+    for (int i = 0; i < effectPrototypesCount; i++) {
+        _effectPrototypes[i] = effectPrototypes[i];
+    }
+    _effectPrototypes[effectPrototypesCount] = new EffectPrototype(this);
+
+    delete effectPrototypes;
+    effectPrototypes = _effectPrototypes;
+    effectPrototypesCount++;
+}
+void Game::removeEffectPrototype(int index) {
+    if (index > -1 && index < effectPrototypesCount) {
+        delete effectPrototypes[index];
+        for (int i = index; i < effectPrototypesCount - 1; i++) {
+            effectPrototypes[i] = effectPrototypes[i + 1];
+        }
+        effectPrototypesCount--;
+    }
+}
 
 int Game::getConditionPrototypesCount() {
 	return conditionPrototypesCount;
@@ -753,23 +806,57 @@ ConditionPrototype* Game::getConditionPrototype(int index) {
 		return NULL;
 	}
 }
+void Game::addConditionPrototype() {
+    ConditionPrototype** _conditionPrototypes = new ConditionPrototype*[conditionPrototypesCount + 1];
+    for (int i = 0; i < conditionPrototypesCount; i++) {
+        _conditionPrototypes[i] = conditionPrototypes[i];
+    }
+    _conditionPrototypes[conditionPrototypesCount] = new ConditionPrototype();
+
+    delete conditionPrototypes;
+    conditionPrototypes = _conditionPrototypes;
+    conditionPrototypesCount++;
+}
+void Game::removeConditionPrototype(int index) {
+    if (index > -1 && index < conditionPrototypesCount) {
+        delete conditionPrototypes[index];
+        for (int i = index; i < conditionPrototypesCount - 1; i++) {
+            conditionPrototypes[i] = conditionPrototypes[i + 1];
+        }
+        conditionPrototypesCount--;
+    }
+}
+
+float Game::worldX(float screenX, float ratio) {
+    return (screenX - getScreenWidth() * 0.5f) / (pixelsPerMeter * scaleFactor) + cameraPos.x * ratio;
+}
+float Game::worldY(float screenY, float ratio) {
+    return (screenY - getScreenHeight() * 0.5f) / (pixelsPerMeter * scaleFactor) + cameraPos.y * ratio;
+}
 
 float Game::worldX(float screenX) {
-    return (screenX / (pixelsPerMeter * scaleFactor)) + cameraPos.x;
+    return (screenX - getScreenWidth() * 0.5f) / (pixelsPerMeter * scaleFactor) + cameraPos.x;
 }
 float Game::worldY(float screenY) {
-    return (screenY / (pixelsPerMeter * scaleFactor)) + cameraPos.y;
+    return (screenY - getScreenHeight() * 0.5f) / (pixelsPerMeter * scaleFactor) + cameraPos.y;
 }
 
 float Game::screenX(float worldX) {
-    return (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor);
+    return (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f;
 }
 float Game::screenY(float worldY) {
-    return (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor);
+    return (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f;
 }
-b2Vec2 Game::screenPos(b2Vec2 worldPos) {
-    return b2Vec2(this->screenX(worldPos.x), this->screenY(worldPos.y));
+
+float Game::screenX(float worldX, float ratio) {
+    return (worldX - cameraPos.x * ratio) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f;
 }
+float Game::screenY(float worldY, float ratio) {
+    return (worldY - cameraPos.y * ratio) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f;
+}
+//b2Vec2 Game::screenPos(b2Vec2 worldPos) {
+//    return b2Vec2(this->screenX(worldPos.x), this->screenY(worldPos.y));
+//}
 
 float Game::getScaleFactor() {
     return scaleFactor;
@@ -783,6 +870,10 @@ float Game::getFullScale() {
 
 void Game::setScale(float scale) {
 	scaleFactor = scale;
+	viewportWidth = screenWidth / (pixelsPerMeter * scaleFactor);
+	viewportHeight = screenHeight / (pixelsPerMeter * scaleFactor);
+	halfViewportWidth = viewportWidth * 0.5f;
+	halfViewportHeight = viewportHeight * 0.5f;
 }
 void Game::moveCamera(b2Vec2 diff) {
 	cameraPos += diff;
@@ -819,19 +910,32 @@ int Game::getScreenWidth() {
 int Game::getScreenHeight() {
 	return screenHeight;
 }
+float Game::getViewportWidth() {
+    return viewportWidth;
+}
+float Game::getViewportHeight() {
+    return viewportHeight;
+}
+float Game::getHalfViewportWidth() {
+    return halfViewportWidth;
+}
+float Game::getHalfViewportHeight() {
+    return halfViewportHeight;
+}
+
 float Game::getMapWidth() {
 	return mapWidth;
 }
 float Game::getMapHeight() {
 	return mapHeight;
 }
+float Game::getHalfMapWidth() {
+	return halfMapWidth;
+}
+float Game::getHalfMapHeight() {
+	return halfMapHeight;
+}
 
-float Game::getWorldScreenWidth() {
-	return screenWidth / (scaleFactor * pixelsPerMeter);
-}
-float Game::getWorldScreenHeight() {
-	return screenHeight / (scaleFactor * pixelsPerMeter);
-}
 
 void Game::loadMap(char* fn) {
 	//mapAnimations = new hgeAnimation*[256];
@@ -856,6 +960,8 @@ void Game::loadMap(char* fn) {
     	if (root->Attribute("height")) {
 			mapHeight = atof(root->Attribute("height"));
 		}
+		halfMapWidth = mapWidth * 0.5f; halfMapHeight = mapHeight * 0.5f;
+
 		mapAnimationsCount = atoi(root->Attribute("animations"));
 		mapAnimations = new MapAnimation*[mapAnimationsCount];
 		groundLinesCount = atoi(root->Attribute("ground_lines"));
@@ -863,19 +969,105 @@ void Game::loadMap(char* fn) {
 		platformsCount = atoi(root->Attribute("platforms"));
 		platforms = new Platform*[platformsCount];
 
-        TiXmlElement* element = root->FirstChildElement("animation");
+
+        int layersCount = atoi( root->Attribute("layers") );
+        int orders[layersCount];
+        float ratios[layersCount];
+
+        int layer = 0;
+        TiXmlElement* element = root->FirstChildElement("layer");
+        while (element) {
+            orders[layer] = atoi( element->Attribute("order") );
+            ratios[layer] = atof( element->Attribute("ratio") );
+            layer++;
+
+            element = element->NextSiblingElement("layer");
+        }
+        layersCount = layer;
+
+        int minOrder = -1;
+        int maxOrder = -100;
+        for (int i = 0; i < layersCount; i++) {
+            if ( orders[i] < minOrder )
+                minOrder = orders[i];
+            if ( orders[i] > maxOrder && orders[i] < 0 )
+                maxOrder = orders[i];
+        }
+        backLayersCount = 0;
+        int backLayerIndices[layersCount];
+        backLayerRatios = new float[layersCount];
+        for (int order = minOrder; order <= maxOrder; order++) {
+            for (int i = 0; i < layersCount; i++) {
+                if (order == orders[i]) {
+                    backLayerRatios[backLayersCount] = ratios[i];
+                    backLayerIndices[backLayersCount] = i;
+                    backLayersCount++;
+                }
+            }
+        }
+
+        minOrder = 100;
+        maxOrder = 0;
+        for (int i = 0; i < layersCount; i++) {
+            if ( orders[i] < minOrder && orders[i] >= 0 )
+                minOrder = orders[i];
+            if ( orders[i] > maxOrder )
+                maxOrder = orders[i];
+        }
+        frontLayersCount = 0;
+        int frontLayerIndices[layersCount];
+        frontLayerRatios = new float[layersCount];
+        for (int order = minOrder; order <= maxOrder; order++) {
+            for (int i = 0; i < layersCount; i++) {
+                if (order == orders[i]) {
+                    frontLayerRatios[frontLayersCount] = ratios[i];
+                    frontLayerIndices[frontLayersCount] = i;
+                    frontLayersCount++;
+                }
+            }
+        }
+
+        backLayersMapAnimationsCounts = new int[backLayersCount];
+        frontLayersMapAnimationsCounts = new int[frontLayersCount];
+        backLayersMapAnimations = new int*[backLayersCount];
+        frontLayersMapAnimations = new int*[frontLayersCount];
+        for (int i = 0; i < backLayersCount; i++) {
+            backLayersMapAnimations[i] = new int[mapAnimationsCount];
+            backLayersMapAnimationsCounts[i] = 0;
+        }
+        for (int i = 0; i < frontLayersCount; i++) {
+            frontLayersMapAnimations[i] = new int[mapAnimationsCount];
+            frontLayersMapAnimationsCounts[i] = 0;
+        }
+
+
+        element = root->FirstChildElement("animation");
         int i = 0;
         while (element) {
         	printf("loading animation...\n");
         	float x = atof(element->Attribute("x"));
 			float y = atof(element->Attribute("y"));
 			float angle = atof(element->Attribute("angle"));
+			int layer = atoi(element->Attribute("layer"));
 
 			char* animationName = (char*)element->Attribute("file");
 			hgeAnimation* animation = loadAnimation(animationName);
 			delete animationName;
 
             mapAnimations[i] = new MapAnimation(this, animation, x, y, angle);
+
+            for (int j = 0; j < backLayersCount; j++) {
+                if (backLayerIndices[j] == layer) {
+                    backLayersMapAnimations[j][ backLayersMapAnimationsCounts[j] ] = i;
+                    backLayersMapAnimationsCounts[j]++;
+                }
+            }
+            for (int j = 0; j < frontLayersCount; j++) {
+                if (frontLayerIndices[j] == layer) {
+                    frontLayersMapAnimations[j][ frontLayersMapAnimationsCounts[j] ] = i;
+                    frontLayersMapAnimationsCounts[j]++;
+                }
+            }
 
 			i++;
             element = element->NextSiblingElement("animation");
@@ -1081,7 +1273,8 @@ char* getFileName(const char* path) {
         }
         i++;
     }
-    for (int i = 0; i < finish - start; i++) {
+
+    for (i = 0; i < finish - start; i++) {
         fileName[i] = path[start + i];
     }
     fileName[i] = '\0';

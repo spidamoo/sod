@@ -13,9 +13,11 @@ class CharacterHotSpot
 		virtual ~CharacterHotSpot();
 
 		b2Shape* getShape();
+		char* getName(); void setName(char* name);
 	protected:
 		b2Shape* shape;
 		int type;
+		char* name;
 	private:
 };
 

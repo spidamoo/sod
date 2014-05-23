@@ -67,8 +67,8 @@ class EffectPrototype
 		Effect* spawnEffect(Character* character);
 		Effect* spawnEffect(Effect* effect);
 
-		int getPositionType(), getAreaType(), getHotSpotIndex();
-		void setPositionType(int type), setAreaType(int type);
+		int getPositionType(), getAreaType(); char* getHotSpotName();
+		void setPositionType(int type), setAreaType(int type), setHotSpotName(char* name);
 
 		int getActionsCount(); EffectAction* getAction(int index);
 		void addAction(), removeAction(int index);
@@ -102,7 +102,8 @@ class EffectPrototype
 
 		float* params;
 
-		int positionType, areaType, hotSpotIndex;
+		int positionType, areaType;
+		char* hotSpotName;
 
 		EffectAction** actions; int actionsCount;
 		char** animations; int animationsCount; int blendMode;

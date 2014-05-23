@@ -137,7 +137,7 @@ b2Vec2 GroundLine::getEndPoint()
 
 void GroundLine::debugDraw(DWORD color)
 {
-	game->drawLine(game->screenPos(startPoint), game->screenPos(endPoint), color);
+	game->drawLine(game->screenX(startPoint.x), game->screenY(startPoint.y), game->screenX(endPoint.x), game->screenY(endPoint.y), color);
 }
 void GroundLine::debugDraw()
 {

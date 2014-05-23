@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<condition_prototypes count="2">
+    <prototype value_formula="1" duration_formula="0" interval_formula="0" type="1" name="direct damage" />
+    <prototype value_formula="0" duration_formula="5" interval_formula="0" type="2" name="simple stun" />
+</condition_prototypes>

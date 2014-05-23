@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/characterEditor" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/characterEditor.debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="bin/Debug/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -20,7 +20,7 @@
 				<Option output="bin/Release/characterEditor" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="bin/Release" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
@@ -46,6 +46,10 @@
 			<Add library="..\Box2D\libBox2D.a" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="resource.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

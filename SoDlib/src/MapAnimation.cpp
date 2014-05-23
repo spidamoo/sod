@@ -14,11 +14,11 @@ MapAnimation::~MapAnimation()
     //dtor
 }
 
-void MapAnimation::draw(bool schematicMode)
+void MapAnimation::draw(float ratio, bool schematicMode)
 {
     animation->RenderEx(
-        game->screenX(x),
-        game->screenY(y),
+        game->screenX(x, ratio),
+        game->screenY(y, ratio),
         angle,
         game->getScaleFactor(),
         game->getScaleFactor()

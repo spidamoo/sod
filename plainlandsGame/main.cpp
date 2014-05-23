@@ -5,6 +5,10 @@
 #include <Box2D/Box2D.h>
 #include <SoDlib.h>
 
+#include "resource.h"
+
+LPTSTR icon;
+
 Game * game;
 
 bool FrameFunc()
@@ -29,6 +33,8 @@ bool RenderFunc()
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+    icon = MAKEINTRESOURCE(_ICON);
+
 	// Get HGE interface
 	HGE * hge = hgeCreate(HGE_VERSION);
 	hge->System_SetState(HGE_USESOUND, false);
@@ -38,6 +44,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "plainlands game");
+
+	hge->System_SetState(HGE_ICON,         icon);
 
 	//b2Vec2 gravity(0.0f, 10.0f);
 	//b2World* world = new b2World(gravity);

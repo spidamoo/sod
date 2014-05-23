@@ -7,6 +7,10 @@
 #include <windows.h>
 #include <list>
 
+#include "resource.h"
+
+LPTSTR icon;
+
 /// Переменные
 //{
 
@@ -30,6 +34,7 @@ const int MODE_ADD_HOTSPOT_BOX_STEP1  = 32;
 const int MODE_ADD_HOTSPOT_BOX_STEP2  = 33;
 const int MODE_HOTSPOT_DRAG           = 34;
 const int MODE_HOTSPOT_ROTATE         = 35;
+const int MODE_HOTSPOT_CONTEXT_MENU   = 36;
 
 const int MODE_ANGLE_DRAG  = 40;
 
@@ -52,6 +57,8 @@ GUIWindow* hotspotTypesWindow;
 GUIWindow* animContextMenuWindow;
 GUIWindow* movesIndexWindow;
 hgeGUIEditableLabel* moveNameLabel;
+GUIWindow* hotSpotContextWindow;
+
 GUIWindow* actionCauseContextWindow;
 GUIWindow* actionCauseTypeWindow;
 GUIWindow* actionCauseParamWindowSwitch;
@@ -70,7 +77,6 @@ hgeGUIEditableLabel* actionEffectParamInput;
 hgeGUIEditableLabel* actionEffectParam2Input;
 
 GUIWindow* frameContextWindow;
-
 GUIWindow* moveContextWindow;
 
 hgeAnimation* beingInsertedAnim;
@@ -348,14 +354,25 @@ float animAngle(int anim) {
 			}
 
 			float progress = (prevDiff / (prevDiff - nextDiff));
-			float pAngle = angleAnimAngle[currentMove][prevAngle][anim];
-			float nAngle = angleAnimAngle[currentMove][nextAngle][anim];
 
-			if (nAngle < pAngle) {
-                nAngle += 2 * M_PI;
-			}
-			return pAngle
-				+ (nAngle - pAngle) * progress;
+			while (angleAnimAngle[currentMove][prevAngle][anim] > M_PI) {
+                angleAnimAngle[currentMove][prevAngle][anim] -= 2.0f * M_PI;
+            }
+            while (angleAnimAngle[currentMove][prevAngle][anim] < -M_PI) {
+                angleAnimAngle[currentMove][prevAngle][anim] += 2.0f * M_PI;
+            }
+            while (angleAnimAngle[currentMove][nextAngle][anim] - angleAnimAngle[currentMove][prevAngle][anim] > M_PI) {
+                angleAnimAngle[currentMove][nextAngle][anim] -= 2.0f * M_PI;
+            }
+            while (angleAnimAngle[currentMove][nextAngle][anim] - angleAnimAngle[currentMove][prevAngle][anim] < -M_PI) {
+                angleAnimAngle[currentMove][nextAngle][anim] += 2.0f * M_PI;
+            }
+
+//			if (nAngle < pAngle) {
+//                nAngle += 2 * M_PI;
+//			}
+			return angleAnimAngle[currentMove][prevAngle][anim]
+				+ (angleAnimAngle[currentMove][nextAngle][anim] - angleAnimAngle[currentMove][prevAngle][anim]) * progress;
 		}
 	}
 }
@@ -705,12 +722,12 @@ void resetMode() {
 
         mainWindow->Show();
         animContextMenuWindow->Hide();
-
         movesIndexWindow->Hide();
         moveNameLabel->Hide();
         actionCauseContextWindow->Hide();
         frameContextWindow->Hide();
         moveContextWindow->Hide();
+        hotSpotContextWindow->Hide();
     }
     else {
         mode = MODE_MOVES_INDEX;
@@ -829,6 +846,7 @@ bool saveCharacter(char* fn) {
         TiXmlElement* element = new TiXmlElement( "hotspot" );
         characterElem->LinkEndChild( element );
         element->SetAttribute("shape", "box");
+        element->SetAttribute("name", hotSpots[i]->getName());
         element->SetDoubleAttribute("x", hotSpotX[i]);
         element->SetDoubleAttribute("y", hotSpotY[i]);
         element->SetDoubleAttribute("angle", hotSpotAngle[i]);
@@ -1024,6 +1042,7 @@ bool loadCharacter(char* fn) {
 			b2PolygonShape* box = new b2PolygonShape();
 			box->SetAsBox(0.5f * w, 0.5f * h);
 			hotSpots[i] = new CharacterHotSpot(box, 1);
+            hotSpots[i]->setName( (char*)element->Attribute("name") );
 
 			hotSpotX[i] = x;
 			hotSpotY[i] = y;
@@ -1294,49 +1313,6 @@ bool loadCharacterButtonClick(hgeGUIObject* sender) {
     if ( GetOpenFileName(&ofn) ) {
         loadCharacter(szFile);
     }
-}
-
-bool insertFrameButtonClick(hgeGUIObject* sender) {
-	for (int i = 0; i < bodiesCount; i++) {
-		frameAnimX[currentMove][framesCounts[currentMove]][i] = frameAnimX[currentMove][currentFrame][i];
-		frameAnimY[currentMove][framesCounts[currentMove]][i] = frameAnimY[currentMove][currentFrame][i];
-		frameAnimAngle[currentMove][framesCounts[currentMove]][i] = frameAnimAngle[currentMove][currentFrame][i];
-		frameAnimScaleX[currentMove][framesCounts[currentMove]][i] = frameAnimScaleX[currentMove][currentFrame][i];
-		frameAnimScaleY[currentMove][framesCounts[currentMove]][i] = frameAnimScaleY[currentMove][currentFrame][i];
-		frameAnimShow[currentMove][framesCounts[currentMove]][i] = frameAnimShow[currentMove][currentFrame][i];
-		frameAnimLayer[currentMove][framesCounts[currentMove]][i] = frameAnimLayer[currentMove][currentFrame][i];
-		frameAnimHideLayer[currentMove][framesCounts[currentMove]][i] = frameAnimHideLayer[currentMove][currentFrame][i];
-	}
-	framesLengths[currentMove][framesCounts[currentMove]] = 0.5f;
-	for (int i = 0; i < hotSpotsCount; i++) {
-		frameHotSpotX[currentMove][framesCounts[currentMove]][i] = frameHotSpotX[currentMove][currentFrame][i];
-		frameHotSpotY[currentMove][framesCounts[currentMove]][i] = frameHotSpotY[currentMove][currentFrame][i];
-		frameHotSpotAngle[currentMove][framesCounts[currentMove]][i] = frameHotSpotAngle[currentMove][currentFrame][i];
-		frameHotSpotShow[currentMove][framesCounts[currentMove]][i] = frameHotSpotShow[currentMove][currentFrame][i];
-	}
-
-	currentFrame = framesCounts[currentMove];
-	framesCounts[currentMove] += 1;
-}
-bool insertAngleButtonClick(hgeGUIObject* sender) {
-	for (int i = 0; i < bodiesCount; i++) {
-		angleAnimX[currentMove][angleCounts[currentMove]][i] = angleAnimX[currentMove][currentFrame][i];
-		angleAnimY[currentMove][angleCounts[currentMove]][i] = angleAnimY[currentMove][currentFrame][i];
-		angleAnimAngle[currentMove][angleCounts[currentMove]][i] = angleAnimAngle[currentMove][currentFrame][i];
-		angleAnimScaleX[currentMove][angleCounts[currentMove]][i] = angleAnimScaleX[currentMove][currentFrame][i];
-		angleAnimScaleY[currentMove][angleCounts[currentMove]][i] = angleAnimScaleY[currentMove][currentFrame][i];
-		angleAnimShow[currentMove][angleCounts[currentMove]][i] = angleAnimShow[currentMove][currentFrame][i];
-	}
-	angles[currentMove][angleCounts[currentMove]] = angles[currentMove][currentFrame];
-	for (int i = 0; i < hotSpotsCount; i++) {
-		angleHotSpotX[currentMove][angleCounts[currentMove]][i] = angleHotSpotX[currentMove][currentFrame][i];
-		angleHotSpotY[currentMove][angleCounts[currentMove]][i] = angleHotSpotY[currentMove][currentFrame][i];
-		angleHotSpotAngle[currentMove][angleCounts[currentMove]][i] = angleHotSpotAngle[currentMove][currentFrame][i];
-		//angleHotSpotShow[currentMove][angleCounts[currentMove]][i] = angleHotSpotShow[currentMove][currentFrame][i];
-	}
-
-	currentFrame = angleCounts[currentMove];
-	angleCounts[currentMove] += 1;
 }
 
 bool increaseLengthButtonClick(hgeGUIObject* sender) {
@@ -1640,10 +1616,6 @@ bool moveNameChange(hgeGUIObject* sender) {
     delete moveNames[currentMove];
     moveNames[currentMove] = copyString(((hgeGUIEditableLabel*)sender)->getTitle());
 }
-bool removeActionCauseClick(hgeGUIObject* sender) {
-}
-bool addActionCauseClick(hgeGUIObject* sender) {
-}
 bool setActionCauseClick(hgeGUIObject* sender) {
     int type = ACTIONCAUSE_TYPE_NONE;
     switch (sender->id) {
@@ -1907,6 +1879,7 @@ bool duplicateMoveClick(hgeGUIObject* sender) {
             frameHotSpotAngle[movesCount][frame][i] = frameHotSpotAngle[currentMove][frame][i];
             frameHotSpotShow[movesCount][frame][i]  = frameHotSpotShow[currentMove][frame][i];
         }
+        framesLengths[movesCount][frame] = framesLengths[currentMove][frame];
     }
 
     for (int angle = 0; angle < angleCounts[currentMove]; angle++) {
@@ -1937,6 +1910,55 @@ bool closeMoveContextMenuClick(hgeGUIObject* sender) {
     resetMode();
 }
 
+bool hotSpotNameChange(hgeGUIObject* sender) {
+    hotSpots[selectedHotSpot]->setName( ( (hgeGUIEditableLabel*)sender )->getTitle() );
+}
+bool closeHotSpotContextWindowClick(hgeGUIObject* sender) {
+    resetMode();
+}
+
+bool insertFrameButtonClick(hgeGUIObject* sender) {
+	for (int i = 0; i < bodiesCount; i++) {
+		frameAnimX[currentMove][framesCounts[currentMove]][i] = frameAnimX[currentMove][currentFrame][i];
+		frameAnimY[currentMove][framesCounts[currentMove]][i] = frameAnimY[currentMove][currentFrame][i];
+		frameAnimAngle[currentMove][framesCounts[currentMove]][i] = frameAnimAngle[currentMove][currentFrame][i];
+		frameAnimScaleX[currentMove][framesCounts[currentMove]][i] = frameAnimScaleX[currentMove][currentFrame][i];
+		frameAnimScaleY[currentMove][framesCounts[currentMove]][i] = frameAnimScaleY[currentMove][currentFrame][i];
+		frameAnimShow[currentMove][framesCounts[currentMove]][i] = frameAnimShow[currentMove][currentFrame][i];
+		frameAnimLayer[currentMove][framesCounts[currentMove]][i] = frameAnimLayer[currentMove][currentFrame][i];
+		frameAnimHideLayer[currentMove][framesCounts[currentMove]][i] = frameAnimHideLayer[currentMove][currentFrame][i];
+	}
+	framesLengths[currentMove][framesCounts[currentMove]] = 0.5f;
+	for (int i = 0; i < hotSpotsCount; i++) {
+		frameHotSpotX[currentMove][framesCounts[currentMove]][i] = frameHotSpotX[currentMove][currentFrame][i];
+		frameHotSpotY[currentMove][framesCounts[currentMove]][i] = frameHotSpotY[currentMove][currentFrame][i];
+		frameHotSpotAngle[currentMove][framesCounts[currentMove]][i] = frameHotSpotAngle[currentMove][currentFrame][i];
+		frameHotSpotShow[currentMove][framesCounts[currentMove]][i] = frameHotSpotShow[currentMove][currentFrame][i];
+	}
+
+	currentFrame = framesCounts[currentMove];
+	framesCounts[currentMove] += 1;
+}
+bool insertAngleButtonClick(hgeGUIObject* sender) {
+	for (int i = 0; i < bodiesCount; i++) {
+		angleAnimX[currentMove][angleCounts[currentMove]][i] = angleAnimX[currentMove][currentFrame][i];
+		angleAnimY[currentMove][angleCounts[currentMove]][i] = angleAnimY[currentMove][currentFrame][i];
+		angleAnimAngle[currentMove][angleCounts[currentMove]][i] = angleAnimAngle[currentMove][currentFrame][i];
+		angleAnimScaleX[currentMove][angleCounts[currentMove]][i] = angleAnimScaleX[currentMove][currentFrame][i];
+		angleAnimScaleY[currentMove][angleCounts[currentMove]][i] = angleAnimScaleY[currentMove][currentFrame][i];
+		angleAnimShow[currentMove][angleCounts[currentMove]][i] = angleAnimShow[currentMove][currentFrame][i];
+	}
+	angles[currentMove][angleCounts[currentMove]] = angles[currentMove][currentFrame];
+	for (int i = 0; i < hotSpotsCount; i++) {
+		angleHotSpotX[currentMove][angleCounts[currentMove]][i] = angleHotSpotX[currentMove][currentFrame][i];
+		angleHotSpotY[currentMove][angleCounts[currentMove]][i] = angleHotSpotY[currentMove][currentFrame][i];
+		angleHotSpotAngle[currentMove][angleCounts[currentMove]][i] = angleHotSpotAngle[currentMove][currentFrame][i];
+		//angleHotSpotShow[currentMove][angleCounts[currentMove]][i] = angleHotSpotShow[currentMove][currentFrame][i];
+	}
+
+	currentFrame = angleCounts[currentMove];
+	angleCounts[currentMove] += 1;
+}
 //} События
 
 //} Интерфейс
@@ -1951,11 +1973,9 @@ bool FrameFunc() {
 
 	if (game->getHge()->Input_GetMouseWheel() > 0) {
 		game->setScale(game->getScaleFactor() * 2);
-		game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
 	}
 	if (game->getHge()->Input_GetMouseWheel() < 0) {
 		game->setScale(game->getScaleFactor() * 0.5);
-		game->setCamera(b2Vec2(worldX - game->getWorldScreenWidth() * 0.5f, worldY - game->getWorldScreenHeight() * 0.5f));
 	}
 
 	if (mode < MODE_MOVES_INDEX) {
@@ -2128,11 +2148,17 @@ bool FrameFunc() {
                     }
                     else {
                         selectedBody = getPointedBody(x, y);
+                        selectedHotSpot = getPointedHotSpot(x, y);
                         if (selectedBody != -1) {
                             mode = MODE_ANIM_CONTEXT_MENU;
                             animContextMenuWindow->Move(x, y);
                             animContextMenuWindow->Show();
                             ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(51) )->setTitle(bodyNames[selectedBody]);
+                        } else if (selectedHotSpot != -1 && hsShow(selectedHotSpot)) {
+                            mode = MODE_HOTSPOT_CONTEXT_MENU;
+                            hotSpotContextWindow->Move(x, y);
+                            hotSpotContextWindow->Show();
+                            ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(81) )->setTitle( hotSpots[selectedHotSpot]->getName() );
                         } else {
                             dragOffsetX = x;
                             dragOffsetY = y;
@@ -3038,6 +3064,8 @@ bool RenderFunc() {
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+    icon = MAKEINTRESOURCE(CE_ICON);
+
 	// Get HGE interface
 	HGE * hge = hgeCreate(HGE_VERSION);
 	hge->System_SetState(HGE_USESOUND, false);
@@ -3048,6 +3076,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	hge->System_SetState(HGE_TITLE, "SoD character editor");
+
+	hge->System_SetState(HGE_ICON,         icon);
 
 	game = new Game(hge);
 
@@ -3256,6 +3286,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		moveContextWindow->AddCtrl(new hgeGUIMenuItem(77, arial12, 100, 40, "ok", closeMoveContextMenuClick));
 		moveContextWindow->Hide();
 
+		hotSpotContextWindow = new GUIWindow(game, 80, 0, 0, 200, 60);
+		game->getGUI()->AddCtrl(hotSpotContextWindow);
+		hgeGUIEditableLabel* hotSpotNameInput = new hgeGUIEditableLabel(game, 81, arial12, 2, 2, 196, 17, "");
+		hotSpotNameInput->setOnChange(hotSpotNameChange);
+		hotSpotContextWindow->AddCtrl(hotSpotNameInput);
+		hotSpotContextWindow->AddCtrl(new hgeGUIMenuItem(89, arial12, 100, 40, "ok", closeHotSpotContextWindowClick));
+		hotSpotContextWindow->Hide();
+
 		movesIndexWindow = new GUIWindow(game, 200, 1300, 0, 300, 900);
 		game->getGUI()->AddCtrl(movesIndexWindow);
 		movesIndexWindow->AddCtrl(new hgeGUIMenuItem(201, fnt, 150, 20, "frames mode", movesModeButtonClick));
@@ -3268,8 +3306,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		actionCauseContextWindow = new GUIWindow(game, 240, 0, 0, 250, 220);
 		game->getGUI()->AddCtrl(actionCauseContextWindow);
-//		actionCauseContextWindow->AddCtrl(new hgeGUIMenuItem(241, arial12, 62, 200, "remove", removeActionCauseClick));
-//		actionCauseContextWindow->AddCtrl(new hgeGUIMenuItem(242, arial12, 187, 200, "add ", addActionCauseClick));
 		actionCauseContextWindow->AddCtrl(new hgeGUIMenuItem(243, arial12, 230, 0, "close", closeActioncauseWindowClick));
 
 		actionCauseTypeWindow = new GUIWindow(game, 250, 0, 20, 125, 200);
@@ -3332,8 +3368,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionEffectParam2Input->setOnChange(actionParamInputChange);
 
 		actionEffectContextWindow->Hide();
-
-		game->moveCamera(b2Vec2(-17, -12));
 
 		game->loop();
 
