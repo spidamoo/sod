@@ -80,10 +80,13 @@ void resetMode() {
 int getPointedAnim(float x, float y) {
 	int selected = -1;
 	for (int i = 0; i < animationsCount; i++) {
+        if (currentLayer != animationLayer[i])
+            continue;
+
         hgeRect* bb = new hgeRect();
         animations[i]->GetBoundingBoxEx(
-            game->screenX(animationX[i]),
-            game->screenY(animationY[i]),
+            game->screenX(animationX[i], layerRatios[ animationLayer[i] ]),
+            game->screenY(animationY[i], layerRatios[ animationLayer[i] ]),
             animationAngle[i],
             game->getScaleFactor(),
             game->getScaleFactor(),
@@ -97,6 +100,8 @@ int getPointedAnim(float x, float y) {
 	return selected;
 }
 int getPointedGroundLine(float x, float y) {
+    if (currentLayer != 0)
+        return -1;
 	int selected = -1;
 	for (int i = 0; i < groundLinesCount; i++) {
 		float distance = distanceToSegment(
@@ -1123,8 +1128,8 @@ bool RenderFunc() {
 	if (selectedAnim > -1) {///Подсветим выбранную анимацию
 		hgeRect* bb = new hgeRect();
         animations[selectedAnim]->GetBoundingBoxEx(
-            game->screenX(animationX[selectedAnim]),
-            game->screenY(animationY[selectedAnim]),
+            game->screenX(animationX[selectedAnim], layerRatios[ animationLayer[selectedAnim] ]),
+            game->screenY(animationY[selectedAnim], layerRatios[ animationLayer[selectedAnim] ]),
             animationAngle[selectedAnim],
             game->getScaleFactor(),
             game->getScaleFactor(),

@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<character_resource_prototypes count="1">
+    <prototype name="health" default_full_value="10" default_regen="0.1" />
+</character_resource_prototypes>

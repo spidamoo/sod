@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../working folder/conditionEditor.debug" prefix_auto="1" extension_auto="1" />
+				<Option output="../working folder/conditionEditor_debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../working folder/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />

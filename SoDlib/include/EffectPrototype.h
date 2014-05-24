@@ -83,7 +83,7 @@ class EffectPrototype
 		void setStartFunction(int ident, const char* expression);
 
 		void setParam(int index, float value);
-		void setName(const char* name);
+		void setName(char* name);
 		char* getName();
 
 		const char* getAnimation(int index);

@@ -1,14 +1,10 @@
 #include "NonPlayerCharacter.h"
 
-NonPlayerCharacter::NonPlayerCharacter(TiXmlElement* xml, Game * game, b2Vec2 origin) : Character(xml, game, origin)
-{
+NonPlayerCharacter::NonPlayerCharacter(TiXmlElement* xml, Game * game, b2Vec2 origin) : Character(xml, game, origin) {
 	targetCharacter = -1;
-	//ctor
 }
 
-NonPlayerCharacter::~NonPlayerCharacter()
-{
-	//dtor
+NonPlayerCharacter::~NonPlayerCharacter() {
 }
 
 void NonPlayerCharacter::control(float dt)

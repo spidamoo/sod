@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<character_param_prototypes count="1">
+    <prototype name="defense" default_normal_value="0.0" />
+</character_param_prototypes>

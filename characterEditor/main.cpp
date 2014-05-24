@@ -736,7 +736,6 @@ void resetMode() {
         moveNameLabel->Show();
 
         mainWindow->Hide();
-        animsWindow->Hide();
         animContextMenuWindow->Hide();
     }
 }

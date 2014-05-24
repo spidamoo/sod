@@ -53,14 +53,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	game = new Game(hge);
 	if (game->preload()) {
 		//game->loadConstruction("ground.xml", b2Vec2(10, 5), b2_staticBody);
-		game->loadPlayerCharacter("mage.xml", b2Vec2(2, 1));
-		game->loadNonPlayerCharacter("rat.xml", b2Vec2(10, 1));
-		//game->loadNonPlayerCharacter("stone_ant.xml", b2Vec2(8, 0));
-		//game->addGroundLine(new GroundLine(game, -1, 2, 20, 3));
-		game->loadMap("map.xml");
+		game->loadCharacterParamPrototypes("character_params.xml");
+        game->loadCharacterResourcePrototypes("character_resources.xml");
+        game->loadCharacterStatusPrototypes("character_statuses.xml");
+        game->loadCharacterMoveTypes("move_types.xml");
 		game->loadEffectPrototypes("effects.xml");
 		game->loadConditionPrototypes("conditions.xml");
-		game->moveCamera(b2Vec2(0, -4.5));
+		game->loadMap("map.xml");
+		game->loadPlayerCharacter("mage.xml", b2Vec2(2, 1));
+		game->loadNonPlayerCharacter("rat.xml", b2Vec2(10, 1));
+
 		game->loop();
 	}
 

@@ -630,7 +630,7 @@ Character * Game::loadPlayerCharacter(char * fn, b2Vec2 origin) {
     }
 }
 Character * Game::loadNonPlayerCharacter(char * fn, b2Vec2 origin) {
-	printf("loading player character %s ... \n", fn);
+	printf("loading non player character %s ... \n", fn);
     TiXmlDocument doc(fn);
     bool loadOkay = doc.LoadFile();
     if (loadOkay) {
@@ -765,6 +765,34 @@ MapAnimation* Game::getMapAnimation(int index) {
 	}
 }
 
+bool Game::loadEffectPrototypes(char* fileName) {
+	printf("loading effect prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
+
+		effectPrototypesCount = atoi(root->Attribute("count"));
+		effectPrototypes = new EffectPrototype*[effectPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			EffectPrototype* newObject = new EffectPrototype(this);
+            newObject->loadFromXml(element);
+            effectPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        effectPrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+
+}
 int Game::getEffectPrototypesCount() {
 	return effectPrototypesCount;
 }
@@ -796,6 +824,35 @@ void Game::removeEffectPrototype(int index) {
     }
 }
 
+/// condition prototypes
+//{
+bool Game::loadConditionPrototypes(char* fileName) {
+	printf("loading condition prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("condition_prototypes");
+
+		conditionPrototypesCount = atoi(root->Attribute("count"));
+		conditionPrototypes = new ConditionPrototype*[conditionPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			ConditionPrototype* newObject = new ConditionPrototype(this);
+            newObject->loadFromXml(element);
+            conditionPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        conditionPrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
 int Game::getConditionPrototypesCount() {
 	return conditionPrototypesCount;
 }
@@ -811,7 +868,7 @@ void Game::addConditionPrototype() {
     for (int i = 0; i < conditionPrototypesCount; i++) {
         _conditionPrototypes[i] = conditionPrototypes[i];
     }
-    _conditionPrototypes[conditionPrototypesCount] = new ConditionPrototype();
+    _conditionPrototypes[conditionPrototypesCount] = new ConditionPrototype(this);
 
     delete conditionPrototypes;
     conditionPrototypes = _conditionPrototypes;
@@ -826,6 +883,253 @@ void Game::removeConditionPrototype(int index) {
         conditionPrototypesCount--;
     }
 }
+//}
+
+/// character param prototypes
+//{
+bool Game::loadCharacterParamPrototypes(char* fileName) {
+	printf("loading character param prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("character_param_prototypes");
+
+		characterParamPrototypesCount = atoi(root->Attribute("count"));
+		characterParamPrototypes = new CharacterParamPrototype*[characterParamPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			CharacterParamPrototype* newObject = new CharacterParamPrototype();
+            newObject->loadFromXml(element);
+            characterParamPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        characterParamPrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
+int Game::getCharacterParamPrototypesCount() {
+	return characterParamPrototypesCount;
+}
+CharacterParamPrototype* Game::getCharacterParamPrototype(int index) {
+	if (index > -1 && index < characterParamPrototypesCount) {
+		return characterParamPrototypes[index];
+	} else {
+		return NULL;
+	}
+}
+void Game::addCharacterParamPrototype() {
+    CharacterParamPrototype** _characterParamPrototypes = new CharacterParamPrototype*[characterParamPrototypesCount + 1];
+    for (int i = 0; i < characterParamPrototypesCount; i++) {
+        _characterParamPrototypes[i] = characterParamPrototypes[i];
+    }
+    _characterParamPrototypes[characterParamPrototypesCount] = new CharacterParamPrototype();
+
+    delete characterParamPrototypes;
+    characterParamPrototypes = _characterParamPrototypes;
+    characterParamPrototypesCount++;
+}
+void Game::removeCharacterParamPrototype(int index) {
+    if (index > -1 && index < characterParamPrototypesCount) {
+        delete characterParamPrototypes[index];
+        for (int i = index; i < characterParamPrototypesCount - 1; i++) {
+            characterParamPrototypes[i] = characterParamPrototypes[i + 1];
+        }
+        characterParamPrototypesCount--;
+    }
+}
+
+//}
+/// character resource prototypes
+//{
+bool Game::loadCharacterResourcePrototypes(char* fileName) {
+	printf("loading character resource prototypes %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("character_resource_prototypes");
+
+		characterResourcePrototypesCount = atoi(root->Attribute("count"));
+		characterResourcePrototypes = new CharacterResourcePrototype*[characterResourcePrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			CharacterResourcePrototype* newObject = new CharacterResourcePrototype();
+            newObject->loadFromXml(element);
+            characterResourcePrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        characterResourcePrototypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
+int Game::getCharacterResourcePrototypesCount() {
+	return characterResourcePrototypesCount;
+}
+CharacterResourcePrototype* Game::getCharacterResourcePrototype(int index) {
+	if (index > -1 && index < characterResourcePrototypesCount) {
+		return characterResourcePrototypes[index];
+	} else {
+		return NULL;
+	}
+}
+void Game::addCharacterResourcePrototype() {
+    CharacterResourcePrototype** _characterResourcePrototypes = new CharacterResourcePrototype*[characterResourcePrototypesCount + 1];
+    for (int i = 0; i < characterResourcePrototypesCount; i++) {
+        _characterResourcePrototypes[i] = characterResourcePrototypes[i];
+    }
+    _characterResourcePrototypes[characterResourcePrototypesCount] = new CharacterResourcePrototype();
+
+    delete characterResourcePrototypes;
+    characterResourcePrototypes = _characterResourcePrototypes;
+    characterResourcePrototypesCount++;
+}
+void Game::removeCharacterResourcePrototype(int index) {
+    if (index > -1 && index < characterResourcePrototypesCount) {
+        delete characterResourcePrototypes[index];
+        for (int i = index; i < characterResourcePrototypesCount - 1; i++) {
+            characterResourcePrototypes[i] = characterResourcePrototypes[i + 1];
+        }
+        characterResourcePrototypesCount--;
+    }
+}
+
+//}
+/// character status prototypes
+//{
+bool Game::loadCharacterStatusPrototypes(char* fileName) {
+	printf("loading character status prototypes %s ... ", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("character_status_prototypes");
+
+		characterStatusPrototypesCount = atoi(root->Attribute("count"));
+		characterStatusPrototypes = new CharacterStatusPrototype*[characterStatusPrototypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			CharacterStatusPrototype* newObject = new CharacterStatusPrototype();
+            newObject->loadFromXml(element);
+            characterStatusPrototypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        characterStatusPrototypesCount = i;
+        printf("%i of them\n", characterStatusPrototypesCount);
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
+int Game::getCharacterStatusPrototypesCount() {
+	return characterStatusPrototypesCount;
+}
+CharacterStatusPrototype* Game::getCharacterStatusPrototype(int index) {
+	if (index > -1 && index < characterStatusPrototypesCount) {
+		return characterStatusPrototypes[index];
+	} else {
+		return NULL;
+	}
+}
+void Game::addCharacterStatusPrototype() {
+    CharacterStatusPrototype** _characterStatusPrototypes = new CharacterStatusPrototype*[characterStatusPrototypesCount + 1];
+    for (int i = 0; i < characterStatusPrototypesCount; i++) {
+        _characterStatusPrototypes[i] = characterStatusPrototypes[i];
+    }
+    _characterStatusPrototypes[characterStatusPrototypesCount] = new CharacterStatusPrototype();
+
+    delete characterStatusPrototypes;
+    characterStatusPrototypes = _characterStatusPrototypes;
+    characterStatusPrototypesCount++;
+}
+void Game::removeCharacterStatusPrototype(int index) {
+    if (index > -1 && index < characterStatusPrototypesCount) {
+        delete characterStatusPrototypes[index];
+        for (int i = index; i < characterStatusPrototypesCount - 1; i++) {
+            characterStatusPrototypes[i] = characterStatusPrototypes[i + 1];
+        }
+        characterStatusPrototypesCount--;
+    }
+}
+
+//}
+/// character move types
+//{
+bool Game::loadCharacterMoveTypes(char* fileName) {
+	printf("loading character move types %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("character_move_types");
+
+		characterMoveTypesCount = atoi(root->Attribute("count"));
+		characterMoveTypes = new CharacterMoveType*[characterMoveTypesCount];
+
+        TiXmlElement* element = root->FirstChildElement("prototype");
+        int i = 0;
+        while (element) {
+			CharacterMoveType* newObject = new CharacterMoveType();
+            newObject->loadFromXml(element);
+            characterMoveTypes[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("prototype");
+        }
+        characterMoveTypesCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
+int Game::getCharacterMoveTypesCount() {
+	return characterMoveTypesCount;
+}
+CharacterMoveType* Game::getCharacterMoveType(int index) {
+	if (index > -1 && index < characterMoveTypesCount) {
+		return characterMoveTypes[index];
+	} else {
+		return NULL;
+	}
+}
+void Game::addCharacterMoveType() {
+    CharacterMoveType** _characterMoveTypes = new CharacterMoveType*[characterMoveTypesCount + 1];
+    for (int i = 0; i < characterMoveTypesCount; i++) {
+        _characterMoveTypes[i] = characterMoveTypes[i];
+    }
+    _characterMoveTypes[characterMoveTypesCount] = new CharacterMoveType();
+
+    delete characterMoveTypes;
+    characterMoveTypes = _characterMoveTypes;
+    characterMoveTypesCount++;
+}
+void Game::removeCharacterMoveType(int index) {
+    if (index > -1 && index < characterMoveTypesCount) {
+        delete characterMoveTypes[index];
+        for (int i = index; i < characterMoveTypesCount - 1; i++) {
+            characterMoveTypes[i] = characterMoveTypes[i + 1];
+        }
+        characterMoveTypesCount--;
+    }
+}
+
+//}
 
 float Game::worldX(float screenX, float ratio) {
     return (screenX - getScreenWidth() * 0.5f) / (pixelsPerMeter * scaleFactor) + cameraPos.x * ratio;
@@ -990,7 +1294,7 @@ void Game::loadMap(char* fn) {
         for (int i = 0; i < layersCount; i++) {
             if ( orders[i] < minOrder )
                 minOrder = orders[i];
-            if ( orders[i] > maxOrder && orders[i] < 0 )
+            if ( orders[i] > maxOrder && orders[i] <= 0 )
                 maxOrder = orders[i];
         }
         backLayersCount = 0;
@@ -1009,7 +1313,7 @@ void Game::loadMap(char* fn) {
         minOrder = 100;
         maxOrder = 0;
         for (int i = 0; i < layersCount; i++) {
-            if ( orders[i] < minOrder && orders[i] >= 0 )
+            if ( orders[i] < minOrder && orders[i] > 0 )
                 minOrder = orders[i];
             if ( orders[i] > maxOrder )
                 maxOrder = orders[i];
@@ -1102,63 +1406,9 @@ void Game::loadMap(char* fn) {
 
 }
 
-bool Game::loadEffectPrototypes(char* fileName) {
-	printf("loading effect prototypes %s ... \n", fileName);
-    TiXmlDocument doc(fileName);
-    bool loadOkay = doc.LoadFile();
-    if (loadOkay) {
-    	TiXmlElement* root = doc.FirstChildElement("effect_prototypes");
 
-		effectPrototypesCount = atoi(root->Attribute("count"));
-		effectPrototypes = new EffectPrototype*[effectPrototypesCount];
 
-        TiXmlElement* element = root->FirstChildElement("prototype");
-        int i = 0;
-        while (element) {
-			EffectPrototype* newObject = new EffectPrototype(this);
-            newObject->loadFromXml(element);
-            effectPrototypes[i] = newObject;
 
-			i++;
-            element = element->NextSiblingElement("prototype");
-        }
-        effectPrototypesCount = i;
-		return true;
-    } else {
-        printf("failed\n");
-        return false;
-    }
-
-}
-
-bool Game::loadConditionPrototypes(char* fileName) {
-	printf("loading condition prototypes %s ... \n", fileName);
-    TiXmlDocument doc(fileName);
-    bool loadOkay = doc.LoadFile();
-    if (loadOkay) {
-    	TiXmlElement* root = doc.FirstChildElement("condition_prototypes");
-
-		conditionPrototypesCount = atoi(root->Attribute("count"));
-		conditionPrototypes = new ConditionPrototype*[conditionPrototypesCount];
-
-        TiXmlElement* element = root->FirstChildElement("prototype");
-        int i = 0;
-        while (element) {
-			ConditionPrototype* newObject = new ConditionPrototype();
-            newObject->loadFromXml(element);
-            conditionPrototypes[i] = newObject;
-
-			i++;
-            element = element->NextSiblingElement("prototype");
-        }
-        conditionPrototypesCount = i;
-		return true;
-    } else {
-        printf("failed\n");
-        return false;
-    }
-
-}
 
 void Game::updateCounter(int index, float value) {
     counters[index] += value;

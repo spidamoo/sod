@@ -19,7 +19,7 @@ class hgeGUIMenuItem : public hgeGUIObject
         virtual bool  MouseLButton(bool bDown);
         virtual bool  KeyClick(int key, int chr);
 
-        char* getTitle();
+        char* getTitle(); void setTitle(char* title);
 
     private:
         hgeFont       *fnt;

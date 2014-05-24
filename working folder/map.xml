@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <map animations="41" ground_lines="1" platforms="0" layers="3" width="100" height="30">
     <layer order="0" ratio="1" />
-    <layer order="-7" ratio="0.8" />
+    <layer order="-7" ratio="0.6" />
     <layer order="1" ratio="1.1" />
     <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-48" y="14.8" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-44" y="14.8" angle="0" layer="0" />
@@ -29,11 +29,11 @@
     <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="44" y="14.8" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="48" y="14.8" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-41.2" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-27.8" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-17.4" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-4" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="9.8" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="28.2" y="12.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-27.8" y="12" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-17.4" y="12" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-4" y="12" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="9.8" y="12" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="28" y="12" angle="0" layer="1" />
     <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="38.2" y="12.8" angle="0" layer="1" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="-46" y="14" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="-34" y="14" angle="0" layer="2" />

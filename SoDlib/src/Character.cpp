@@ -8,8 +8,15 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin) {
 	width = 0.5f;
 	halfWidth = 0.25f;
 
-	maxHitPoints = 10;
-	currentHitPoints = 10;
+    params = new CharacterParam*[game->getCharacterParamPrototypesCount()];
+	for (int i = 0; i < game->getCharacterParamPrototypesCount(); i++) {
+        params[i] = new CharacterParam( this, game->getCharacterParamPrototype(i) );
+	}
+
+	resources = new CharacterResource*[game->getCharacterResourcePrototypesCount()];
+	for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
+        resources[i] = new CharacterResource( this, game->getCharacterResourcePrototype(i) );
+	}
 
 	loadFromXml(xml, origin);
 
@@ -307,6 +314,7 @@ void Character::draw(bool schematicMode) {
 		}
 	}
 
+    /*
 	game->drawRect(
         game->screenX(position.x) - 25,
         game->screenY(position.y - halfHeight) - 10,
@@ -323,6 +331,7 @@ void Character::draw(bool schematicMode) {
             0xFFFF0000, 0xFFFF0000
         );
     }
+    */
 }
 
 void Character::update(float dt) {
@@ -473,7 +482,7 @@ void Character::update(float dt) {
 		}
 	}
 
-    int* conditionsToRemove = new int[conditionsCount];
+    int conditionsToRemove[conditionsCount];
 	int conditionsToRemoveCount = 0;
 	for (int i = 0; i < conditionsCount; i++) {
         conditions[i]->update(dt);
@@ -485,9 +494,22 @@ void Character::update(float dt) {
 	for (int i = conditionsToRemoveCount - 1; i >= 0 ; i--) {
 	    removeCondition( conditionsToRemove[i] );
 	}
-	delete conditionsToRemove;
 
 	control(dt);
+}
+
+void Character::updateParams(Condition* condition) {
+    switch ( condition->getPrototype()->getType() ) {
+        case CONDITION_TYPE_ADD_RESOURCE:
+        case CONDITION_TYPE_ADD_FULL_RESOURCE:
+        case CONDITION_TYPE_BOOST_RESOURCE:
+        case CONDITION_TYPE_REGEN_RESOURCE:
+            resources[condition->getPrototype()->getParam()]->update();
+            break;
+        case CONDITION_TYPE_ADD_PARAM:
+            params[condition->getPrototype()->getParam()]->update();
+            break;
+    }
 }
 
 void Character::turn() {
@@ -525,13 +547,6 @@ void Character::jump(b2Vec2 speed) {
 
 void Character::move(float dx, float dy) {
     position.x += dx; position.y += dy;
-}
-
-
-void Character::doDamage(int amount) {
-    currentHitPoints -= amount;
-    if ( currentHitPoints < 0)
-        currentHitPoints = 0;
 }
 
 void Character::setAnim(int anim) {
@@ -598,24 +613,38 @@ float Character::getAnimTime() {
     return currentTime;
 }
 
+int Character::getConditionsCount() {
+    return conditionsCount;
+}
+Condition* Character::getCondition(int index) {
+    return conditions[index];
+}
 void Character::addCondition(Condition* condition) {
     conditions[conditionsCount] = condition;
     conditionsCount++;
-}
 
+    updateParams(condition);
+}
 void Character::removeCondition(int index) {
     if (index == conditionsCount - 1) {
-        delete conditions[index];
+        Condition* deleted = conditions[index];
         conditions[index] = NULL;
         conditionsCount--;
+        updateParams(deleted);
+        delete deleted;
     } else {
-        delete conditions[index];
+        Condition* deleted = conditions[index];
         conditions[index] = conditions[conditionsCount - 1];
         conditions[conditionsCount - 1] = NULL;
         conditionsCount--;
+        updateParams(deleted);
+        delete deleted;
     }
 }
 
-int Character::getDamage() {
-    return 1;
+CharacterParam* Character::getParam(int index) {
+    return params[index];
+}
+CharacterResource* Character::getResource(int index) {
+    return resources[index];
 }

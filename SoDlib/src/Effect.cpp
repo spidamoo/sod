@@ -184,6 +184,7 @@ void Effect::update(float dt)
                                     game->getCharacter(j)->addCondition(
                                         game->getConditionPrototype( action->getParam() )->spawnCondition( owner, game->getCharacter(j) )
                                     );
+
                                     actionInteractions[i][j]++;
                                 }
                             }

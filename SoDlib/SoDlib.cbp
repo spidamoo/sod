@@ -56,6 +56,12 @@
 		<Unit filename="include/CharacterActionCause.h" />
 		<Unit filename="include/CharacterActionEffect.h" />
 		<Unit filename="include/CharacterHotSpot.h" />
+		<Unit filename="include/CharacterMoveType.h" />
+		<Unit filename="include/CharacterParam.h" />
+		<Unit filename="include/CharacterParamPrototype.h" />
+		<Unit filename="include/CharacterResource.h" />
+		<Unit filename="include/CharacterResourcePrototype.h" />
+		<Unit filename="include/CharacterStatusPrototype.h" />
 		<Unit filename="include/Condition.h" />
 		<Unit filename="include/ConditionPrototype.h" />
 		<Unit filename="include/Construction.h" />
@@ -97,6 +103,12 @@
 		<Unit filename="src/CharacterActionCause.cpp" />
 		<Unit filename="src/CharacterActionEffect.cpp" />
 		<Unit filename="src/CharacterHotSpot.cpp" />
+		<Unit filename="src/CharacterMoveType.cpp" />
+		<Unit filename="src/CharacterParam.cpp" />
+		<Unit filename="src/CharacterParamPrototype.cpp" />
+		<Unit filename="src/CharacterResource.cpp" />
+		<Unit filename="src/CharacterResourcePrototype.cpp" />
+		<Unit filename="src/CharacterStatusPrototype.cpp" />
 		<Unit filename="src/Condition.cpp" />
 		<Unit filename="src/ConditionPrototype.cpp" />
 		<Unit filename="src/Construction.cpp" />

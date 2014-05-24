@@ -17,10 +17,11 @@ Condition::~Condition()
 
 void Condition::initialize()
 {
-    prototype->setParamsFromCharacter(inflictor);
+    prototype->setParamsFromCharacters(inflictor, bearer);
 
     totalTime = prototype->getDuration();
     interval  = prototype->getInterval();
+    value = prototype->getValue();
 }
 
 void Condition::update(float dt)
@@ -28,12 +29,13 @@ void Condition::update(float dt)
     totalTime -= dt;
     tickTime += dt;
 
-    prototype->setParamsFromCharacter(inflictor);
+    prototype->setParamsFromCharacters(inflictor, bearer);
 
     while ( tickTime >= interval ) {
+        value = prototype->getValue();
         switch ( prototype->getType() ) {
-            case CONDITION_TYPE_DAMAGE:
-                bearer->doDamage( prototype->getValue() );
+            case CONDITION_TYPE_ADD_RESOURCE:
+                bearer->getResource( prototype->getParam() )->add( value );
                 break;
         }
 
@@ -44,7 +46,14 @@ void Condition::update(float dt)
     }
 }
 
-float Condition::getTime()
-{
+ConditionPrototype* Condition::getPrototype() {
+    return prototype;
+}
+
+float Condition::getTime() {
     return totalTime;
+}
+
+float Condition::getValue() {
+    return value;
 }

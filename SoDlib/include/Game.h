@@ -96,14 +96,31 @@ class Game
 		Character*    loadNonPlayerCharacter(char * fn, b2Vec2 origin);
 		b2Fixture*    loadFixture(b2Body* body, TiXmlElement* elem);
 
+        void loadMap(char* fn);
 		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA); void addPlatform(Platform* newPlatform);
-		void addEffect(Effect* newEffect);
 
 		void removeEffect(int index);
 
-		void loadMap(char* fn);
-		bool loadEffectPrototypes(char* fn);
-		bool loadConditionPrototypes(char* fn);
+
+		bool loadEffectPrototypes(char* fn); int getEffectPrototypesCount(); EffectPrototype* getEffectPrototype(int index);
+		void addEffectPrototype(), removeEffectPrototype(int index);
+
+        bool loadConditionPrototypes(char* fn); int getConditionPrototypesCount(); ConditionPrototype* getConditionPrototype(int index);
+        void addConditionPrototype(), removeConditionPrototype(int index);
+
+		bool loadCharacterParamPrototypes(char* fn); int getCharacterParamPrototypesCount(); CharacterParamPrototype* getCharacterParamPrototype(int index);
+        void addCharacterParamPrototype(), removeCharacterParamPrototype(int index);
+
+        bool loadCharacterResourcePrototypes(char* fn); int getCharacterResourcePrototypesCount(); CharacterResourcePrototype* getCharacterResourcePrototype(int index);
+        void addCharacterResourcePrototype(), removeCharacterResourcePrototype(int index);
+
+        bool loadCharacterStatusPrototypes(char* fn); int getCharacterStatusPrototypesCount(); CharacterStatusPrototype* getCharacterStatusPrototype(int index);
+        void addCharacterStatusPrototype(), removeCharacterStatusPrototype(int index);
+
+        bool loadCharacterMoveTypes(char* fn); int getCharacterMoveTypesCount(); CharacterMoveType* getCharacterMoveType(int index);
+        void addCharacterMoveType(), removeCharacterMoveType(int index);
+
+		void addEffect(Effect* newEffect);
 
 		int getCharactersCount();
 		Character* getCharacter(int index);
@@ -113,10 +130,6 @@ class Game
 
 		int getMapAnimationsCount();
 		MapAnimation* getMapAnimation(int index);
-
-		int getEffectPrototypesCount(); EffectPrototype* getEffectPrototype(int index); void addEffectPrototype(), removeEffectPrototype(int index);
-
-		int getConditionPrototypesCount(); ConditionPrototype* getConditionPrototype(int index); void addConditionPrototype(), removeConditionPrototype(int index);
 
 		HGE* getHge();
 		b2World* getWorld();
@@ -165,9 +178,13 @@ class Game
 
 		Platform** platforms; int platformsCount;
 		Character** characters; int charactersCount;
-		EffectPrototype** effectPrototypes; int effectPrototypesCount;
 		Effect** effects; int effectsCount;
+		EffectPrototype** effectPrototypes; int effectPrototypesCount;
 		ConditionPrototype** conditionPrototypes; int conditionPrototypesCount;
+		CharacterParamPrototype** characterParamPrototypes; int characterParamPrototypesCount;
+		CharacterResourcePrototype** characterResourcePrototypes; int characterResourcePrototypesCount;
+		CharacterStatusPrototype** characterStatusPrototypes; int characterStatusPrototypesCount;
+		CharacterMoveType** characterMoveTypes; int characterMoveTypesCount;
 
 		hgeAnimation** animations; char** animationNames; int animationsCount;
 		HTEXTURE* textures; char** textureNames; int texturesCount;

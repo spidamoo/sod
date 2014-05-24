@@ -20,13 +20,12 @@ class Character
 		void draw(bool schematicMode);
 		virtual void control(float dt)=0;
 		void update(float dt);
+		void updateParams(Condition* condition);
 
 		void turn();
 		void run(float speed);
 		void jump(b2Vec2 speed);
 		void move(float dx, float dy);
-
-		void doDamage(int amount);
 
 		void setAnim(int anim);
 
@@ -42,10 +41,11 @@ class Character
 
 		float getAnimTime();
 
-		void addCondition(Condition* condition);
-		void removeCondition(int index);
+        int getConditionsCount(); Condition* getCondition(int index);
+		void addCondition(Condition* condition); void removeCondition(int index);
 
-        int getDamage();
+        CharacterParam* getParam(int index);
+        CharacterResource* getResource(int index);
 	protected:
 	    float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
 
@@ -94,9 +94,10 @@ class Character
 		bool turnedRight;
 		int onGround;
 
-		int currentHitPoints, maxHitPoints;
-
 		Condition** conditions; int conditionsCount;
+
+		CharacterParam** params;
+		CharacterResource** resources;
 };
 #define CHARACTER_H_COMPLETE
 #endif // CHARACTER_H

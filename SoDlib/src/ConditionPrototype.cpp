@@ -1,27 +1,32 @@
 #include "ConditionPrototype.h"
 
-ConditionPrototype::ConditionPrototype()
+ConditionPrototype::ConditionPrototype(Game* _game)
 {
-    type = CONDITION_TYPE_DAMAGE;
+    game = _game;
+    type = CONDITION_TYPE_ADD_RESOURCE;
+    param = 0;
 
-    params = new float[CONDITION_PROTOTYPE_PARAMS_COUNT];
+    inflictor_params    = new float[game->getCharacterParamPrototypesCount()];
+    bearer_params       = new float[game->getCharacterParamPrototypesCount()];
+    inflictor_resources = new float[game->getCharacterResourcePrototypesCount()];
+    bearer_resources    = new float[game->getCharacterResourcePrototypesCount()];
 
     name = "<condition>";
 }
 
 ConditionPrototype::~ConditionPrototype()
 {
-    //dtor
+    delete name;
+    delete inflictor_params;
+    delete bearer_params;
+    delete inflictor_resources;
+    delete bearer_resources;
 }
 
 void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
     printf("loading condition ");
     if ( xml->Attribute("value_formula") ) {
         valueParser.SetExpr( xml->Attribute("value_formula") );
-        for ( int j = 0; j < CONDITION_PROTOTYPE_PARAMS_COUNT; j++ ) {
-            valueParser.DefineVar(CONDITION_PROTOTYPE_PARAM_NAMES[j], &params[j]);
-        }
-
         valueParser.DefineFun("rand", frand);
     } else {
         valueParser.SetExpr("0");
@@ -29,10 +34,6 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
 
     if ( xml->Attribute("duration_formula") ) {
         durationParser.SetExpr( xml->Attribute("duration_formula") );
-        for ( int j = 0; j < CONDITION_PROTOTYPE_PARAMS_COUNT; j++ ) {
-            durationParser.DefineVar(CONDITION_PROTOTYPE_PARAM_NAMES[j], &params[j]);
-        }
-
         durationParser.DefineFun("rand", frand);
     } else {
         durationParser.SetExpr("0");
@@ -40,24 +41,47 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
 
     if ( xml->Attribute("interval_formula") ) {
         intervalParser.SetExpr( xml->Attribute("interval_formula") );
-        for ( int j = 0; j < CONDITION_PROTOTYPE_PARAMS_COUNT; j++ ) {
-            intervalParser.DefineVar(CONDITION_PROTOTYPE_PARAM_NAMES[j], &params[j]);
-        }
-
         intervalParser.DefineFun("rand", frand);
     } else {
         intervalParser.SetExpr("0");
     }
 
+    char buffer[64];
+    for (int i = 0; i < game->getCharacterParamPrototypesCount(); i++) {
+        sprintf(buffer, "inflictor_%s", game->getCharacterParamPrototype(i)->getName());
+        valueParser.DefineVar(buffer, &inflictor_params[i]);
+        durationParser.DefineVar(buffer, &inflictor_params[i]);
+        intervalParser.DefineVar(buffer, &inflictor_params[i]);
+
+        sprintf(buffer, "bearer_%s", game->getCharacterParamPrototype(i)->getName());
+        valueParser.DefineVar(buffer, &bearer_params[i]);
+        durationParser.DefineVar(buffer, &bearer_params[i]);
+        intervalParser.DefineVar(buffer, &bearer_params[i]);
+    }
+    for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
+        sprintf(buffer, "inflictor_%s", game->getCharacterResourcePrototype(i)->getName());
+        valueParser.DefineVar(buffer, &inflictor_resources[i]);
+        durationParser.DefineVar(buffer, &inflictor_resources[i]);
+        intervalParser.DefineVar(buffer, &inflictor_resources[i]);
+
+        sprintf(buffer, "bearer_%s", game->getCharacterResourcePrototype(i)->getName());
+        valueParser.DefineVar(buffer, &bearer_resources[i]);
+        durationParser.DefineVar(buffer, &bearer_resources[i]);
+        intervalParser.DefineVar(buffer, &bearer_resources[i]);
+    }
+
+
 	if (xml->Attribute("type")) {
         type = atoi(xml->Attribute("type"));
         printf("type %d ", type);
-	} else {
-	    type = CONDITION_TYPE_DAMAGE;
 	}
 
 	if (xml->Attribute("name")) {
         name = copyString(xml->Attribute("name"));
+	}
+
+	if (xml->Attribute("param")) {
+        param = atoi(xml->Attribute("param"));
 	}
 
 	printf(" done\n");
@@ -78,15 +102,19 @@ void ConditionPrototype::saveToXml(TiXmlElement* xml) {
 
     xml->SetAttribute("type", type);
     xml->SetAttribute("name", name);
+    xml->SetAttribute("param", param);
 }
 
-void ConditionPrototype::setParam(int index, float value)
+void ConditionPrototype::setParamsFromCharacters(Character* inflictor, Character* bearer)
 {
-    params[index] = value;
-}
-void ConditionPrototype::setParamsFromCharacter(Character* character)
-{
-    setParam( CONDITION_PROTOTYPE_PARAM_DAMAGE, character->getDamage() );
+    for (int i = 0; i < game->getCharacterParamPrototypesCount(); i++) {
+        inflictor_params[i] = inflictor->getParam(i)->getCurrentValue();
+        bearer_params[i] = bearer->getParam(i)->getCurrentValue();
+    }
+    for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
+        inflictor_resources[i] = inflictor->getResource(i)->getCurrentValue();
+        bearer_resources[i] = bearer->getResource(i)->getCurrentValue();
+    }
 }
 
 int ConditionPrototype::getType() {
@@ -94,6 +122,13 @@ int ConditionPrototype::getType() {
 }
 void ConditionPrototype::setType(int _type) {
     type = _type;
+}
+
+int ConditionPrototype::getParam() {
+    return param;
+}
+void ConditionPrototype::setParam(int _param) {
+    param = _param;
 }
 
 float ConditionPrototype::getValue() {
@@ -135,9 +170,7 @@ void ConditionPrototype::setName(const char* _name) {
 }
 
 
-Condition* ConditionPrototype::spawnCondition(Character* inflictor, Character* bearer)
-{
-//    printf("spawning condition\n");
+Condition* ConditionPrototype::spawnCondition(Character* inflictor, Character* bearer) {
     Condition* newObject = new Condition(this, inflictor, bearer);
     newObject->initialize();
     return newObject;

@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<character_move_types count="3">
+    <prototype name="idle" />
+    <prototype name="walk" />
+    <prototype name="jump" />
+</character_move_types>

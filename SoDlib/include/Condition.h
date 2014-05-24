@@ -13,12 +13,13 @@ class Condition
 
         void update(float dt);
 
-        float getTime();
+        ConditionPrototype* getPrototype();
+        float getTime(); float getValue();
     protected:
         ConditionPrototype* prototype;
         Character* inflictor; Character* bearer;
 
-        float totalTime, tickTime, interval;
+        float totalTime, tickTime, interval, value;
     private:
 };
 

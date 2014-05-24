@@ -41,8 +41,7 @@ bool PlayerCharacter::isKeyHit(int key)
 	}
 }
 
-bool PlayerCharacter::isKeyDown(int key)
-{
+bool PlayerCharacter::isKeyDown(int key) {
 	switch (key) {
 		case CHARACTER_KEY_BACK:
 			if (turnedRight) {

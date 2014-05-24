@@ -103,6 +103,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
     }
 
     if (xml->Attribute("name")) {
+        delete name;
         name = copyString(xml->Attribute("name"));
 	}
 
@@ -297,7 +298,7 @@ void EffectPrototype::setParam(int index, float value) {
 char* EffectPrototype::getName() {
     return name;
 }
-void EffectPrototype::setName(const char* _name) {
+void EffectPrototype::setName(char* _name) {
     if (name)
         delete name;
     name = copyString(_name);

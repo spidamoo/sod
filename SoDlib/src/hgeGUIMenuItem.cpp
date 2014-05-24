@@ -88,3 +88,8 @@ char* hgeGUIMenuItem::getTitle() {
 
     return title;
 }
+void hgeGUIMenuItem::setTitle(char* _title) {
+    if (title)
+        delete title;
+    title = copyString(_title);
+}

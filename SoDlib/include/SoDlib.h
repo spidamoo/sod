@@ -18,6 +18,12 @@ class Condition;
 class EffectAction;
 class EffectPrototype;
 class Effect;
+class CharacterParamPrototype;
+class CharacterResourcePrototype;
+class CharacterStatusPrototype;
+class CharacterMoveType;
+class CharacterParam;
+class CharacterResource;
 class Game;
 class hgeGUIObject;
 class hgeGUIMenuItem;
@@ -43,6 +49,12 @@ typedef bool (*guiCallback)(hgeGUIObject* sender);
 #include <Exception.h>
 #include <Game.h>
 //#include <Construction.h>
+#include <CharacterParamPrototype.h>
+#include <CharacterResourcePrototype.h>
+#include <CharacterStatusPrototype.h>
+#include <CharacterMoveType.h>
+#include <CharacterParam.h>
+#include <CharacterResource.h>
 #include <ConditionPrototype.h>
 #include <Condition.h>
 #include <EffectAction.h>
