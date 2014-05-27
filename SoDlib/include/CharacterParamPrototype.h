@@ -14,8 +14,10 @@ class CharacterParamPrototype
 
         char* getName(); void setName(char* name);
         float getDefaultNormalValue(); void setDefaultNormalValue(float defaultNormalValue);
+
     protected:
         char* name; float defaultNormalValue;
+
     private:
 };
 

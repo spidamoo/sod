@@ -48,10 +48,13 @@ const int EFFECT_PARAM_YSPEED   = 12;
 const int EFFECT_PARAM_SCALE    = 13;
 const int EFFECT_PARAM_DT       = 14;
 
-const int EFFECT_PARAMS_COUNT = 15;
+const int EFFECT_PARAM_OWNER_DIRECTION  = 15;
+
+const int EFFECT_PARAMS_COUNT = 16;
 
 static const char* EFFECT_PARAM_NAMES[EFFECT_PARAMS_COUNT] = {
-    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "dt"
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "dt",
+    "owner_direction"
 };
 
 

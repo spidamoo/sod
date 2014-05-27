@@ -1,4 +1,4 @@
 <?xml version="1.0" ?>
 <character_status_prototypes count="1">
-    <prototype name="stun" />
+    <prototype name="stun" priority="0" />
 </character_status_prototypes>

@@ -1,40 +1,42 @@
 <?xml version="1.0" ?>
-<map animations="41" ground_lines="1" platforms="0" layers="3" width="100" height="30">
+<map animations="103" ground_lines="4" platforms="0" layers="5" width="100" height="30">
     <layer order="0" ratio="1" />
-    <layer order="-7" ratio="0.6" />
+    <layer order="-1" ratio="0.6" />
     <layer order="1" ratio="1.1" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-48" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-44" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-40" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-36" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-32" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-28" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-24" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-20" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-16" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="8" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-12" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-8" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-4" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-0" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="4" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="12" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="16" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="20" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="24" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="28" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="32" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="40" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="44" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="48" y="14.8" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-41.2" y="12.8" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-27.8" y="12" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-17.4" y="12" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-4" y="12" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="9.8" y="12" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="28" y="12" angle="0" layer="1" />
-    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="38.2" y="12.8" angle="0" layer="1" />
+    <layer order="-5" ratio="0.01" />
+    <layer order="-4" ratio="0.02" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-46" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="-2" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\ground_anim.xml" x="36" y="-14" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-37.8" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-27.8" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-17.4" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="-4" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="9.8" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="28" y="11.8" angle="0" layer="1" />
+    <animation file="D:\work\my\sod\working folder\bgs\house1.xml" x="38.2" y="11.8" angle="0" layer="1" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="-46" y="14" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="-34" y="14" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="-23" y="14" angle="0" layer="2" />
@@ -44,5 +46,70 @@
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="27" y="14" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="40" y="14" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\lamp.xml" x="50" y="14" angle="0" layer="2" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-49" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-47" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-45" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-43" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-41" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-39" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-37" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-35" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-33" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-31" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-29" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-27" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-25" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-23" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-21" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-19" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-17" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-15" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-13" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-11" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-9" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-7" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-5" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-3" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="-1" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="1" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="3" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="5" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="7" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="9" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="11" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="13" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="15" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="17" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="19" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="21" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="23" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="25" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="27" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="29" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="31" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="33" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="35" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="37" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="39" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="41" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="43" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="45" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="47" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="49" y="15" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\peca.xml" x="10" y="-5" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud.xml" x="12" y="-4" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud2.xml" x="-12" y="-8" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud3.xml" x="-11" y="1" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud4.xml" x="-1" y="-3" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud5.xml" x="11" y="5" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\cloud6.xml" x="5" y="-6.5" angle="0" layer="4" />
+    <animation file="D:\work\my\sod\working folder\bgs\tree.xml" x="39" y="7.6" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\branch.xml" x="34.4" y="9.6" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\branch.xml" x="38.6" y="10.2" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\branch.xml" x="38" y="12.4" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\road.xml" x="39" y="15" angle="0" layer="0" />
     <ground_line x1="-50" y1="14.6" x2="50" y2="14.6" />
+    <ground_line x1="38.2" y1="10.2" x2="39.2" y2="10" />
+    <ground_line x1="37.6" y1="12.4" x2="38.6" y2="12.2" />
+    <ground_line x1="34" y1="9.6" x2="35" y2="9.4" />
 </map>

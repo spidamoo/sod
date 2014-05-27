@@ -130,6 +130,31 @@ void removeCharacterParam(int index) {
     selectCharacterParam(index);
 }
 
+void displayEvent(int index) {
+    int ctrlIndex = 510 + 5 * index;
+
+    game->getGUI()->GetCtrl(ctrlIndex + 1)->bVisible = true;
+    game->getGUI()->GetCtrl(ctrlIndex + 2)->Show();
+    game->getGUI()->GetCtrl(ctrlIndex + 3)->bVisible = true;
+    game->getGUI()->GetCtrl(ctrlIndex + 4)->Show();
+    game->getGUI()->GetCtrl(ctrlIndex + 5)->Show();
+
+    char buffer[16];
+    sprintf( buffer, "%.2f", game->getCharacterResourcePrototype(selectedCharacterResource)->getEventPercent(index) );
+    ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(ctrlIndex + 2) )->setTitle( buffer );
+    sprintf( buffer, "%d", game->getCharacterResourcePrototype(selectedCharacterResource)->getEventCondition(index) );
+    ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(ctrlIndex + 4) )->setTitle( buffer );
+}
+void hideEvent(int index) {
+    int ctrlIndex = 510 + 5 * index;
+
+    game->getGUI()->GetCtrl(ctrlIndex + 1)->Hide();
+    game->getGUI()->GetCtrl(ctrlIndex + 2)->Hide();
+    game->getGUI()->GetCtrl(ctrlIndex + 3)->Hide();
+    game->getGUI()->GetCtrl(ctrlIndex + 4)->Hide();
+    game->getGUI()->GetCtrl(ctrlIndex + 5)->Leave();
+    game->getGUI()->GetCtrl(ctrlIndex + 5)->Hide();
+}
 void selectCharacterResource(int index) {
     selectedCharacterResource = index;
     if (index < 0 || index >= game->getCharacterResourcePrototypesCount())
@@ -144,6 +169,17 @@ void selectCharacterResource(int index) {
     sprintf( buffer, "%.2f", game->getCharacterResourcePrototype(index)->getDefaultRegen() );
     ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(504) )->setTitle( buffer );
 
+    for (int i = 0; i < 16; i++) {
+        if (i < game->getCharacterResourcePrototype(index)->getEventsCount()) {
+            displayEvent(i);
+        }
+        else {
+            hideEvent(i);
+        }
+    }
+    float y = 170.0f + 20.0f * game->getCharacterResourcePrototype(index)->getEventsCount();
+    game->getGUI()->GetCtrl(510)->Move(780.0f, y);
+    game->getGUI()->GetCtrl(510)->Show();
 }
 void addCharacterResource() {
     game->addCharacterResourcePrototype();
@@ -166,7 +202,6 @@ void selectCharacterStatus(int index) {
     ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(603) )->setTitle( game->getCharacterStatusPrototype(index)->getName() );
 }
 void addCharacterStatus() {
-    printf("!");
     game->addCharacterStatusPrototype();
     selectCharacterStatus(game->getCharacterStatusPrototypesCount() - 1);
 }
@@ -242,6 +277,35 @@ bool defaultFullValueChange(hgeGUIObject* sender) {
 }
 bool defaultRegenChange(hgeGUIObject* sender) {
     game->getCharacterResourcePrototype(selectedCharacterResource)->setDefaultRegen( atof( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
+}
+bool percentChange(hgeGUIObject* sender) {
+    int index = (sender->id - 512) / 5;
+    game->getCharacterResourcePrototype(selectedCharacterResource)->setEventPercent( index, atof( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
+}
+bool conditionChange(hgeGUIObject* sender) {
+    int index = (sender->id - 514) / 5;
+    game->getCharacterResourcePrototype(selectedCharacterResource)->setEventCondition( index, atoi( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
+}
+bool removeEventClick(hgeGUIObject* sender) {
+    int index = (sender->id - 515) / 5;
+
+    game->getCharacterResourcePrototype(selectedCharacterResource)->removeEvent(index);
+    hideEvent(index);
+
+    float y = 170.0f + 20.0f * game->getCharacterResourcePrototype(selectedCharacterResource)->getEventsCount();
+    game->getGUI()->GetCtrl(510)->Move(780.0f, y);
+}
+bool addEventClick(hgeGUIObject* sender) {
+    if (selectedCharacterResource < 0 || selectedCharacterResource >= game->getCharacterResourcePrototypesCount())
+        return true;
+
+    game->getCharacterResourcePrototype(selectedCharacterResource)->addEvent();
+
+    float y = 170.0f + 20.0f * game->getCharacterResourcePrototype(selectedCharacterResource)->getEventsCount();
+
+    displayEvent( game->getCharacterResourcePrototype(selectedCharacterResource)->getEventsCount() - 1 );
+
+    sender->Move(780.0f, y);
 }
 
 bool characterStatusNameChange(hgeGUIObject* sender) {
@@ -667,11 +731,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		fnt = new hgeFont("font1.fnt");
 		arial12 = new hgeFont("arial12.fnt");
 
-        game->loadConditionPrototypes("conditions.xml");
         game->loadCharacterParamPrototypes("character_params.xml");
         game->loadCharacterResourcePrototypes("character_resources.xml");
         game->loadCharacterStatusPrototypes("character_statuses.xml");
         game->loadCharacterMoveTypes("move_types.xml");
+		game->loadEffectPrototypes("effects.xml");
+		game->loadConditionPrototypes("conditions.xml");
 
 		mainWindow = new GUIWindow(game, 1500, 1501.0f, 0.0f, 100.0f, 901.0f);
 		game->getGUI()->AddCtrl(mainWindow);
@@ -792,6 +857,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		hgeGUIEditableLabel* defaultRegenInput = new hgeGUIEditableLabel(game, 504, arial12, 160.0f, 120.0f, 100.0f, 17.0f, "");
 		defaultRegenInput->setOnChange(defaultRegenChange);
 		characterResourceWindow->AddCtrl(defaultRegenInput);
+
+//		characterResourceWindow->AddCtrl(new hgeGUIMenuItem(510, arial12, 105.0f, 190.0f, "add event", addEventClick));
+//		game->getGUI()->GetCtrl(510)->Hide();
+
+		for (int i = 0; i < 16; i++) {
+            int index = 510 + i * 5;
+            float y = 170.0f + 20.0f * i;
+            hgeGUIMenuItem* percentLabel = new hgeGUIMenuItem(index + 1, arial12, 35.0f, y, "level", NULL);
+            percentLabel->bEnabled = false;
+            characterResourceWindow->AddCtrl(percentLabel);
+            percentLabel->Hide();
+
+            hgeGUIEditableLabel* percentInput = new hgeGUIEditableLabel(game, index + 2, arial12, 70.0f, y, 30.0f, 17.0f, "");
+            percentInput->setOnChange(percentChange);
+            characterResourceWindow->AddCtrl(percentInput);
+            percentInput->Hide();
+
+            hgeGUIMenuItem* conditionLabel = new hgeGUIMenuItem(index + 3, arial12, 135.0f, y, "condition", NULL);
+            conditionLabel->bEnabled = false;
+            characterResourceWindow->AddCtrl(conditionLabel);
+            conditionLabel->Hide();
+
+            hgeGUIEditableLabel* conditionInput = new hgeGUIEditableLabel(game, index + 4, arial12, 170.0f, y, 30.0f, 17.0f, "");
+            conditionInput->setOnChange(conditionChange);
+            characterResourceWindow->AddCtrl(conditionInput);
+            conditionInput->Hide();
+
+            hgeGUIMenuItem* removeButton = new hgeGUIMenuItem(index + 5, arial12, 240.0f, y, "remove", removeEventClick);
+            characterResourceWindow->AddCtrl(removeButton);
+            removeButton->Hide();
+		}
 
         //}
 

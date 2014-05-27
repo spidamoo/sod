@@ -14,7 +14,8 @@ class Condition
         void update(float dt);
 
         ConditionPrototype* getPrototype();
-        float getTime(); float getValue();
+        float getTime(); void setTime(float time);
+        float getValue();
     protected:
         ConditionPrototype* prototype;
         Character* inflictor; Character* bearer;

@@ -72,10 +72,10 @@ void setSelectedAction(int selected) {
     sprintf( buffer, "%d", game->getEffectPrototype(selectedEffect)->getAction(selectedAction)->getParam() );
     ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(194)) )->setTitle(buffer);
 
-    sprintf( buffer, "%.2f", game->getEffectPrototype(selectedEffect)->getAction(selectedAction)->getStartTime() );
+    sprintf( buffer, "%.4f", game->getEffectPrototype(selectedEffect)->getAction(selectedAction)->getStartTime() );
     ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(196)) )->setTitle(buffer);
 
-    sprintf( buffer, "%.2f", game->getEffectPrototype(selectedEffect)->getAction(selectedAction)->getInterval() );
+    sprintf( buffer, "%.4f", game->getEffectPrototype(selectedEffect)->getAction(selectedAction)->getInterval() );
     ( (hgeGUIEditableLabel*)(game->getGUI()->GetCtrl(198)) )->setTitle(buffer);
 
     game->getGUI()->GetCtrl(200)->selected = false;
@@ -447,6 +447,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		fnt = new hgeFont("font1.fnt");
 		arial12 = new hgeFont("arial12.fnt");
 
+		game->loadCharacterParamPrototypes("character_params.xml");
+        game->loadCharacterResourcePrototypes("character_resources.xml");
+        game->loadCharacterStatusPrototypes("character_statuses.xml");
+        game->loadCharacterMoveTypes("move_types.xml");
 		game->loadEffectPrototypes("effects.xml");
 		game->loadConditionPrototypes("conditions.xml");
 
@@ -574,7 +578,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 //		game->moveCamera(b2Vec2(-17, -12));
 
-        game->moveScreen(b2Vec2(-750.0f, - 700.0f));
+        game->moveScreen(b2Vec2(-100.0f, -250.0f));
 
 		game->loop();
 	}

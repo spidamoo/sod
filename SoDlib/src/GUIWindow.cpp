@@ -28,6 +28,10 @@ void GUIWindow::AddCtrl(hgeGUIObject* ctrl)
 	ctrl->rect.Set(oldRect.x1 + x, oldRect.y1 + y, oldRect.x2 + x, oldRect.y2 + y);
 	gui->AddCtrl(ctrl);
 }
+void GUIWindow::DelCtrl(int index) {
+    gui->DelCtrl(index);
+    controls.remove( gui->GetCtrl(index) );
+}
 
 
 void GUIWindow::Render()

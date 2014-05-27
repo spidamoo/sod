@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<effect_prototypes count="3">
+<effect_prototypes count="7">
     <prototype start_speed_formula="0" angle_formula="angle+rand(0.03, 0.08)" start_angle_formula="rand(0, 6.28)" start_r_formula="255" start_g_formula="255" start_b_formula="0" start_a_formula="255" start_time_formula="0.5" start_amount_formula="0" start_duration_formula="0" start_x_formula="0" start_y_formula="0" start_xspeed_formula="0" start_yspeed_formula="0" scale_formula="(abs(0.25-time)-0.25) * 2" start_scale_formula="0" name="mage: fire strike" position_type="2" area_type="1" hot_spot_name="weapon tip" blend_mode="2" animations_count="1" actions_count="3">
         <animation file="particles/light.xml" />
         <action type="1" param="1" interval="0.01" condition="0" targets="0" start_time="0.3" max_interactions="1" />
@@ -13,5 +13,17 @@
     </prototype>
     <prototype start_speed_formula="0" angle_formula="angle+rand(0.03, 0.08)" start_angle_formula="rand(0, 6.28)" r_formula="max(128,255-time*255)" start_r_formula="128" g_formula="max(128,255-time*255)" start_g_formula="128" b_formula="max(128,255-time*255)" start_b_formula="128" a_formula="time &gt; 1 ? (1.5-time)*255 : min(128,255 * time)" start_a_formula="255" start_time_formula="rand(1, 1.5)" start_amount_formula="0" start_duration_formula="0" start_x_formula="0" start_y_formula="0" xspeed_formula="xspeed+rand(-0.2, 0.2)" start_xspeed_formula="rand(-0.5,0.5)" start_yspeed_formula="-rand(2, 3)" scale_formula="1.5-time" start_scale_formula="0" name="smoke" position_type="3" area_type="1" hot_spot_name="" blend_mode="2" animations_count="1" actions_count="0">
         <animation file="particles/smoke.xml" />
+    </prototype>
+    <prototype start_speed_formula="" start_angle_formula="rand(0,6.28)" start_r_formula="200" start_g_formula="200" start_b_formula="200" a_formula="time*128" start_a_formula="128" start_time_formula="0.5" start_amount_formula="" start_duration_formula="" start_x_formula="" start_y_formula="" start_xspeed_formula="0" start_yspeed_formula="-rand(1.5,2)" scale_formula="(0.5-time)*2" start_scale_formula="0" name="dust" position_type="3" area_type="1" hot_spot_name="" blend_mode="2" animations_count="1" actions_count="0">
+        <animation file="D:\work\my\sod\working folder\particles\dust.xml" />
+    </prototype>
+    <prototype start_speed_formula="0" start_angle_formula="0" start_r_formula="255" start_g_formula="255" start_b_formula="255" start_a_formula="255" start_time_formula="0.1" start_amount_formula="0" start_duration_formula="0" start_x_formula="0" start_y_formula="0" start_xspeed_formula="0" start_yspeed_formula="0" start_scale_formula="1" name="dust trail" position_type="2" area_type="1" hot_spot_name="feet" blend_mode="2" animations_count="0" actions_count="1">
+        <action type="1" param="3" interval="0.001" condition="0" targets="0" start_time="0" max_interactions="1" />
+    </prototype>
+    <prototype start_speed_formula="0" start_angle_formula="0" start_r_formula="255" start_g_formula="255" start_b_formula="255" start_a_formula="255" start_time_formula="0.2" start_amount_formula="0" start_duration_formula="0" start_x_formula="0" start_y_formula="0" xspeed_formula="0" start_xspeed_formula="0" yspeed_formula="0" start_yspeed_formula="0" start_scale_formula="1" name="dust splash" position_type="3" area_type="1" hot_spot_name="feet" blend_mode="2" animations_count="0" actions_count="1">
+        <action type="1" param="6" interval="0.002" condition="0" targets="0" start_time="0" max_interactions="1" />
+    </prototype>
+    <prototype start_speed_formula="" start_angle_formula="rand(0,6.28)" start_r_formula="200" start_g_formula="200" start_b_formula="200" a_formula="time*128" start_a_formula="128" start_time_formula="0.5" start_amount_formula="" start_duration_formula="" start_x_formula="" start_y_formula="" start_xspeed_formula="owner_direction*rand(1.5,2)" start_yspeed_formula="-rand(0.5,2)" scale_formula="(0.5-time)*2" start_scale_formula="0" name="dynamic dust" position_type="3" area_type="1" hot_spot_name="" blend_mode="2" animations_count="1" actions_count="0">
+        <animation file="D:\work\my\sod\working folder\particles\dust.xml" />
     </prototype>
 </effect_prototypes>

@@ -32,7 +32,7 @@ void CharacterActionEffect::perform(Game* game, Character* character) {
 			character->turn();
 			break;
 		case ACTIONEFFECT_TYPE_CHANGEMOVE:
-			character->setAnim(param);
+			character->setMove(param);
 			break;
 		case ACTIONEFFECT_TYPE_RUN:
 			character->run(param);

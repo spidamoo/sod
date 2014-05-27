@@ -11,6 +11,7 @@ class GUIWindow : public hgeGUIObject
 		virtual ~GUIWindow();
 
 		void AddCtrl(hgeGUIObject* ctrl);
+		void DelCtrl(int index);
 		void Render();
 
 		void Hide();

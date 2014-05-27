@@ -41,3 +41,5 @@ float CharacterParamPrototype::getDefaultNormalValue() {
 void CharacterParamPrototype::setDefaultNormalValue(float _value) {
     defaultNormalValue = _value;
 }
+
+

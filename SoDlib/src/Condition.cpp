@@ -53,6 +53,9 @@ ConditionPrototype* Condition::getPrototype() {
 float Condition::getTime() {
     return totalTime;
 }
+void Condition::setTime(float _time) {
+    totalTime = _time;
+}
 
 float Condition::getValue() {
     return value;

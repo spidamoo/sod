@@ -17,6 +17,8 @@ const int ACTIONCAUSE_TYPE_ONGROUND    = 201;
 const int ACTIONCAUSE_TYPE_ANIM_TIME_PASSED    = 301;
 const int ACTIONCAUSE_TYPE_ANIM_TIME_IS    = 302;
 
+const int ACTIONCAUSE_TYPE_HAVE_STATUS    = 401;
+
 
 class CharacterActionCause
 {

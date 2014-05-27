@@ -13,8 +13,9 @@ class CharacterStatusPrototype
         void loadFromXml(TiXmlElement* xml), saveToXml(TiXmlElement* xml);
 
         char* getName(); void setName(char* name);
+        float getPriority(); void setPriority(float priority);
     protected:
-        char* name;
+        char* name; float priority;
     private:
 };
 

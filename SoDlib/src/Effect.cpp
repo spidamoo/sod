@@ -48,6 +48,13 @@ Character* Effect::getOwner() {
 }
 
 void Effect::initialize() {
+    if (owner) {
+        prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, owner->getDirection());
+    }
+    else {
+        prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, 0.0f);
+    }
+
     time = prototype->evalStartExpression(EFFECT_FUNCTION_TIME);
     componentSpeed.x = prototype->evalStartExpression(EFFECT_FUNCTION_XSPEED);
     componentSpeed.y = prototype->evalStartExpression(EFFECT_FUNCTION_YSPEED);
@@ -85,6 +92,13 @@ void Effect::update(float dt)
     prototype->setParam(EFFECT_PARAM_ANGLE, angle);
     prototype->setParam(EFFECT_PARAM_SCALE, scale);
     prototype->setParam(EFFECT_PARAM_DT, dt);
+
+    if (owner) {
+        prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, owner->getDirection());
+    }
+    else {
+        prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, 0.0f);
+    }
 
     if (animation) {
         if ( prototype->getExpressionExists(EFFECT_FUNCTION_R) ) {

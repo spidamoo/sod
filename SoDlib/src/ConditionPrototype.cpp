@@ -11,6 +11,14 @@ ConditionPrototype::ConditionPrototype(Game* _game)
     inflictor_resources = new float[game->getCharacterResourcePrototypesCount()];
     bearer_resources    = new float[game->getCharacterResourcePrototypesCount()];
 
+    valueParser.SetExpr("0");
+    valueParser.DefineFun("rand", frand);
+    durationParser.SetExpr("0");
+    durationParser.DefineFun("rand", frand);
+    intervalParser.SetExpr("0");
+    intervalParser.DefineFun("rand", frand);
+
+
     name = "<condition>";
 }
 
@@ -27,23 +35,26 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
     printf("loading condition ");
     if ( xml->Attribute("value_formula") ) {
         valueParser.SetExpr( xml->Attribute("value_formula") );
-        valueParser.DefineFun("rand", frand);
+
+        printf("value=%s ", xml->Attribute("value_formula"));
     } else {
-        valueParser.SetExpr("0");
+
     }
 
     if ( xml->Attribute("duration_formula") ) {
         durationParser.SetExpr( xml->Attribute("duration_formula") );
-        durationParser.DefineFun("rand", frand);
+
+        printf("duration=%s ", xml->Attribute("duration_formula"));
     } else {
-        durationParser.SetExpr("0");
+
     }
 
     if ( xml->Attribute("interval_formula") ) {
         intervalParser.SetExpr( xml->Attribute("interval_formula") );
-        intervalParser.DefineFun("rand", frand);
+
+        printf("interval=%s ", xml->Attribute("interval_formula"));
     } else {
-        intervalParser.SetExpr("0");
+
     }
 
     char buffer[64];
@@ -69,6 +80,7 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
         durationParser.DefineVar(buffer, &bearer_resources[i]);
         intervalParser.DefineVar(buffer, &bearer_resources[i]);
     }
+    printf(" params defined");
 
 
 	if (xml->Attribute("type")) {
@@ -77,6 +89,7 @@ void ConditionPrototype::loadFromXml(TiXmlElement* xml) {
 	}
 
 	if (xml->Attribute("name")) {
+        delete name;
         name = copyString(xml->Attribute("name"));
 	}
 

@@ -2,21 +2,30 @@
 
 
 EffectPrototype::EffectPrototype(Game* game) {
+    printf("creating effect\n");
 	this->game = game;
 
 	animationsCount = actionsCount = positionType = areaType = 0;
 
 	name = "<effect>";
+	params = new float[EFFECT_PARAMS_COUNT];
 
 	expressionParsers      = new mu::Parser[EFFECT_FUNCTIONS_COUNT];
     startExpressionParsers = new mu::Parser[EFFECT_FUNCTIONS_COUNT];
     expressionExists = new bool[EFFECT_FUNCTIONS_COUNT];
 
     for ( int i = 0; i < EFFECT_FUNCTIONS_COUNT; i++ ) {
+        expressionParsers[i].SetExpr("0");
+        for ( int j = 0; j < EFFECT_PARAMS_COUNT; j++ ) {
+            expressionParsers[i].DefineVar(EFFECT_PARAM_NAMES[j], &params[j]);
+            startExpressionParsers[i].DefineVar(EFFECT_PARAM_NAMES[j], &params[j]);
+        }
         expressionParsers[i].DefineFun("rand", frand);
         expressionExists[i] = false;
+        startExpressionParsers[i].SetExpr("0");
         startExpressionParsers[i].DefineFun("rand", frand);
     }
+    printf("functions initialized\n");
 
     startExpressionParsers[EFFECT_FUNCTION_TIME].SetExpr("1");
     startExpressionParsers[EFFECT_FUNCTION_XSPEED].SetExpr("0");
@@ -29,8 +38,6 @@ EffectPrototype::EffectPrototype(Game* game) {
     startExpressionParsers[EFFECT_FUNCTION_A].SetExpr("255");
 
     startExpressionParsers[EFFECT_FUNCTION_SCALE].SetExpr("1");
-
-    params = new float[EFFECT_PARAMS_COUNT];
 
     hotSpotName = "";
 
@@ -69,24 +76,19 @@ EffectPrototype::~EffectPrototype() {
 }
 
 void EffectPrototype::loadFromXml(TiXmlElement* xml) {
+    printf("loading effect\n");
     for ( int i = 0; i < EFFECT_FUNCTIONS_COUNT; i++ ) {
-        char formulaAttribName[20];
+        char formulaAttribName[64];
         sprintf( formulaAttribName, "%s_formula", EFFECT_FUNCTION_NAMES[i] );
 
         if ( xml->Attribute(formulaAttribName) ) {
             expressionParsers[i].SetExpr( xml->Attribute(formulaAttribName) );
-            for ( int j = 0; j < EFFECT_PARAMS_COUNT; j++ ) {
-                expressionParsers[i].DefineVar(EFFECT_PARAM_NAMES[j], &params[j]);
-            }
 
             expressionParsers[i].DefineFun("rand", frand);
 
             expressionExists[i] = true;
             printf("%s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(formulaAttribName));
         } else {
-            expressionParsers[i].SetExpr("0");
-            expressionParsers[i].DefineFun("rand", frand);
-            expressionExists[i] = false;
         }
 
         char startFormulaAttribName[30];
@@ -94,11 +96,8 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
 
         if ( xml->Attribute(startFormulaAttribName) ) {
             startExpressionParsers[i].SetExpr( xml->Attribute(startFormulaAttribName) );
-            startExpressionParsers[i].DefineFun("rand", frand);
             printf("start %s formula is <%s>\n", EFFECT_FUNCTION_NAMES[i], xml->Attribute(startFormulaAttribName));
         } else {
-            startExpressionParsers[i].SetExpr("0");
-            startExpressionParsers[i].DefineFun("rand", frand);
         }
     }
 
@@ -106,6 +105,7 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
         delete name;
         name = copyString(xml->Attribute("name"));
 	}
+	printf("name is %s\n", name);
 
 	if (xml->Attribute("position_type")) {
         positionType = atoi(xml->Attribute("position_type"));
@@ -166,6 +166,8 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
 	    actionsCount = 0;
 	    actions = NULL;
 	}
+
+	printf("effect loaded\n");
 }
 void EffectPrototype::saveToXml(TiXmlElement* xml) {
     for ( int i = 0; i < EFFECT_FUNCTIONS_COUNT; i++ ) {
@@ -208,13 +210,17 @@ void EffectPrototype::saveToXml(TiXmlElement* xml) {
 Effect* EffectPrototype::spawnEffect(Character* character) {
     Effect* newObject = new Effect(game, this);
     newObject->setOwner(character);
-    newObject->setPosition( character->getPosition() );
-    newObject->setHotSpotIndex( character->getHotSpotIndex(hotSpotName) );
+
+    int hsi = character->getHotSpotIndex(hotSpotName);
+    newObject->setHotSpotIndex( hsi );
+    newObject->setPosition( b2Vec2(character->getHotSpotX(hsi), character->getHotSpotY(hsi)) );
+
     return newObject;
 }
 Effect* EffectPrototype::spawnEffect(Effect* effect) {
     clock_t st = clock();
     Effect* newObject = new Effect(game, this);
+
     newObject->setOwner( effect->getOwner() );
     newObject->setPosition( effect->getPosition() );
     //printf("new effect position is %f %f\n", effect->getPosition().x, effect->getPosition().y);

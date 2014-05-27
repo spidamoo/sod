@@ -1322,34 +1322,6 @@ bool decreaseLengthButtonClick(hgeGUIObject* sender) {
 		framesLengths[currentMove][currentFrame] -= 0.1f;
 }
 
-bool insertMoveButtonClick(hgeGUIObject* sender) {
-	movesCount += 1;
-	framesCounts[currentMove] = 1;
-	moveNames[currentMove] = "<title>";
-	currentFrame = 0;
-	currentMove = movesCount - 1;
-
-	for (int i = 0; i < bodiesCount; i++) {
-		frameAnimShow[currentMove][currentFrame][i] = false;
-		frameAnimHideLayer[currentMove][currentFrame][i] = false;
-		frameAnimX[currentMove][currentFrame][i] = 0;
-		frameAnimY[currentMove][currentFrame][i] = 0;
-		frameAnimLayer[currentMove][currentFrame][i] = i;
-		frameAnimAngle[currentMove][currentFrame][i] = 0;
-		frameAnimScaleX[currentMove][currentFrame][i] = 1.0f;
-		frameAnimScaleY[currentMove][currentFrame][i] = 1.0f;
-	}
-	for (int i = 0; i < hotSpotsCount; i++) {
-		frameHotSpotX[currentMove][currentFrame][i] = 0;
-		frameHotSpotY[currentMove][currentFrame][i] = 0;
-		frameHotSpotAngle[currentMove][currentFrame][i] = 0;
-		frameHotSpotShow[currentMove][currentFrame][i] = false;
-	}
-
-	setMove(currentMove);
-}
-
-
 bool setTabButtonClick(hgeGUIObject* sender) {
 	currentTab = atoi(((hgeGUIMenuItem*)sender)->getTitle()) - 1;
 }
@@ -1735,34 +1707,23 @@ bool removeFrameClick(hgeGUIObject* sender) {
         return true;
     }
 
-    delete frameAnimX[currentMove][currentFrame];
-    delete frameAnimY[currentMove][currentFrame];
-    delete frameAnimAngle[currentMove][currentFrame];
-    delete frameAnimScaleX[currentMove][currentFrame];
-    delete frameAnimScaleY[currentMove][currentFrame];
-    delete frameAnimShow[currentMove][currentFrame];
-    delete frameAnimLayer[currentMove][currentFrame];
-    delete frameAnimHideLayer[currentMove][currentFrame];
-
-    delete frameHotSpotX[currentMove][currentFrame];
-    delete frameHotSpotY[currentMove][currentFrame];
-    delete frameHotSpotAngle[currentMove][currentFrame];
-    delete frameHotSpotShow[currentMove][currentFrame];
-
     for (int i = currentFrame; i < framesCounts[currentMove] - 1; i++) {
-        frameAnimX[currentMove][i]         = frameAnimX[currentMove][i + 1];
-        frameAnimY[currentMove][i]         = frameAnimY[currentMove][i + 1];
-        frameAnimAngle[currentMove][i]     = frameAnimAngle[currentMove][i + 1];
-        frameAnimScaleX[currentMove][i]    = frameAnimScaleX[currentMove][i + 1];
-        frameAnimScaleY[currentMove][i]    = frameAnimScaleY[currentMove][i + 1];
-        frameAnimShow[currentMove][i]      = frameAnimShow[currentMove][i + 1];
-        frameAnimLayer[currentMove][i]     = frameAnimLayer[currentMove][i + 1];
-        frameAnimHideLayer[currentMove][i] = frameAnimHideLayer[currentMove][i + 1];
+        for (int j = 0; j < bodiesCount; j++) {
+            frameAnimX[currentMove][i][j]         = frameAnimX[currentMove][i + 1][j];
+            frameAnimY[currentMove][i][j]         = frameAnimY[currentMove][i + 1][j];
+            frameAnimAngle[currentMove][i][j]     = frameAnimAngle[currentMove][i + 1][j];
+            frameAnimScaleX[currentMove][i][j]    = frameAnimScaleX[currentMove][i + 1][j];
+            frameAnimScaleY[currentMove][i][j]    = frameAnimScaleY[currentMove][i + 1][j];
+            frameAnimShow[currentMove][i][j]      = frameAnimShow[currentMove][i + 1][j];
+            frameAnimLayer[currentMove][i][j]     = frameAnimLayer[currentMove][i + 1][j];
+            frameAnimHideLayer[currentMove][i][j] = frameAnimHideLayer[currentMove][i + 1][j];
 
-        frameHotSpotX[currentMove][i]     = frameHotSpotX[currentMove][i + 1];
-        frameHotSpotY[currentMove][i]     = frameHotSpotY[currentMove][i + 1];
-        frameHotSpotAngle[currentMove][i] = frameHotSpotAngle[currentMove][i + 1];
-        frameHotSpotShow[currentMove][i]  = frameHotSpotShow[currentMove][i + 1];
+            frameHotSpotX[currentMove][i][j]     = frameHotSpotX[currentMove][i + 1][j];
+            frameHotSpotY[currentMove][i][j]     = frameHotSpotY[currentMove][i + 1][j];
+            frameHotSpotAngle[currentMove][i][j] = frameHotSpotAngle[currentMove][i + 1][j];
+            frameHotSpotShow[currentMove][i][j]  = frameHotSpotShow[currentMove][i + 1][j];
+        }
+        framesLengths[currentMove][i] = framesLengths[currentMove][i + 1];
     }
     framesCounts[currentMove]--;
     if (currentFrame >= framesCounts[currentMove]) {
@@ -1811,39 +1772,57 @@ bool closeActioneffectWindowClick(hgeGUIObject* sender) {
     resetMode();
 }
 
-bool removeMoveClick(hgeGUIObject* sender) {
-    delete frameAnimShow[currentMove];
-    delete frameAnimHideLayer[currentMove];
-    delete frameAnimX[currentMove];
-    delete frameAnimY[currentMove];
-    delete frameAnimLayer[currentMove];
-    delete frameAnimAngle[currentMove];
-    delete frameAnimScaleX[currentMove];
-    delete frameAnimScaleY[currentMove];
+bool insertMoveButtonClick(hgeGUIObject* sender) {
+	movesCount += 1;
+	currentMove = movesCount - 1;
+	framesCounts[currentMove] = 1;
+	moveNames[currentMove] = "<move>";
+	currentFrame = 0;
+	framesLengths[currentMove][0] = 0.5f;
 
-    delete frameHotSpotX[currentMove];
-    delete frameHotSpotY[currentMove];
-    delete frameHotSpotAngle[currentMove];
-    delete frameHotSpotShow[currentMove];
+	for (int i = 0; i < bodiesCount; i++) {
+		frameAnimShow[currentMove][currentFrame][i] = false;
+		frameAnimHideLayer[currentMove][currentFrame][i] = false;
+		frameAnimX[currentMove][currentFrame][i] = 0;
+		frameAnimY[currentMove][currentFrame][i] = 0;
+		frameAnimLayer[currentMove][currentFrame][i] = i;
+		frameAnimAngle[currentMove][currentFrame][i] = 0;
+		frameAnimScaleX[currentMove][currentFrame][i] = 1.0f;
+		frameAnimScaleY[currentMove][currentFrame][i] = 1.0f;
+	}
+	for (int i = 0; i < hotSpotsCount; i++) {
+		frameHotSpotX[currentMove][currentFrame][i] = 0;
+		frameHotSpotY[currentMove][currentFrame][i] = 0;
+		frameHotSpotAngle[currentMove][currentFrame][i] = 0;
+		frameHotSpotShow[currentMove][currentFrame][i] = false;
+	}
+
+	setMove(currentMove);
+}
+bool removeMoveClick(hgeGUIObject* sender) {
 
     delete moveNames[currentMove];
 
     for (int i = currentMove; i < movesCount - 1; i++) {
-        frameAnimShow[i]      = frameAnimShow[i + 1];
-        frameAnimHideLayer[i] = frameAnimHideLayer[i + 1];
-        frameAnimX[i]         = frameAnimX[i + 1];
-        frameAnimY[i]         = frameAnimY[i + 1];
-        frameAnimLayer[i]     = frameAnimLayer[i + 1];
-        frameAnimAngle[i]     = frameAnimAngle[i + 1];
-        frameAnimScaleX[i]    = frameAnimScaleX[i + 1];
-        frameAnimScaleY[i]    = frameAnimScaleY[i + 1];
+        for (int j = 0; j < framesCounts[i]; j++) {
+            for (int k = 0; k < bodiesCount; k++) {
+                frameAnimShow[i][j][k] = frameAnimShow[i + 1][j][k];
+                frameAnimHideLayer[i][j][k] = frameAnimHideLayer[i + 1][j][k];
+                frameAnimX[i][j][k] = frameAnimX[i + 1][j][k];
+                frameAnimY[i][j][k] = frameAnimY[i + 1][j][k];
+                frameAnimLayer[i][j][k] = frameAnimLayer[i + 1][j][k];
+                frameAnimAngle[i][j][k] = frameAnimAngle[i + 1][j][k];
+                frameAnimScaleX[i][j][k] = frameAnimScaleX[i + 1][j][k];
+                frameAnimScaleY[i][j][k] = frameAnimScaleY[i + 1][j][k];
 
-        frameHotSpotX[i]     = frameHotSpotX[i + 1];
-        frameHotSpotY[i]     = frameHotSpotY[i + 1];
-        frameHotSpotAngle[i] = frameHotSpotAngle[i + 1];
-        frameHotSpotShow[i]  = frameHotSpotShow[i + 1];
-
-        moveNames[i] = moveNames[i + 1];
+                frameHotSpotX[i][j][k] = frameHotSpotX[i + 1][j][k];
+                frameHotSpotY[i][j][k] = frameHotSpotY[i + 1][j][k];
+                frameHotSpotAngle[i][j][k] = frameHotSpotAngle[i + 1][j][k];
+                frameHotSpotShow[i][j][k] = frameHotSpotShow[i + 1][j][k];
+            }
+        }
+        delete moveNames[i];
+        moveNames[i] = copyString(moveNames[i + 1]);
     }
 
     movesCount--;
@@ -2631,7 +2610,7 @@ bool RenderFunc() {
                 game->drawPoly(
                     (b2PolygonShape*)hotSpots[i]->getShape(),
                     trans,
-                    -game->getPixelsPerMeter() * game->getScaleFactor() * game->getCameraPos(),
+                    -game->getPixelsPerMeter() * game->getScaleFactor() * game->getCameraPos() + 0.5f * b2Vec2(game->getScreenWidth(), game->getScreenHeight()),
                     game->getPixelsPerMeter() * game->getScaleFactor(),
                     color, fillcolor
                 );
@@ -2987,11 +2966,19 @@ bool RenderFunc() {
                         );
                         break;
                     case ACTIONEFFECT_TYPE_SPAWN_EFFECT:
-                        sprintf(
-                            text, "spawn effect #%d: %s",
-                            (int)actions[currentMove][i]->getEffect(j)->getParam(1),
-                            game->getEffectPrototype((int)actions[currentMove][i]->getEffect(j)->getParam(1))->getName()
-                        );
+                        if (game->getEffectPrototype((int)actions[currentMove][i]->getEffect(j)->getParam(1))) {
+                            sprintf(
+                                text, "spawn effect #%d: %s",
+                                (int)actions[currentMove][i]->getEffect(j)->getParam(1),
+                                game->getEffectPrototype((int)actions[currentMove][i]->getEffect(j)->getParam(1))->getName()
+                            );
+                        }
+                        else {
+                            sprintf(
+                                text, "%d IS WRONG EFFECT INDEX",
+                                (int)actions[currentMove][i]->getEffect(j)->getParam(1)
+                            );
+                        }
                         break;
                     case ACTIONEFFECT_TYPE_CHANGEMOVE:
                         sprintf(

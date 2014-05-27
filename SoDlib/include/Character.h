@@ -20,14 +20,14 @@ class Character
 		void draw(bool schematicMode);
 		virtual void control(float dt)=0;
 		void update(float dt);
-		void updateParams(Condition* condition);
+		void updateParams(Condition* condition); void updateStatus();
 
 		void turn();
 		void run(float speed);
 		void jump(b2Vec2 speed);
 		void move(float dx, float dy);
 
-		void setAnim(int anim);
+		void setMove(int anim);
 
 		b2Vec2 getPosition();
 		void setPosition(b2Vec2 newPos);
@@ -36,6 +36,7 @@ class Character
 		float getHalfHeight();
 		float getHalfWidth();
 		int getOnGround();
+		int getDirection();
 
 		float getHotSpotX(int index), getHotSpotY(int index); int getHotSpotIndex(char* name);
 
@@ -46,6 +47,8 @@ class Character
 
         CharacterParam* getParam(int index);
         CharacterResource* getResource(int index);
+
+        void setStatusAction(int status, CharacterAction* action);
 	protected:
 	    float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
 
@@ -55,12 +58,14 @@ class Character
 		float angle;
 
 		hgeAnimation** animations;
-		CharacterAction*** actions;
+		CharacterAction*** actions; int* actionsCounts;
 		CharacterHotSpot** hotSpots;
 
 		float*** frameAnimX;
 		float*** frameAnimY;
 		float*** frameAnimAngle;
+		float*** frameAnimScaleX = new float**[256];
+        float*** frameAnimScaleY = new float**[256];
 		int*** frameAnimLayer;
 		bool*** frameAnimShow;
 
@@ -79,14 +84,13 @@ class Character
 		float height, width, halfHeight, halfWidth;
 		int* framesCounts;
 		float** framesLengths;
+		float* movePriorities;
 		int currentFrame, nextFrame;
 		int movesCount;
 		int currentMove;
 		float currentTime;
 		int prevAngle, nextAngle;
 		float frameProgress, angleProgress;
-
-		int* actionsCounts;
 
 		int bodiesCount;
 		int hotSpotsCount;
@@ -98,6 +102,9 @@ class Character
 
 		CharacterParam** params;
 		CharacterResource** resources;
+
+		CharacterAction** statusActions;
+		int currentStatus; float statusPriority;
 };
 #define CHARACTER_H_COMPLETE
 #endif // CHARACTER_H

@@ -53,7 +53,7 @@ Game::Game(HGE * hge) {
 	hge->System_SetState(HGE_SCREENWIDTH, screenWidth);
 	hge->System_SetState(HGE_SCREENHEIGHT, screenHeight);
 	hge->System_SetState(HGE_SCREENBPP, 32);
-	hge->System_SetState(HGE_FPS, 60);
+	hge->System_SetState(HGE_FPS, 0);
 
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
@@ -546,13 +546,14 @@ void Game::drawCircle(float x, float y, float r, DWORD color, DWORD bgcolor) {
 
 
 hgeAnimation* Game::loadAnimation(char * fn) {
-//    printf("loading animation %s ...\n", fn);
 
     for ( int i = 0; i < animationsCount; i++ ) {
         if ( compareStrings(fn, animationNames[i]) ) {
+//            printf("cloning anim #%d\n", i);
             return new hgeAnimation(*animations[i]);
         }
     }
+    printf("loading animation %s ...\n", fn);
 
 
 	TiXmlDocument doc(fn);

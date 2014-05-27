@@ -860,7 +860,7 @@
 1353419913 d:\work\git\sod\sodlib\include\hgeguimenuitem.h
 	<SoDlib.h>
 
-1400871456 source:d:\work\my\sod\mapeditor\main.cpp
+1400959064 source:d:\work\my\sod\mapeditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1212,31 +1212,31 @@
 1400947304 d:\work\my\sod\sodlib\include\conditionprototype.h
 	<SoDlib.h>
 
-1400944401 d:\work\my\sod\sodlib\include\condition.h
+1401017903 d:\work\my\sod\sodlib\include\condition.h
 	<SoDlib.h>
 
 1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1400926507 d:\work\my\sod\sodlib\include\effectprototype.h
+1401021975 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
 1400533750 d:\work\my\sod\sodlib\include\effect.h
 	<SoDlib.h>
 
-1397717394 d:\work\my\sod\sodlib\include\characteractioncause.h
+1401002091 d:\work\my\sod\sodlib\include\characteractioncause.h
 	<SoDlib.h>
 
 1397805132 d:\work\my\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1400438363 d:\work\my\sod\sodlib\include\characteraction.h
+1401176577 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
 1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1400956878 d:\work\my\sod\sodlib\include\character.h
+1401178013 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
@@ -1257,7 +1257,7 @@
 1396800264 d:\work\my\sod\sodlib\include\debugdraw.h
 	<SoDLib.h>
 
-1397592908 d:\work\my\sod\sodlib\include\guiwindow.h
+1401058656 d:\work\my\sod\sodlib\include\guiwindow.h
 	<SoDlib.h>
 	<list>
 
@@ -1272,13 +1272,13 @@
 1400706811 source:d:\work\my\sod\mapeditor\resource.rc
 	"resource.h"
 
-1400932900 d:\work\my\sod\sodlib\include\characterparamprototype.h
+1401059930 d:\work\my\sod\sodlib\include\characterparamprototype.h
 	<SoDlib.h>
 
-1400944895 d:\work\my\sod\sodlib\include\characterresourceprototype.h
+1401059933 d:\work\my\sod\sodlib\include\characterresourceprototype.h
 	<SoDlib.h>
 
-1400931765 d:\work\my\sod\sodlib\include\characterstatusprototype.h
+1401002818 d:\work\my\sod\sodlib\include\characterstatusprototype.h
 	<SoDlib.h>
 
 1400931746 d:\work\my\sod\sodlib\include\charactermovetype.h

@@ -69,12 +69,23 @@ bool CharacterAction::take(Game* game, Character* character) {
 	}
 
 	if (fulfilled) {
-		for (int i = 0; i < effectsCount; i++) {
-			effects[i]->perform(game, character);
-		}
-		return true;
+        perform(game, character);
+        return true;
 	}
+
 	return false;
+}
+void CharacterAction::perform(Game* game, Character* character) {
+    for (int i = 0; i < effectsCount; i++) {
+        effects[i]->perform(game, character);
+    }
+}
+void CharacterAction::prepareStatus(Character* character) {
+	for (int i = 0; i < causesCount; i++) {
+		if (causes[i]->getType() == ACTIONCAUSE_TYPE_HAVE_STATUS) {
+            character->setStatusAction(causes[i]->getParam(), this);
+		}
+	}
 }
 
 int CharacterAction::getEffectsCount() {
