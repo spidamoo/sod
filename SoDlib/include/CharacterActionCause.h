@@ -19,6 +19,9 @@ const int ACTIONCAUSE_TYPE_ANIM_TIME_IS    = 302;
 
 const int ACTIONCAUSE_TYPE_HAVE_STATUS    = 401;
 
+const int ACTIONCAUSE_TYPE_RESORCE_LESS    = 501;
+const int ACTIONCAUSE_TYPE_RESORCE_MORE    = 502;
+
 
 class CharacterActionCause
 {

@@ -261,6 +261,12 @@ void Game::drawGame() {
         }
 	}
 
+	if (schematicDrawMode) {
+        for (int i = 0; i < groundLinesCount; i++) {
+            groundLines[i]->debugDraw();
+        }
+	}
+
 	et = clock();
 	updateCounter(COUNTER_DRAW_MAP, map_t + et - st);
 	st = clock();
@@ -448,6 +454,10 @@ void Game::drawPoly(b2PolygonShape* poly, b2Transform transform, b2Vec2 origin, 
 		color
 	);
 }
+void Game::drawText(float x, float y, char* text) {
+    defaultFont->Render(x, y, HGETEXT_CENTER, text);
+}
+
 void Game::DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor) {
 	b2Vec2 first = getPixelsPerMeter() * getScaleFactor() * (vertices[0] - cameraPos);
 	b2Vec2 prev = first;

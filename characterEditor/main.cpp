@@ -150,6 +150,15 @@ bool*** frameHotSpotShow = new bool**[256];
 char** moveNames = new char*[256];
 char** bodyNames = new char*[256];
 
+float* resourceBarWidths = new float[64];
+float* resourceBarHeights = new float[64];
+float* resourceBarPositionX = new float[64];
+float* resourceBarPositionY = new float[64];
+DWORD* resourceBarEmptyColors = new DWORD[64];
+DWORD* resourceBarFullColors = new DWORD[64];
+DWORD* resourceBarBoostColors = new DWORD[64];
+DWORD* resourceBarFrameColors = new DWORD[64];
+
 int currentTab = 0;
 float currentTime = 0;
 float frameProgress = 0;
@@ -957,6 +966,20 @@ bool saveCharacter(char* fn) {
         characterElem->LinkEndChild( moveElem );
         //cxn->SetDoubleAttribute("timeout", 123.456);
 	}
+
+	for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
+        TiXmlElement* element = new TiXmlElement( "resource" );
+        characterElem->LinkEndChild( element );
+
+        element->SetDoubleAttribute("width", resourceBarWidths[i]);
+        element->SetDoubleAttribute("height", resourceBarHeights[i]);
+        element->SetDoubleAttribute("x", resourceBarPositionX[i]);
+        element->SetDoubleAttribute("y", resourceBarPositionY[i]);
+        element->SetAttribute("full_color", resourceBarFullColors[i]);
+        element->SetAttribute("empty_color", resourceBarEmptyColors[i]);
+        element->SetAttribute("boost_color", resourceBarBoostColors[i]);
+        element->SetAttribute("frame_color", resourceBarFrameColors[i]);
+	}
 	doc.LinkEndChild( characterElem );
 	doc.SaveFile(fn);
 }
@@ -1157,6 +1180,24 @@ bool loadCharacter(char* fn) {
             moveElem = moveElem->NextSiblingElement("move");
         }
 		movesCount = i;
+
+		element = characterElem->FirstChildElement("resource");
+        i = 0;
+        while (element) {
+            resourceBarWidths[i] = atof( element->Attribute("width") );
+            resourceBarHeights[i] = atof( element->Attribute("height") );
+            resourceBarPositionX[i] = atof( element->Attribute("x") );
+            resourceBarPositionY[i] = atof( element->Attribute("y") );
+
+            resourceBarFullColors[i] = atoi( element->Attribute("full_color") );
+            resourceBarEmptyColors[i] = atoi( element->Attribute("empty_color") );
+            resourceBarBoostColors[i] = atoi( element->Attribute("boost_color") );
+            resourceBarFrameColors[i] = atoi( element->Attribute("frame_color") );
+
+            i++;
+            element = element->NextSiblingElement("resource");
+        }
+
 		printf("character loaded\n");
 		setMove(0);
     }

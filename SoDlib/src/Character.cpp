@@ -30,7 +30,7 @@ Character::Character(TiXmlElement* xml, Game * game, b2Vec2 origin) {
 
 	resources = new CharacterResource*[game->getCharacterResourcePrototypesCount()];
 	for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
-        resources[i] = new CharacterResource( this, game->getCharacterResourcePrototype(i) );
+        resources[i] = new CharacterResource( game, this, game->getCharacterResourcePrototype(i) );
 	}
 
 	statusActions = new CharacterAction*[game->getCharacterStatusPrototypesCount()];
@@ -314,6 +314,21 @@ void Character::draw(bool schematicMode) {
                 0, 0xFF00FF00, 0xAA00FF00
             );
 		}
+		for (int i = 0; i < game->getCharacterResourcePrototypesCount(); i++) {
+            char buffer[64];
+            sprintf(
+                buffer,
+                "%s: %.2f/%.2f",
+                game->getCharacterResourcePrototype(i)->getName(),
+                getResource(i)->getCurrentValue(),
+                getResource(i)->getFullValue()
+            );
+            game->drawText(
+                game->screenX(position.x),
+                game->screenY(position.y - halfHeight) - 30.0f - 30.0f * i,
+                buffer
+            );
+		}
 	} else {
 
 	}
@@ -543,6 +558,10 @@ void Character::update(float dt) {
 
 	if (currentStatus > -1 && statusPriority > movePriorities[currentMove]) {
         statusActions[currentStatus]->perform(game, this);
+	}
+
+	for (int i =0; i < game->getCharacterResourcePrototypesCount(); i++) {
+        resources[i]->regen(dt);
 	}
 
 	control(dt);

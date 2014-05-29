@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		game->loadEffectPrototypes("effects.xml");
 		game->loadConditionPrototypes("conditions.xml");
 		game->loadMap("map.xml");
-		game->loadPlayerCharacter("rem.xml", b2Vec2(2, 1));
+		game->loadPlayerCharacter("mage.xml", b2Vec2(2, 1));
 		game->loadNonPlayerCharacter("rat.xml", b2Vec2(10, 1));
 
 		game->loop();

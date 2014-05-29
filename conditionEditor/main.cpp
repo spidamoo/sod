@@ -169,17 +169,17 @@ void selectCharacterResource(int index) {
     sprintf( buffer, "%.2f", game->getCharacterResourcePrototype(index)->getDefaultRegen() );
     ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(504) )->setTitle( buffer );
 
-    for (int i = 0; i < 16; i++) {
-        if (i < game->getCharacterResourcePrototype(index)->getEventsCount()) {
-            displayEvent(i);
-        }
-        else {
-            hideEvent(i);
-        }
-    }
-    float y = 170.0f + 20.0f * game->getCharacterResourcePrototype(index)->getEventsCount();
-    game->getGUI()->GetCtrl(510)->Move(780.0f, y);
-    game->getGUI()->GetCtrl(510)->Show();
+//    for (int i = 0; i < 16; i++) {
+//        if (i < game->getCharacterResourcePrototype(index)->getEventsCount()) {
+//            displayEvent(i);
+//        }
+//        else {
+//            hideEvent(i);
+//        }
+//    }
+//    float y = 170.0f + 20.0f * game->getCharacterResourcePrototype(index)->getEventsCount();
+//    game->getGUI()->GetCtrl(510)->Move(780.0f, y);
+//    game->getGUI()->GetCtrl(510)->Show();
 }
 void addCharacterResource() {
     game->addCharacterResourcePrototype();

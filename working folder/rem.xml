@@ -30,7 +30,7 @@
     <body animation="1\Layer_14.png.xml" name="&lt;body&gt;" x="215.62" y="147.827" angle="0.0333203" />
     <body animation="1\dHead.xml" name="dHead" x="131" y="36" angle="0" />
     <body animation="1\hand3.xml" name="hand3" x="114.553" y="122.367" angle="0.74849" />
-    <hotspot shape="box" name="feet" x="5" y="129" angle="4.50139e-041" w="0.69375" h="0.1625" />
+    <hotspot shape="box" name="feet" x="0" y="138" angle="4.50139e-041" w="0.69375" h="0.1625" />
     <move frames="3" angles="1" name="idle">
         <body rotating="0" />
         <body rotating="0" />
@@ -93,7 +93,7 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
             <body x="-0.846875" y="-0.690625" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
             <body x="0.659375" y="-0.7125" scale_x="1" scale_y="1" angle="0" show="0" layer="29" />
-            <hotspot x="12.275" y="4.3" angle="4.50139e-041" show="0" />
+            <hotspot x="0.05625" y="0.84375" angle="4.50139e-041" show="1" />
         </frame>
         <frame length="0.2">
             <body x="0.348439" y="0.679688" scale_x="1" scale_y="1" angle="8.44914e-039" show="1" layer="26" />
@@ -126,7 +126,7 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="29" />
-            <hotspot x="0" y="0" angle="0" show="0" />
+            <hotspot x="0.03125" y="0.85" angle="4.50139e-041" show="1" />
         </frame>
         <frame length="0.2">
             <body x="0.348439" y="0.679688" scale_x="1" scale_y="1" angle="8.44914e-039" show="1" layer="26" />
@@ -159,7 +159,7 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="29" />
-            <hotspot x="0" y="0" angle="0" show="0" />
+            <hotspot x="0.05" y="0.84375" angle="4.50139e-041" show="1" />
         </frame>
         <angle value="0">
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />

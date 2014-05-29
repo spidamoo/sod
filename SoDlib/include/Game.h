@@ -83,6 +83,7 @@ class Game
 		void drawCircle(float x, float y, float r, DWORD color);
 		void drawCircle(float x, float y, float r, DWORD color, DWORD bgcolor);
 		void drawPoly(b2PolygonShape* poly, b2Transform transform, b2Vec2 origin, float scale, DWORD color, DWORD bgcolor);
+		void drawText(float x, float y, char* text);
 
 		void 	DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor);
 		void 	DrawPolygonScreen (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor);
