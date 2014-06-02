@@ -25,11 +25,13 @@ const int EFFECT_FUNCTION_Y        = 10;
 const int EFFECT_FUNCTION_XSPEED   = 11;
 const int EFFECT_FUNCTION_YSPEED   = 12;
 const int EFFECT_FUNCTION_SCALE    = 13;
+const int EFFECT_FUNCTION_WIDTH    = 14;
+const int EFFECT_FUNCTION_HEIGHT   = 15;
 
-const int EFFECT_FUNCTIONS_COUNT = 14;
+const int EFFECT_FUNCTIONS_COUNT = 16;
 
 static const char* EFFECT_FUNCTION_NAMES[EFFECT_FUNCTIONS_COUNT] = {
-    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale"
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "width", "height"
 };
 
 const int EFFECT_PARAM_SPEED    = 0;
@@ -46,15 +48,18 @@ const int EFFECT_PARAM_Y        = 10;
 const int EFFECT_PARAM_XSPEED   = 11;
 const int EFFECT_PARAM_YSPEED   = 12;
 const int EFFECT_PARAM_SCALE    = 13;
-const int EFFECT_PARAM_DT       = 14;
+const int EFFECT_PARAM_WIDTH    = 14;
+const int EFFECT_PARAM_HEIGHT   = 15;
+const int EFFECT_PARAM_DT       = 16;
 
-const int EFFECT_PARAM_OWNER_DIRECTION  = 15;
+const int EFFECT_PARAM_OWNER_DIRECTION  = 17;
+const int EFFECT_PARAM_OWNER_ANGLE  = 18;
 
-const int EFFECT_PARAMS_COUNT = 16;
+const int EFFECT_PARAMS_COUNT = 19;
 
 static const char* EFFECT_PARAM_NAMES[EFFECT_PARAMS_COUNT] = {
-    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "dt",
-    "owner_direction"
+    "speed", "angle", "r", "g", "b", "a", "time", "amount", "duration", "x", "y", "xspeed", "yspeed", "scale", "width", "height", "dt",
+    "owner_direction", "owner_angle"
 };
 
 

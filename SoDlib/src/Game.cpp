@@ -54,9 +54,12 @@ Game::Game(HGE * hge) {
 	hge->System_SetState(HGE_SCREENHEIGHT, screenHeight);
 	hge->System_SetState(HGE_SCREENBPP, 32);
 	hge->System_SetState(HGE_FPS, 0);
+	hge->System_SetState(HGE_TEXTUREFILTER, false);
 
 	//debugDraw = new DebugDraw(this);
 	//world->SetDebugDraw((b2Draw*)debugDraw);
+
+	Game::instance = this;
 }
 
 Game::~Game() {
@@ -68,7 +71,7 @@ bool Game::preload() {
     try
     {
     	if(hge->System_Initiate()) {
-			hge->Random_Seed(0);
+			hge->Random_Seed();
 
 	//		loadConstruction("box.xml", b2Vec2(10, 0));
 	//		loadConstruction("box.xml", b2Vec2(11, 3));
@@ -197,7 +200,7 @@ bool Game::updateControls() {
 	if (hge->Input_KeyDown(HGEK_TAB)) {
         schematicDrawMode = !schematicDrawMode;
 	}
-	if (hge->Input_KeyDown(HGEK_D)) {
+	if (hge->Input_KeyDown(HGEK_P)) {
         drawPerformanceInfo = (drawPerformanceInfo + 1) % 3;
         for (int i = 0; i < COUNTERS_COUNT; i++) {
             counters[i] = 0;
@@ -252,7 +255,18 @@ void Game::drawGame() {
 		characters[i]->draw(schematicDrawMode);
 	}
 	et = clock();
+
+
 	updateCounter(COUNTER_DRAW_CHARACTERS, et - st);
+
+	st = clock();
+	for (int i = 0; i < effectsCount; i++) {
+        effects[i]->draw(schematicDrawMode);
+	}
+	et = clock();
+	updateCounter(COUNTER_DRAW_EFFECTS, et - st);
+
+
 	st = clock();
 
 	for (int i = 0; i < frontLayersCount; i++) {
@@ -269,14 +283,8 @@ void Game::drawGame() {
 
 	et = clock();
 	updateCounter(COUNTER_DRAW_MAP, map_t + et - st);
-	st = clock();
-	for (int i = 0; i < effectsCount; i++) {
-        effects[i]->draw(schematicDrawMode);
-	}
-	et = clock();
-	updateCounter(COUNTER_DRAW_EFFECTS, et - st);
-	st = clock();
 
+    st = clock();
 	if (drawPerformanceInfo) {
         int i = 0;
         float totalTime = (displayedCounters[COUNTER_TOTAL]) / CLOCKS_PER_SEC;
@@ -1157,17 +1165,17 @@ float Game::worldY(float screenY) {
 }
 
 float Game::screenX(float worldX) {
-    return (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f;
+    return roundf( (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
 }
 float Game::screenY(float worldY) {
-    return (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f;
+    return roundf( (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
 }
 
 float Game::screenX(float worldX, float ratio) {
-    return (worldX - cameraPos.x * ratio) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f;
+    return roundf( (worldX - cameraPos.x * ratio) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
 }
 float Game::screenY(float worldY, float ratio) {
-    return (worldY - cameraPos.y * ratio) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f;
+    return roundf( (worldY - cameraPos.y * ratio) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
 }
 //b2Vec2 Game::screenPos(b2Vec2 worldPos) {
 //    return b2Vec2(this->screenX(worldPos.x), this->screenY(worldPos.y));
@@ -1360,16 +1368,11 @@ void Game::loadMap(char* fn) {
         int i = 0;
         while (element) {
         	printf("loading animation...\n");
-        	float x = atof(element->Attribute("x"));
-			float y = atof(element->Attribute("y"));
-			float angle = atof(element->Attribute("angle"));
-			int layer = atoi(element->Attribute("layer"));
 
-			char* animationName = (char*)element->Attribute("file");
-			hgeAnimation* animation = loadAnimation(animationName);
-			delete animationName;
+            mapAnimations[i] = new MapAnimation(this);
+            mapAnimations[i]->loadFromXml(element);
 
-            mapAnimations[i] = new MapAnimation(this, animation, x, y, angle);
+            int layer = atoi(element->Attribute("layer"));
 
             for (int j = 0; j < backLayersCount; j++) {
                 if (backLayerIndices[j] == layer) {
@@ -1423,6 +1426,11 @@ void Game::loadMap(char* fn) {
 
 void Game::updateCounter(int index, float value) {
     counters[index] += value;
+}
+
+Game* Game::instance = NULL;
+Game* Game::getInstance() {
+    return Game::instance;
 }
 
 b2Vec2 intersection(b2Vec2 p1, b2Vec2 p2, b2Vec2 p3, b2Vec2 p4) {
@@ -1481,7 +1489,10 @@ float distanceToSegment(float x1, float y1, float x2, float y2, float pointX, fl
 }
 
 float frand(float from, float to) {
-    return from + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX / (to-from)));
+    float r = Game::getInstance()->getHge()->Random_Float(from, to);
+//    printf("%.3f - %.3f: %.3f\n", from, to, r);
+    return r;
+    return from + (rand()) /( static_cast <float> (RAND_MAX / (to-from)));
 }
 
 char* copyString(const char* original) {
@@ -1542,3 +1553,4 @@ char* getFileName(const char* path) {
 
     return fileName;
 }
+

@@ -44,6 +44,11 @@ void CharacterActionEffect::perform(Game* game, Character* character) {
             game->addEffect( game->getEffectPrototype(param)->spawnEffect(character) );
             //printf("effect spawn\n");
             break;
+        case ACTIONEFFECT_TYPE_ADD_CONDITION:
+            character->addCondition(
+                game->getConditionPrototype( param )->spawnCondition( character, character )
+            );
+            break;
 	}
 }
 

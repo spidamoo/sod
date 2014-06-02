@@ -25,29 +25,35 @@ hgeAnimation* disabledIcon;
 hgeAnimation* beingInsertedAnim;
 char* beingInsertedAnimName;
 
-const int MODE_DEFAULT     = 0;
-const int MODE_SELECT_ANIM = 1;
-const int MODE_INSERT_ANIM = 2;
-const int MODE_CAMERA_MOVE = 3;
-const int MODE_ANIM_DRAG   = 4;
-const int MODE_ANIM_ROTATE = 5;
-const int MODE_INSERT_GL_STEP1   = 6;
-const int MODE_INSERT_GL_STEP2   = 7;
+const int MODE_DEFAULT              = 0;
+const int MODE_SELECT_ANIM          = 1;
+const int MODE_INSERT_ANIM          = 2;
+const int MODE_INSERTING_MULTI_ANIM = 3;
+const int MODE_CAMERA_MOVE          = 4;
+const int MODE_ANIM_DRAG            = 5;
+const int MODE_ANIM_ROTATE          = 6;
+const int MODE_ANIM_SCALE           = 7;
+const int MODE_INSERT_GL_STEP1      = 8;
+const int MODE_INSERT_GL_STEP2      = 9;
 
-const int MODE_SELECT_PLATFORM   = 11;
-const int MODE_NEW_PLATFORM = 111;
-const int MODE_EDIT_PLATFORM = 112;
+const int MODE_SELECT_PLATFORM         = 110;
+const int MODE_NEW_PLATFORM            = 111;
+const int MODE_EDIT_PLATFORM           = 112;
 const int MODE_DRAG_PLATFORM_SPOT_TIME = 113;
-const int MODE_DRAG_PLATFORM = 114;
+const int MODE_DRAG_PLATFORM           = 114;
 
-const int MODE_MOVING_PLATFORMS = 10;
+const int MODE_MOVING_PLATFORMS = 100;
+
+const int MAX_ANIMATIONS = 10000;
 
 int mode = MODE_DEFAULT;
 
-float width = 100.0f; float height = 30.0f;
+float width = 60.0f; float height = 30.0f;
 float halfWidth = width * 0.5f; float halfHeight = height * 0.5f;
-int animationsCount = 0; char** animationNames = new char*[256]; hgeAnimation** animations = new hgeAnimation*[256];
-float* animationX = new float[256]; float* animationY = new float[256]; float* animationAngle = new float[256]; int* animationLayer = new int[256];
+int animationsCount = 0; char** animationNames = new char*[MAX_ANIMATIONS]; hgeAnimation** animations = new hgeAnimation*[MAX_ANIMATIONS];
+float* animationX = new float[MAX_ANIMATIONS]; float* animationY = new float[MAX_ANIMATIONS];
+float* animationScaleX = new float[MAX_ANIMATIONS]; float* animationScaleY = new float[MAX_ANIMATIONS];
+float* animationAngle = new float[MAX_ANIMATIONS]; int* animationLayer = new int[MAX_ANIMATIONS];
 int groundLinesCount = 0; GroundLine** groundLines = new GroundLine*[256];
 
 int platformsCount = 0; int* platformGroundLinesCounts = new int[256]; int* platformAnimsCounts = new int[256];
@@ -60,8 +66,8 @@ float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
 int selectedAnim = -1; int selectedGroundLine = -1;
 float currentTime = 0;
 
-float gridSizes[7] = {0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f, 20.0f};
-int currentGridSize = 2;
+float gridSizes[10] = {0.01f, 0.05f, 0.1f, 0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f, 20.0f};
+int currentGridSize = 5;
 
 int layerOrders[16] = {0, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8};
 float layerRatios[16] = {1.0f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
@@ -88,8 +94,8 @@ int getPointedAnim(float x, float y) {
             game->screenX(animationX[i], layerRatios[ animationLayer[i] ]),
             game->screenY(animationY[i], layerRatios[ animationLayer[i] ]),
             animationAngle[i],
-            game->getScaleFactor(),
-            game->getScaleFactor(),
+            game->getScaleFactor() * animationScaleX[i],
+            game->getScaleFactor() * animationScaleY[i],
             bb
         );
 
@@ -170,8 +176,8 @@ float* getPlatformBounds(int platform) {
 			game->screenX(animationX[platformAnims[platform][j]] + shiftX, layerRatios[animationLayer[j]]),
 			game->screenY(animationY[platformAnims[platform][j]] + shiftY, layerRatios[animationLayer[j]]),
 			animationAngle[platformAnims[platform][j]],
-			game->getScaleFactor(),
-			game->getScaleFactor(),
+			game->getScaleFactor() * animationScaleX[platformAnims[platform][j]],
+			game->getScaleFactor() * animationScaleY[platformAnims[platform][j]],
 			bb
 		);
 		///Если края крайнее, выберем их
@@ -273,6 +279,8 @@ bool saveMap(char* fn) {
         element->SetAttribute("file", animationNames[i]);
         element->SetDoubleAttribute("x", animationX[i]);
         element->SetDoubleAttribute("y", animationY[i]);
+        element->SetDoubleAttribute("scale_x", animationScaleX[i]);
+        element->SetDoubleAttribute("scale_y", animationScaleY[i]);
         element->SetDoubleAttribute("angle", animationAngle[i]);
         element->SetAttribute("layer", animationLayer[i]);
 	}
@@ -315,14 +323,16 @@ bool saveMap(char* fn) {
 }
 
 bool loadMap(char* fn) {
-	animations = new hgeAnimation*[256];
+	animations = new hgeAnimation*[MAX_ANIMATIONS];
 
 	animationsCount = 0;
 
-	animationX = new float[256];
-	animationY = new float[256];
-	animationAngle = new float[256];
-	animationNames = new char*[256];
+	animationX = new float[MAX_ANIMATIONS];
+	animationY = new float[MAX_ANIMATIONS];
+	animationScaleX = new float[MAX_ANIMATIONS];
+	animationScaleY = new float[MAX_ANIMATIONS];
+	animationAngle = new float[MAX_ANIMATIONS];
+	animationNames = new char*[MAX_ANIMATIONS];
 
 
 	printf("loading map %s ... \n", fn);
@@ -364,6 +374,19 @@ bool loadMap(char* fn) {
 			animationX[i] = x;
 			animationY[i] = y;
 			animationAngle[i] = angle;
+
+			if ( element->Attribute("scale_x") ) {
+                animationScaleX[i] = atof( element->Attribute("scale_x") );
+			}
+			else {
+                animationScaleX[i] = 1.0f;
+			}
+			if ( element->Attribute("scale_y") ) {
+                animationScaleY[i] = atof( element->Attribute("scale_y") );
+			}
+			else {
+                animationScaleY[i] = 1.0f;
+			}
 
 			if ( element->Attribute("layer") ) {
                 animationLayer[i] = atoi( element->Attribute("layer") );
@@ -523,7 +546,7 @@ bool FrameFunc() {
 
 	if (game->getHge()->Input_GetMouseWheel() > 0) {
         if (game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
-            if (currentGridSize < 6)
+            if (currentGridSize < 9)
                 currentGridSize++;
         }
         else {
@@ -576,6 +599,16 @@ bool FrameFunc() {
 					mode = MODE_ANIM_ROTATE;
 				}
 			}
+			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
+				if (selectedAnim != -1) {
+					//mainWindow->Hide();
+					dragOffsetX = worldX - animationX[selectedAnim];
+					dragOffsetY = worldY - animationY[selectedAnim];
+//					selectedBodyX = game->screenX(animX(selectedBody));
+//					selectedBodyY = game->screenY(animY(selectedBody));
+					mode = MODE_ANIM_SCALE;
+				}
+			}
 			if (game->getHge()->Input_KeyDown(HGEK_RBUTTON)) {
                 dragOffsetX = x;
                 dragOffsetY = y;
@@ -611,32 +644,50 @@ bool FrameFunc() {
 			}
 			break;
 		case MODE_INSERT_ANIM:
-			if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
+			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON)
                 && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
             ) {
 
-				animationX[animationsCount] = insertX;
-				animationY[animationsCount] = insertY;
-				animationAngle[animationsCount] = 0;
-				animationLayer[animationsCount] = currentLayer;
+                dragOffsetX = insertX;
+                dragOffsetY = insertY;
 
-				animationNames[animationsCount] = beingInsertedAnimName;
-				animations[animationsCount] = beingInsertedAnim;
+                mode = MODE_INSERTING_MULTI_ANIM;
 
-				animationsCount++;
 			}
 			if (game->getHge()->Input_KeyUp(HGEK_RBUTTON)) {
                 resetMode();
             }
 
 			break;
+        case MODE_INSERTING_MULTI_ANIM:
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
+                && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
+            ) {
+                for (float x = dragOffsetX; x <= insertX; x += gridSizes[currentGridSize]) {
+                    for (float y = dragOffsetY; y <= insertY; y += gridSizes[currentGridSize]) {
+                        animationX[animationsCount] = x;
+                        animationY[animationsCount] = y;
+                        animationScaleX[animationsCount] = 1.0f;
+                        animationScaleY[animationsCount] = 1.0f;
+                        animationAngle[animationsCount] = 0.0f;
+                        animationLayer[animationsCount] = currentLayer;
+
+                        animationNames[animationsCount] = beingInsertedAnimName;
+                        animations[animationsCount] = beingInsertedAnim;
+
+                        animationsCount++;
+                    }
+                }
+                mode = MODE_INSERT_ANIM;
+            }
+            break;
         case MODE_ANIM_DRAG:
 			if (selectedAnim != -1) {
 				float currentX = worldX - dragOffsetX;
 				float currentY = worldY - dragOffsetY;
 				currentX = roundf(currentX / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
                 currentY = roundf(currentY / gridSizes[currentGridSize]) * gridSizes[currentGridSize];
-				if (currentX > -halfWidth && currentX < halfWidth && currentY > -halfHeight && currentY < halfHeight) {
+				if (currentX >= -halfWidth && currentX <= halfWidth && currentY >= -halfHeight && currentY <= halfHeight) {
                     animationX[selectedAnim] = currentX;
                     animationY[selectedAnim] = currentY;
 				}
@@ -652,24 +703,28 @@ bool FrameFunc() {
 					dragOffsetAngle = atan2(worldY - dragOffsetY, worldX - dragOffsetX) - animationAngle[selectedAnim];
 				} else {
 					float angle = atan2(worldY - dragOffsetY, worldX - dragOffsetX) - dragOffsetAngle;
-					float offsetAngle = atan2(
-						dragOffsetY - animationY[selectedAnim],
-						dragOffsetX - animationX[selectedAnim]
-					);
-					float len = sqrt(
-						pow(dragOffsetX - animationX[selectedAnim], 2) +
-						pow(dragOffsetY - animationY[selectedAnim], 2)
-					);
+//					float offsetAngle = atan2(
+//						dragOffsetY - animationY[selectedAnim],
+//						dragOffsetX - animationX[selectedAnim]
+//					);
 
-					float newOffsetX = animationX[selectedAnim] + cos(angle - animationAngle[selectedAnim] + offsetAngle) * len;
-					float newOffsetY = animationY[selectedAnim] + sin(angle - animationAngle[selectedAnim] + offsetAngle) * len;
+					angle = roundf( angle / M_PI_2 ) * M_PI_2;
 
-					float transX = newOffsetX - dragOffsetX;
-					float transY = newOffsetY - dragOffsetY;
+//					float len = sqrt(
+//						pow(dragOffsetX - animationX[selectedAnim], 2) +
+//						pow(dragOffsetY - animationY[selectedAnim], 2)
+//					);
+
+//					float newOffsetX = animationX[selectedAnim] + cos(angle - animationAngle[selectedAnim] + offsetAngle) * len;
+//					float newOffsetY = animationY[selectedAnim] + sin(angle - animationAngle[selectedAnim] + offsetAngle) * len;
+
+//					float transX = newOffsetX - dragOffsetX;
+//					float transY = newOffsetY - dragOffsetY;
 					//printf("%f %f %f\n", len, transX, transY);
 
-                    animationX[selectedAnim] = animationX[selectedAnim] - transX;
-                    animationY[selectedAnim] = animationY[selectedAnim] - transY;
+//                    animationX[selectedAnim] = animationX[selectedAnim] - transX;
+//                    animationY[selectedAnim] = animationY[selectedAnim] - transY;
+
 					animationAngle[selectedAnim] = angle;
 				}
 			}
@@ -677,6 +732,13 @@ bool FrameFunc() {
 				resetMode();
 			}
 			break;
+        case MODE_ANIM_SCALE:
+            animationScaleX[selectedAnim] = roundf( (worldX - animationX[selectedAnim]) / dragOffsetX );
+            animationScaleY[selectedAnim] = roundf( (worldY - animationY[selectedAnim]) / dragOffsetY );
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON) || game->getHge()->Input_KeyUp(HGEK_CTRL)) {
+				resetMode();
+			}
+            break;
         case MODE_INSERT_GL_STEP1:
             if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
                 && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight) {
@@ -745,8 +807,8 @@ bool FrameFunc() {
                     game->screenX(animationX[i], layerRatios[currentLayer]),
                     game->screenY(animationY[i], layerRatios[currentLayer]),
                     animationAngle[i],
-                    game->getScaleFactor(),
-                    game->getScaleFactor(),
+                    game->getScaleFactor() * animationScaleX[i],
+                    game->getScaleFactor() * animationScaleY[i],
                     bb
                 );
                 if (///Проверяем, умещается ли bb картинки целиком в выделенную область
@@ -986,24 +1048,24 @@ bool RenderFunc() {
                 game->screenX(animationX[i] + shiftX, layerRatios[animationLayer[i]]),
                 game->screenY(animationY[i] + shiftY, layerRatios[animationLayer[i]]),
                 animationAngle[i],
-                game->getScaleFactor(),
-                game->getScaleFactor()
+                game->getScaleFactor() * animationScaleX[i],
+                game->getScaleFactor() * animationScaleY[i]
             );
 
-            hgeRect* bb = new hgeRect();
-            animations[i]->GetBoundingBoxEx(
-                game->screenX(animationX[i] + shiftX, layerRatios[animationLayer[i]]),
-                game->screenY(animationY[i] + shiftY, layerRatios[animationLayer[i]]),
-                animationAngle[i],
-                game->getScaleFactor(),
-                game->getScaleFactor(),
-                bb
-            );
-
-            if (i == selectedAnim) {
-                bbColor = 0xFFFF0000;
-            }
-            game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, bbColor, 0);
+//            hgeRect* bb = new hgeRect();
+//            animations[i]->GetBoundingBoxEx(
+//                game->screenX(animationX[i] + shiftX, layerRatios[animationLayer[i]]),
+//                game->screenY(animationY[i] + shiftY, layerRatios[animationLayer[i]]),
+//                animationAngle[i],
+//                game->getScaleFactor() * animationScaleX[i],
+//                game->getScaleFactor() * animationScaleY[i],
+//                bb
+//            );
+//
+//            if (i == selectedAnim) {
+//                bbColor = 0xFFFF0000;
+//            }
+//            game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, bbColor, 0);
 
         }
     }
@@ -1131,8 +1193,8 @@ bool RenderFunc() {
             game->screenX(animationX[selectedAnim], layerRatios[ animationLayer[selectedAnim] ]),
             game->screenY(animationY[selectedAnim], layerRatios[ animationLayer[selectedAnim] ]),
             animationAngle[selectedAnim],
-            game->getScaleFactor(),
-            game->getScaleFactor(),
+            game->getScaleFactor() * animationScaleX[selectedAnim],
+            game->getScaleFactor() * animationScaleY[selectedAnim],
             bb
         );
 
@@ -1161,6 +1223,13 @@ bool RenderFunc() {
             }
             else {
                 beingInsertedAnim->RenderEx(insertX, insertY, 0, game->getScaleFactor(), game->getScaleFactor());
+            }
+            break;
+        case MODE_INSERTING_MULTI_ANIM:
+            for (float x = dragOffsetX; x <= worldInsertX; x += gridSizes[currentGridSize]) {
+                for (float y = dragOffsetY; y <= worldInsertY; y += gridSizes[currentGridSize]) {
+                    beingInsertedAnim->RenderEx(game->screenX(x, layerRatios[currentLayer]), game->screenY(y, layerRatios[currentLayer]), 0, game->getScaleFactor(), game->getScaleFactor());
+                }
             }
             break;
         case MODE_ANIM_ROTATE:

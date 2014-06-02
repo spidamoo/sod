@@ -25,6 +25,7 @@ class Effect
 		Game* game; Character* owner;
 		float angle, speed;
 		b2Vec2 position, prevPosition, componentSpeed;
+		float width, height;
 		float time;
 		int r, g, b, a;
 		float scale;

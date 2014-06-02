@@ -161,7 +161,11 @@ class Game
 		float getTimeStep();
 
 		void updateCounter(int ident, float value);
+
+		static Game* getInstance();
 	protected:
+	    static Game* instance;
+
 		b2World* world;
 		HGE* hge;
 		hgeGUI* gui;

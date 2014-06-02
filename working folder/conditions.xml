@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
-<condition_prototypes count="2">
+<condition_prototypes count="4">
     <prototype value_formula="-1" duration_formula="0" interval_formula="0" type="1" name="direct damage" param="0" />
     <prototype value_formula="0" duration_formula="5" interval_formula="0" type="6" name="simple stun" param="0" />
+    <prototype value_formula="-1" duration_formula="11" interval_formula="0" type="9" name="death hp freeze" param="0" />
+    <prototype value_formula="-5.1" duration_formula="0" interval_formula="0" type="1" name="mage: fire damage" param="0" />
 </condition_prototypes>

@@ -6,13 +6,15 @@
 class MapAnimation
 {
     public:
-        MapAnimation(Game* game, hgeAnimation* anim, float x, float y, float angle);
+        MapAnimation(Game* game);
         virtual ~MapAnimation();
+
+        void loadFromXml(TiXmlElement* xml);
 
         void draw(float ratio, bool schematicMode);
         void move(float dx, float dy);
     protected:
-        float x, y, angle;
+        float x, y, angle, scaleX, scaleY;
         hgeAnimation* animation;
         Game* game;
     private:

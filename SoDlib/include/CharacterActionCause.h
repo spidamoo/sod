@@ -13,6 +13,8 @@ const int ACTIONCAUSE_TYPE_NPC_TARGETFARTHER = 102;
 const int ACTIONCAUSE_TYPE_NPC_TARGETCLOSER  = 103;
 
 const int ACTIONCAUSE_TYPE_ONGROUND    = 201;
+const int ACTIONCAUSE_TYPE_ANGLE_MORE  = 202;
+const int ACTIONCAUSE_TYPE_ANGLE_LESS  = 203;
 
 const int ACTIONCAUSE_TYPE_ANIM_TIME_PASSED    = 301;
 const int ACTIONCAUSE_TYPE_ANIM_TIME_IS    = 302;
@@ -36,11 +38,11 @@ class CharacterActionCause
 
 		int   getType();
 		void  setType(int type);
-		float getParam();
-		void  setParam(float param);
+		float getParam(), getParam(int index);
+		void  setParam(float param), setParam(int index, float param);
 	protected:
 		int type;
-		float param;
+		float param; float param2;
 	private:
 };
 

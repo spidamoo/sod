@@ -66,6 +66,7 @@ GUIWindow* actionCauseParamWindowInput;
 GUIWindow* actionCauseParamWindowKey;
 GUIWindow* actionCauseParamWindowSide;
 hgeGUIEditableLabel* actionCauseParamInput;
+hgeGUIEditableLabel* actionCauseParam2Input;
 
 GUIWindow* actionEffectContextWindow;
 GUIWindow* actionEffectTypeWindow;
@@ -1479,6 +1480,7 @@ void resetActioncauseWindow() {
             game->getGUI()->GetCtrl(312)->selected = false;
             game->getGUI()->GetCtrl(313)->selected = false;
             game->getGUI()->GetCtrl(314)->selected = false;
+            game->getGUI()->GetCtrl(315)->selected = false;
             switch ((int)actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getParam()) {
                 case CHARACTER_KEY_FORTH:
                     game->getGUI()->GetCtrl(311)->selected = true;
@@ -1491,6 +1493,9 @@ void resetActioncauseWindow() {
                     break;
                 case CHARACTER_KEY_JUMP:
                     game->getGUI()->GetCtrl(314)->selected = true;
+                    break;
+                case CHARACTER_KEY_SATTACK:
+                    game->getGUI()->GetCtrl(315)->selected = true;
                     break;
             }
             break;
@@ -1510,6 +1515,8 @@ void resetActioncauseWindow() {
             char buffer[20];
             sprintf(buffer, "%.2f", actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getParam());
             actionCauseParamInput->setTitle( buffer );
+            sprintf(buffer, "%.2f", actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getParam(2));
+            actionCauseParam2Input->setTitle( buffer );
             delete buffer;
             break;
     }
@@ -1524,6 +1531,9 @@ void resetActioncauseWindow() {
     game->getGUI()->GetCtrl(258)->selected = false;
     game->getGUI()->GetCtrl(259)->selected = false;
     game->getGUI()->GetCtrl(260)->selected = false;
+    game->getGUI()->GetCtrl(261)->selected = false;
+    game->getGUI()->GetCtrl(262)->selected = false;
+    game->getGUI()->GetCtrl(263)->selected = false;
 
     switch (actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getType()) {
         case ACTIONCAUSE_TYPE_NONE:
@@ -1555,6 +1565,15 @@ void resetActioncauseWindow() {
             break;
         case ACTIONCAUSE_TYPE_NPC_TARGETCLOSER:
             game->getGUI()->GetCtrl(260)->selected = true;
+            break;
+        case ACTIONCAUSE_TYPE_RESORCE_LESS:
+            game->getGUI()->GetCtrl(261)->selected = true;
+            break;
+        case ACTIONCAUSE_TYPE_ANGLE_MORE:
+            game->getGUI()->GetCtrl(262)->selected = true;
+            break;
+        case ACTIONCAUSE_TYPE_ANGLE_LESS:
+            game->getGUI()->GetCtrl(263)->selected = true;
             break;
     }
 }
@@ -1661,7 +1680,15 @@ bool setActionCauseClick(hgeGUIObject* sender) {
         case 260:
             type = ACTIONCAUSE_TYPE_NPC_TARGETCLOSER;
             break;
-
+        case 261:
+            type = ACTIONCAUSE_TYPE_RESORCE_LESS;
+            break;
+        case 262:
+            type = ACTIONCAUSE_TYPE_ANGLE_MORE;
+            break;
+        case 263:
+            type = ACTIONCAUSE_TYPE_ANGLE_LESS;
+            break;
     }
     actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setType(type);
     actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setParam(1.0f);
@@ -1698,7 +1725,9 @@ bool setActionParamKeyClick(hgeGUIObject* sender) {
         case 314:
             key = CHARACTER_KEY_JUMP;
             break;
-
+        case 315:
+            key = CHARACTER_KEY_SATTACK;
+            break;
     }
     actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setParam( key );
 
@@ -1708,6 +1737,9 @@ bool actionParamInputChange(hgeGUIObject* sender) {
     switch (sender->id) {
         case 301:
             actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setParam( atof( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
+            break;
+        case 305:
+            actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setParam( 2, atof( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
             break;
         case 551:
             actions[currentMove][selectedAction]->getEffect(selectedActionCoE)->setParam( atof( ((hgeGUIEditableLabel*)sender)->getTitle() ) );
@@ -1735,6 +1767,9 @@ bool setActionEffectClick(hgeGUIObject* sender) {
             break;
         case 515:
             type = ACTIONEFFECT_TYPE_SPAWN_EFFECT;
+            break;
+        case 516:
+            type = ACTIONEFFECT_TYPE_ADD_CONDITION;
             break;
     }
     actions[currentMove][selectedAction]->getEffect(selectedActionCoE)->setType(type);
@@ -2918,6 +2953,18 @@ bool RenderFunc() {
                                 break;
                         }
                         break;
+                    case ACTIONCAUSE_TYPE_RESORCE_LESS:
+                        if ( game->getCharacterResourcePrototype((int)actions[currentMove][i]->getCause(j)->getParam()) ) {
+                            sprintf(
+                                text, "%s <= %.0f%%",
+                                game->getCharacterResourcePrototype((int)actions[currentMove][i]->getCause(j)->getParam())->getName(),
+                                actions[currentMove][i]->getCause(j)->getParam(2) * 100.0f
+                            );
+                        }
+                        else {
+                            sprintf(text, "WRONG RESOURCE INDEX");
+                        }
+                        break;
                     default:
                         sprintf(
                             text, "%s %.2f",
@@ -3027,6 +3074,21 @@ bool RenderFunc() {
                             move,
                             moveNames[move]
                         );
+                        break;
+                    case ACTIONEFFECT_TYPE_ADD_CONDITION:
+                        if (game->getConditionPrototype((int)actions[currentMove][i]->getEffect(j)->getParam(1))) {
+                            sprintf(
+                                text, "add condition #%d: %s",
+                                (int)actions[currentMove][i]->getEffect(j)->getParam(1),
+                                game->getConditionPrototype((int)actions[currentMove][i]->getEffect(j)->getParam(1))->getName()
+                            );
+                        }
+                        else {
+                            sprintf(
+                                text, "%d IS WRONG CONDITION INDEX",
+                                (int)actions[currentMove][i]->getEffect(j)->getParam(1)
+                            );
+                        }
                         break;
                     default:
                         sprintf(
@@ -3208,7 +3270,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     actionCauses[ACTIONCAUSE_TYPE_NPC_TARGETFARTHER] = "target farther than";
     actionCauses[ACTIONCAUSE_TYPE_NPC_TARGETCLOSER] = "target closer than";
 
+    actionCauses[ACTIONCAUSE_TYPE_RESORCE_LESS] = "resource less than";
+
     actionCauses[ACTIONCAUSE_TYPE_ONGROUND] = "on ground";
+    actionCauses[ACTIONCAUSE_TYPE_ANGLE_MORE] = "angle > ";
+    actionCauses[ACTIONCAUSE_TYPE_ANGLE_LESS] = "angle < ";
 
     actionCauses[ACTIONCAUSE_TYPE_ANIM_TIME_PASSED] = "time passed";
     actionCauses[ACTIONCAUSE_TYPE_ANIM_TIME_IS] = "time is";
@@ -3224,6 +3290,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     keyNames[CHARACTER_KEY_FORTH] = "forth";
     keyNames[CHARACTER_KEY_JUMP] = "jump";
     keyNames[CHARACTER_KEY_ATTACK] = "attack";
+    keyNames[CHARACTER_KEY_SATTACK] = "s attack";
 
 	if (game->preload()) {
 		//bgTex = game->getHge()->Texture_Load("box.png");
@@ -3234,7 +3301,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		disabledIcon = game->loadAnimation("disabled_icon.xml");
 		resizeIcon = game->loadAnimation("resize_icon.xml");
 
+		game->loadCharacterParamPrototypes("character_params.xml");
+        game->loadCharacterResourcePrototypes("character_resources.xml");
+        game->loadCharacterStatusPrototypes("character_statuses.xml");
+        game->loadCharacterMoveTypes("move_types.xml");
 		game->loadEffectPrototypes("effects.xml");
+		game->loadConditionPrototypes("conditions.xml");
 
 		grayQuad.v[0].x = 1300; grayQuad.v[0].y = 0; grayQuad.v[0].col = 0xFFAAAAAA; grayQuad.v[0].z = 1;
 		grayQuad.v[1].x = 1600; grayQuad.v[1].y = 0; grayQuad.v[1].col = 0xFFAAAAAA; grayQuad.v[1].z = 1;
@@ -3342,17 +3414,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(253, arial12, 62, 35, "key released", setActionCauseClick));
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(254, arial12, 62, 50, "key down", setActionCauseClick));
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(255, arial12, 62, 65, "on ground", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(256, arial12, 62, 80, "time passed", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(257, arial12, 62, 95, "time is", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(258, arial12, 62, 110, "npc: target at", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(259, arial12, 62, 125, "npc: target farther", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(260, arial12, 62, 140, "npc: target closer", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(262, arial12, 62, 80, "angle >", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(263, arial12, 62, 95, "angle <", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(256, arial12, 62, 110, "time passed", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(257, arial12, 62, 125, "time is", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(258, arial12, 62, 140, "npc: target at", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(259, arial12, 62, 155, "npc: target farther", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(260, arial12, 62, 170, "npc: target closer", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(261, arial12, 62, 185, "resource less", setActionCauseClick));
 
-		actionCauseParamWindowInput = new GUIWindow(game, 300, 125, 20, 125, 30);
+		actionCauseParamWindowInput = new GUIWindow(game, 300, 125, 20, 125, 50);
 		actionCauseContextWindow->AddCtrl(actionCauseParamWindowInput);
 		actionCauseParamInput = new hgeGUIEditableLabel(game, 301, arial12, 2, 5, 120, 17, "0");
 		actionCauseParamWindowInput->AddCtrl(actionCauseParamInput);
 		actionCauseParamInput->setOnChange(actionParamInputChange);
+		actionCauseParam2Input = new hgeGUIEditableLabel(game, 305, arial12, 2, 25, 120, 17, "0");
+		actionCauseParamWindowInput->AddCtrl(actionCauseParam2Input);
+		actionCauseParam2Input->setOnChange(actionParamInputChange);
 
 		actionCauseParamWindowSwitch = new GUIWindow(game, 302, 125, 20, 125, 20);
 		actionCauseContextWindow->AddCtrl(actionCauseParamWindowSwitch);
@@ -3365,6 +3443,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(312, arial12, 62, 20, "back", setActionParamKeyClick));
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(313, arial12, 62, 35, "attack", setActionParamKeyClick));
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(314, arial12, 62, 50, "jump", setActionParamKeyClick));
+		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(315, arial12, 62, 65, "jump", setActionParamKeyClick));
 
 		actionCauseParamWindowSide = new GUIWindow(game, 330, 125, 20, 125, 20);
 		actionCauseContextWindow->AddCtrl(actionCauseParamWindowSide);
@@ -3384,6 +3463,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionEffectTypeWindow->AddCtrl(new hgeGUIMenuItem(513, arial12, 62, 35, "run", setActionEffectClick));
 		actionEffectTypeWindow->AddCtrl(new hgeGUIMenuItem(514, arial12, 62, 50, "jump", setActionEffectClick));
 		actionEffectTypeWindow->AddCtrl(new hgeGUIMenuItem(515, arial12, 62, 65, "spawn effect", setActionEffectClick));
+		actionEffectTypeWindow->AddCtrl(new hgeGUIMenuItem(516, arial12, 62, 80, "add condition", setActionEffectClick));
 
 		actionEffectParamWindowInput = new GUIWindow(game, 550, 125, 20, 125, 50);
 		actionEffectContextWindow->AddCtrl(actionEffectParamWindowInput);

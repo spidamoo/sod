@@ -7,6 +7,7 @@ const int CONDITION_TYPE_ADD_RESOURCE           = 1;
 const int CONDITION_TYPE_ADD_FULL_RESOURCE      = 2;
 const int CONDITION_TYPE_BOOST_RESOURCE         = 3;
 const int CONDITION_TYPE_REGEN_RESOURCE         = 4;
+const int CONDITION_TYPE_SET_RESOURCE           = 9;
 
 const int CONDITION_TYPE_ADD_PARAM              = 5;
 

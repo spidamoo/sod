@@ -1234,7 +1234,7 @@
 1384979514 d:\work\sod\sodlib\include\mapanimation.h
 	<SoDlib.h>
 
-1401023913 source:d:\work\my\sod\charactereditor\main.cpp
+1401438790 source:d:\work\my\sod\charactereditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1575,10 +1575,10 @@
 	<stdio.h>
 	<string.h>
 
-1400929315 d:\work\my\sod\sodlib\include\game.h
+1401216357 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
-1400947304 d:\work\my\sod\sodlib\include\conditionprototype.h
+1401396126 d:\work\my\sod\sodlib\include\conditionprototype.h
 	<SoDlib.h>
 
 1401017903 d:\work\my\sod\sodlib\include\condition.h
@@ -1587,25 +1587,25 @@
 1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1401021975 d:\work\my\sod\sodlib\include\effectprototype.h
+1401435624 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
 1400533750 d:\work\my\sod\sodlib\include\effect.h
 	<SoDlib.h>
 
-1401002091 d:\work\my\sod\sodlib\include\characteractioncause.h
+1401438433 d:\work\my\sod\sodlib\include\characteractioncause.h
 	<SoDlib.h>
 
-1397805132 d:\work\my\sod\sodlib\include\characteractioneffect.h
+1401396817 d:\work\my\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1401176577 d:\work\my\sod\sodlib\include\characteraction.h
+1401394016 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
 1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1401178013 d:\work\my\sod\sodlib\include\character.h
+1401435713 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
@@ -1661,6 +1661,6 @@
 1400947378 d:\work\my\sod\sodlib\include\characterparam.h
 	<SoDlib.h>
 
-1400946674 d:\work\my\sod\sodlib\include\characterresource.h
+1401396236 d:\work\my\sod\sodlib\include\characterresource.h
 	<SoDlib.h>
 

@@ -34,7 +34,7 @@ int NonPlayerCharacter::getTargetSide()
 float NonPlayerCharacter::getTargetDistance()
 {
 	if (targetCharacter != -1) {
-		return fabs(game->getCharacter(targetCharacter)->getPosition().x - getPosition().x);
+		return fabs(game->getCharacter(targetCharacter)->getPosition().x - getPosition().x) - game->getCharacter(targetCharacter)->getHalfWidth() - halfWidth;
 	}
-	return 0;
+	return 0.0f;
 }

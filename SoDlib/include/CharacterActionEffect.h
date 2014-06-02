@@ -8,6 +8,7 @@ const int ACTIONEFFECT_TYPE_CHANGEMOVE = 2;
 const int ACTIONEFFECT_TYPE_RUN = 3;
 const int ACTIONEFFECT_TYPE_JUMP = 4;
 const int ACTIONEFFECT_TYPE_SPAWN_EFFECT = 5;
+const int ACTIONEFFECT_TYPE_ADD_CONDITION = 6;
 
 class CharacterActionEffect
 {

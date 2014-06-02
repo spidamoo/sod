@@ -454,7 +454,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		game->loadEffectPrototypes("effects.xml");
 		game->loadConditionPrototypes("conditions.xml");
 
-		effectDetailsWindow = new GUIWindow(game, 1, 200, 0, 880, 500);
+		effectDetailsWindow = new GUIWindow(game, 1, 200, 0, 880, 550);
 		game->getGUI()->AddCtrl(effectDetailsWindow);
 		effectNameLabel = new hgeGUIEditableLabel(game, 2, arial12, 60.0f, 10.0f, 200.0f, 19.0f, "");
 		effectDetailsWindow->AddCtrl(effectNameLabel);
@@ -487,37 +487,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
             effectDetailsWindow->AddCtrl(startFunctionInput);
 		}
 
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(81, fnt, 60.0f, 470.0f, "test", testEffectClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(81, fnt, 60.0f, 520.0f, "test", testEffectClick) );
 
-        hgeGUIMenuItem* positionTypeLabel = new hgeGUIMenuItem(82, arial12, 50.0f, 420.0f, "position:", NULL);
+        hgeGUIMenuItem* positionTypeLabel = new hgeGUIMenuItem(82, arial12, 50.0f, 470.0f, "position:", NULL);
         positionTypeLabel->bEnabled = false;
         effectDetailsWindow->AddCtrl( positionTypeLabel );
 
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(83, arial12, 100.0f, 420.0f, "static", effectPositionTypeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(84, arial12, 150.0f, 420.0f, "hotspot", effectPositionTypeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(85, arial12, 200.0f, 420.0f, "dynamic", effectPositionTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(83, arial12, 100.0f, 470.0f, "static", effectPositionTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(84, arial12, 150.0f, 470.0f, "hotspot", effectPositionTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(85, arial12, 200.0f, 470.0f, "dynamic", effectPositionTypeClick) );
 
-        hgeGUIMenuItem* areaTypeLabel = new hgeGUIMenuItem(86, arial12, 50.0f, 440.0f, "area:", NULL);
+        hgeGUIMenuItem* areaTypeLabel = new hgeGUIMenuItem(86, arial12, 50.0f, 490.0f, "area:", NULL);
         areaTypeLabel->bEnabled = false;
         effectDetailsWindow->AddCtrl( areaTypeLabel );
 
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(87, arial12, 100.0f, 440.0f, "point", effectAreaTypeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(88, arial12, 150.0f, 440.0f, "rect", effectAreaTypeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(89, arial12, 200.0f, 440.0f, "circle", effectAreaTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(87, arial12, 100.0f, 490.0f, "point", effectAreaTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(88, arial12, 150.0f, 490.0f, "rect", effectAreaTypeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(89, arial12, 200.0f, 490.0f, "circle", effectAreaTypeClick) );
 
-        hgeGUIMenuItem* blendModeLabel = new hgeGUIMenuItem(90, arial12, 300.0f, 420.0f, "blend mode:", NULL);
+        hgeGUIMenuItem* blendModeLabel = new hgeGUIMenuItem(90, arial12, 300.0f, 470.0f, "blend mode:", NULL);
         blendModeLabel->bEnabled = false;
         effectDetailsWindow->AddCtrl( blendModeLabel );
 
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(91, arial12, 380.0f, 420.0f, "coloradd", effectBlendModeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(92, arial12, 460.0f, 420.0f, "alphablend", effectBlendModeClick) );
-        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(93, arial12, 540.0f, 420.0f, "zwrite", effectBlendModeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(91, arial12, 380.0f, 470.0f, "coloradd", effectBlendModeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(92, arial12, 460.0f, 470.0f, "alphablend", effectBlendModeClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(93, arial12, 540.0f, 470.0f, "zwrite", effectBlendModeClick) );
 
-        hgeGUIMenuItem* hotSpotNameLabel = new hgeGUIMenuItem(94, arial12, 300.0f, 440.0f, "hotspot:", NULL);
+        hgeGUIMenuItem* hotSpotNameLabel = new hgeGUIMenuItem(94, arial12, 300.0f, 490.0f, "hotspot:", NULL);
         hotSpotNameLabel->bEnabled = false;
         effectDetailsWindow->AddCtrl( hotSpotNameLabel );
 
-        hgeGUIEditableLabel* hotSpotNameInput = new hgeGUIEditableLabel(game, 95, arial12, 350.0f, 440.0f, 100.0f, 19.0f, "");
+        hgeGUIEditableLabel* hotSpotNameInput = new hgeGUIEditableLabel(game, 95, arial12, 350.0f, 490.0f, 100.0f, 19.0f, "");
         hotSpotNameInput->setOnChange(hotSpotNameChange);
         effectDetailsWindow->AddCtrl( hotSpotNameInput );
 

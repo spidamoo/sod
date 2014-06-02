@@ -37,6 +37,9 @@ void Condition::update(float dt)
             case CONDITION_TYPE_ADD_RESOURCE:
                 bearer->getResource( prototype->getParam() )->add( value );
                 break;
+            case CONDITION_TYPE_SET_RESOURCE:
+                bearer->getResource( prototype->getParam() )->set( value );
+                break;
         }
 
         tickTime -= interval;

@@ -33,6 +33,8 @@ Effect::Effect(Game* game, EffectPrototype* prototype) {
     }
 
     owner = NULL;
+
+    width = 1.0f;
 }
 
 Effect::~Effect() {
@@ -50,15 +52,20 @@ Character* Effect::getOwner() {
 void Effect::initialize() {
     if (owner) {
         prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, owner->getDirection());
+        prototype->setParam(EFFECT_PARAM_OWNER_ANGLE, owner->getAngle());
     }
     else {
         prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, 0.0f);
+        prototype->setParam(EFFECT_PARAM_OWNER_ANGLE, 0.0f);
     }
 
     time = prototype->evalStartExpression(EFFECT_FUNCTION_TIME);
+    prototype->setParam(EFFECT_PARAM_TIME, time);
+    angle = prototype->evalStartExpression(EFFECT_FUNCTION_ANGLE);
+    prototype->setParam(EFFECT_PARAM_ANGLE, angle);
+
     componentSpeed.x = prototype->evalStartExpression(EFFECT_FUNCTION_XSPEED);
     componentSpeed.y = prototype->evalStartExpression(EFFECT_FUNCTION_YSPEED);
-    angle = prototype->evalStartExpression(EFFECT_FUNCTION_ANGLE);
 
     r = prototype->evalStartExpression(EFFECT_FUNCTION_R);
     g = prototype->evalStartExpression(EFFECT_FUNCTION_G);
@@ -66,12 +73,21 @@ void Effect::initialize() {
     a = prototype->evalStartExpression(EFFECT_FUNCTION_A);
 
     scale = prototype->evalStartExpression(EFFECT_FUNCTION_SCALE);
+
+    width = prototype->evalStartExpression(EFFECT_FUNCTION_WIDTH);
+    height = prototype->evalStartExpression(EFFECT_FUNCTION_HEIGHT);
 }
 
-void Effect::draw(bool schematicMode)
-{
+void Effect::draw(bool schematicMode) {
     if (schematicMode) {
-        game->drawRect( game->screenX(position.x), game->screenY(position.y), 3, 3, 0, 0xFFFFAA00, 0xAAFFAA00 );
+        switch (prototype->getAreaType()) {
+            case EFFECT_AREA_TYPE_POINT:
+                game->drawRect( game->screenX(position.x), game->screenY(position.y), 3, 3, 0, 0xFFFFAA00, 0xAAFFAA00 );
+                break;
+            case EFFECT_AREA_TYPE_CIRCLE:
+                game->drawCircle( game->screenX(position.x), game->screenY(position.y), width * game->getFullScale(), 0xFFFFAA00, 0xAAFFAA00 );
+                break;
+        }
     }
     else {
         if (animation) {
@@ -80,9 +96,10 @@ void Effect::draw(bool schematicMode)
     }
 }
 
-void Effect::update(float dt)
-{
+void Effect::update(float dt) {
     clock_t st = clock();
+
+    prevPosition = position;
 
     prototype->setParam(EFFECT_PARAM_X, position.x);
     prototype->setParam(EFFECT_PARAM_Y, position.y);
@@ -95,9 +112,11 @@ void Effect::update(float dt)
 
     if (owner) {
         prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, owner->getDirection());
+        prototype->setParam(EFFECT_PARAM_OWNER_ANGLE, owner->getAngle());
     }
     else {
         prototype->setParam(EFFECT_PARAM_OWNER_DIRECTION, 0.0f);
+        prototype->setParam(EFFECT_PARAM_OWNER_ANGLE, 0.0f);
     }
 
     if (animation) {
@@ -123,6 +142,13 @@ void Effect::update(float dt)
             angle = prototype->evalExpression(EFFECT_FUNCTION_ANGLE);
     //                printf("angle evaluated to %f \n", angle);
         }
+    }
+
+    if ( prototype->getExpressionExists(EFFECT_FUNCTION_WIDTH) ) {
+        width = prototype->evalExpression(EFFECT_FUNCTION_WIDTH);
+    }
+    if ( prototype->getExpressionExists(EFFECT_FUNCTION_HEIGHT) ) {
+        height = prototype->evalExpression(EFFECT_FUNCTION_HEIGHT);
     }
 
     switch ( prototype->getPositionType() ) {
@@ -175,12 +201,69 @@ void Effect::update(float dt)
                 case EFFECTACTION_CONDITION_NONE:
                     conditionSatisfied = true;
                     break;
+                case EFFECTACTION_CONDITION_CROSS_ENEMY_BODY:
+                    for (int j = 0; j < game->getCharactersCount(); j++) {
+                        if ( owner->getType() != game->getCharacter(j)->getType() ) {
+                            if ( characterCrosses( game->getCharacter(j) ) ) {
+                                conditionSatisfied = true;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case EFFECTACTION_CONDITION_CROSS_FRIEND_BODY:
+                    for (int j = 0; j < game->getCharactersCount(); j++) {
+                        if ( owner->getType() == game->getCharacter(j)->getType() ) {
+                            if ( characterCrosses( game->getCharacter(j) ) ) {
+                                conditionSatisfied = true;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case EFFECTACTION_CONDITION_CROSS_GROUND:
+                    for (int i = 0; i < game->getGroundLinesCount(); i++) {///Обработаем все стены
+                        if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_WALL) {
+                                if (
+                                    position.y + 0.1f < game->getGroundLine(i)->getBottom()///Верхняя точка героя выше нижней точки линии
+                                    && position.y - 0.1f > game->getGroundLine(i)->getTop()///Или нижняя героя ниже верхней линии
+                                ) {
+                                    ///Если середина была слева от линии, а правый край теперь справа
+                                    if (prevPosition.x < game->getGroundLine(i)->xAt(position.y) && position.x > game->getGroundLine(i)->xAt(position.y)) {
+                                        conditionSatisfied = true;
+                                        break;
+                                    } else if (prevPosition.x > game->getGroundLine(i)->xAt(position.y) && position.x < game->getGroundLine(i)->xAt(position.y)) {
+                                        conditionSatisfied = true;
+                                        break;
+                                    }
+                                }
+
+                        }
+                        if (game->getGroundLine(i)->getType() == GROUND_LINE_TYPE_FLOOR) {
+                            if (
+                                position.x > game->getGroundLine(i)->getStartPoint().x && position.x < game->getGroundLine(i)->getEndPoint().x
+                            ) {
+                                float highY, lowY;
+                                highY = game->getGroundLine(i)->yAt(position.x);
+                                lowY = game->getGroundLine(i)->yAt(position.x);
+
+                                if (prevPosition.y < highY && position.y > highY && componentSpeed.y >= 0) {
+                                    conditionSatisfied = true;
+                                    break;
+                                }
+                                else if (prevPosition.y > lowY && position.y < lowY) {
+                                    /// уперся в платформу снизу
+                                }
+                            }
+                        }
+                    }
+                    break;
             }
 
             if (conditionSatisfied) {
                 switch ( action->getType() ) {
                     case EFFECTACTION_TYPE_DESTRUCT:
-                        time = -1;
+                        time = -1.0f;
                         break;
                     case EFFECTACTION_TYPE_SPAWN_EFFECT:
                         //printf("effect spawns effect\n");
@@ -189,7 +272,7 @@ void Effect::update(float dt)
                     case EFFECTACTION_TYPE_INFLICT_CONDITION:
                         //printf("trying to apply condition\n");
                         for (int j = 0; j < game->getCharactersCount(); j++) {
-                            if ( !owner ||
+                            if (
                                 ( (action->getTargets() & EFFECTACTION_TARGET_FRIEND) && owner->getType() == game->getCharacter(j)->getType() )
                                 || ( (action->getTargets() & EFFECTACTION_TARGET_ENEMY) && owner->getType() != game->getCharacter(j)->getType() )
                             ) {
@@ -207,7 +290,11 @@ void Effect::update(float dt)
                 }
             }
 
+            if (action->getInterval() == 0.0f)
+                break;
+
             actionTimes[i] -= action->getInterval();
+
         }
     }
 
@@ -217,8 +304,7 @@ void Effect::update(float dt)
     time -= dt;
 }
 
-float Effect::getTime()
-{
+float Effect::getTime() {
     return time;
 }
 
@@ -237,8 +323,7 @@ void Effect::setAnimation(hgeAnimation* animation, int blendMode) {
     this->animation->SetBlendMode(blendMode);
 }
 
-bool Effect::characterCrosses(Character* character)
-{
+bool Effect::characterCrosses(Character* character) {
     //printf("position %f %f ", position.x, position.y);
     switch ( prototype->getAreaType() ) {
         case EFFECT_AREA_TYPE_POINT:
@@ -247,6 +332,13 @@ bool Effect::characterCrosses(Character* character)
                 && fabs( position.y - character->getY() ) < character->getHalfHeight()
             ) {
 //                printf("%f - %f < %f and %f - %f < %f\n", position.x, character->getX(), character->getHalfWidth(), position.y, character->getY(), character->getHalfHeight());
+                return true;
+            }
+            break;
+        case EFFECT_AREA_TYPE_CIRCLE:
+            if (
+                sqrt( powf( position.x - character->getX(), 2 ) + pow( position.y - character->getY(), 2 ) ) < width
+            ) {
                 return true;
             }
             break;

@@ -37,6 +37,7 @@ class Character
 		float getHalfWidth();
 		int getOnGround();
 		int getDirection();
+		float getAngle();
 
 		float getHotSpotX(int index), getHotSpotY(int index); int getHotSpotIndex(char* name);
 
@@ -48,7 +49,7 @@ class Character
         CharacterParam* getParam(int index);
         CharacterResource* getResource(int index);
 
-        void setStatusAction(int status, CharacterAction* action);
+        void setStatusAction(int status, CharacterAction* action), setResourceLessAction(int resource, float value, CharacterAction* action);
 	protected:
 	    float animatedValue(float prev, float next), midanglePosition(float prev, float next), midangleAngle(float prev, float next);
 

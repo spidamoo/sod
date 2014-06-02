@@ -1,12 +1,13 @@
 <?xml version="1.0" ?>
-<character bodies="7" hotspots="0" height="0.387497" width="1.25" moves="2">
-    <body animation="rat/tail2.png.xml" name="tail2" x="83.0554" y="93.9396" angle="0.411389" />
+<character bodies="7" hotspots="1" height="0.387497" width="1.25" moves="5">
+    <body animation="rat/tail2.png.xml" name="tail2" x="30.8223" y="76.1707" angle="0.281594" />
     <body animation="rat/body.png.xml" name="body" x="7" y="137" angle="1.15785e-038" />
     <body animation="rat/leg.png.xml" name="leg" x="2" y="120" angle="0" />
-    <body animation="rat/tail.png.xml" name="tail1" x="34.4814" y="50.0438" angle="-0.570997" />
-    <body animation="rat/head2.png.xml" name="bite head" x="38" y="59" angle="0" />
-    <body animation="rat/head.png.xml" name="head" x="1" y="95" angle="0" />
+    <body animation="rat/tail.png.xml" name="tail1" x="1.00024" y="102" angle="0" />
+    <body animation="rat/head2.png.xml" name="bite head" x="61.682" y="109.951" angle="0.291897" />
+    <body animation="rat/head.png.xml" name="head" x="10.0002" y="56.0004" angle="0" />
     <body animation="rat/arm.png.xml" name="arm" x="0" y="138" angle="0" />
+    <hotspot shape="box" name="weapon tip" x="21" y="247" angle="1.08489e-041" w="0.1" h="0.1" />
     <move frames="1" angles="1" name="idle">
         <body rotating="0" />
         <body rotating="0" />
@@ -23,6 +24,7 @@
             <body x="1358" y="574" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
             <body x="-0.640624" y="-0.0124987" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
             <body x="-0.434373" y="0.112501" scale_x="1" scale_y="1" angle="0" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
         </frame>
         <angle value="0">
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
@@ -32,22 +34,44 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
         </angle>
-        <actions count="2">
+        <actions count="4">
             <action>
                 <on causes="1">
-                    <cause type="101" param="1" />
+                    <cause type="101" param="1" param2="0" />
                 </on>
                 <do effects="1">
                     <effect type="1" param="0" param2="0" />
                 </do>
             </action>
             <action>
-                <on causes="1">
-                    <cause type="102" param="2" />
+                <on causes="2">
+                    <cause type="102" param="1" param2="0" />
+                    <cause type="101" param="0" param2="0" />
                 </on>
                 <do effects="1">
                     <effect type="2" param="1" param2="1" />
+                </do>
+            </action>
+            <action>
+                <on causes="1">
+                    <cause type="501" param="0" param2="0" />
+                </on>
+                <do effects="3">
+                    <effect type="2" param="2" param2="1" />
+                    <effect type="6" param="2" param2="1" />
+                    <effect type="4" param="5" param2="-3" />
+                </do>
+            </action>
+            <action>
+                <on causes="2">
+                    <cause type="103" param="1" param2="0" />
+                    <cause type="101" param="0" param2="0" />
+                </on>
+                <do effects="2">
+                    <effect type="2" param="4" param2="1" />
+                    <effect type="5" param="12" param2="1" />
                 </do>
             </action>
         </actions>
@@ -68,6 +92,7 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
             <body x="-0.509374" y="0.0250013" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
             <body x="-0.327882" y="0.0742991" scale_x="1" scale_y="1" angle="0.805342" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
         </frame>
         <frame length="0.2">
             <body x="0.762674" y="0.187311" scale_x="1" scale_y="1" angle="0.411389" show="0" layer="0" />
@@ -77,6 +102,7 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
             <body x="-0.509374" y="0.0250013" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
             <body x="-0.262432" y="0.172201" scale_x="1" scale_y="1" angle="-0.530415" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
         </frame>
         <angle value="0">
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
@@ -86,11 +112,12 @@
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
             <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
         </angle>
         <actions count="3">
             <action>
                 <on causes="1">
-                    <cause type="101" param="1" />
+                    <cause type="101" param="1" param2="0" />
                 </on>
                 <do effects="1">
                     <effect type="2" param="0" param2="1" />
@@ -98,7 +125,7 @@
             </action>
             <action>
                 <on causes="1">
-                    <cause type="201" param="0" />
+                    <cause type="201" param="0" param2="0" />
                 </on>
                 <do effects="1">
                     <effect type="3" param="5" param2="0" />
@@ -106,7 +133,7 @@
             </action>
             <action>
                 <on causes="1">
-                    <cause type="103" param="1" />
+                    <cause type="103" param="0" param2="0" />
                 </on>
                 <do effects="1">
                     <effect type="2" param="0" param2="1" />
@@ -114,4 +141,153 @@
             </action>
         </actions>
     </move>
+    <move frames="3" angles="1" name="dying">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.15">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="-0.162498" y="-0.0234363" scale_x="1" scale_y="1" angle="1.15785e-038" show="1" layer="3" />
+            <body x="-0.00937366" y="0.100001" scale_x="1" scale_y="1" angle="0" show="1" layer="1" />
+            <body x="0.406251" y="-0.0187488" scale_x="1" scale_y="1" angle="0" show="1" layer="2" />
+            <body x="-0.653125" y="0.00624967" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="-0.640624" y="-0.0124987" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
+            <body x="-0.434373" y="0.112501" scale_x="1" scale_y="1" angle="0" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </frame>
+        <frame length="0.15">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="-0.138055" y="-0.343263" scale_x="1" scale_y="1" angle="1.98215" show="1" layer="3" />
+            <body x="-0.354686" y="-0.00312397" scale_x="1" scale_y="1" angle="0" show="1" layer="1" />
+            <body x="-0.190547" y="0.253114" scale_x="1" scale_y="1" angle="1.97354" show="1" layer="2" />
+            <body x="0.0395134" y="-0.839579" scale_x="1" scale_y="1" angle="2.31478" show="1" layer="4" />
+            <body x="-0.0340435" y="-0.820784" scale_x="1" scale_y="1" angle="2.02421" show="0" layer="5" />
+            <body x="-0.201185" y="-0.617669" scale_x="1" scale_y="1" angle="1.32628" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </frame>
+        <frame length="20">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="0.191848" y="0.081674" scale_x="1" scale_y="1" angle="-2.84057" show="1" layer="3" />
+            <body x="-0.111662" y="-0.203583" scale_x="1" scale_y="1" angle="1.46095" show="1" layer="1" />
+            <body x="-0.406242" y="0.0588082" scale_x="1" scale_y="1" angle="3.14151" show="1" layer="2" />
+            <body x="0.53473" y="0.0772395" scale_x="1" scale_y="1" angle="2.50637" show="1" layer="4" />
+            <body x="0.519643" y="0.124928" scale_x="1" scale_y="1" angle="2.78509" show="0" layer="5" />
+            <body x="0.359158" y="0.0190278" scale_x="1" scale_y="1" angle="2.40966" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="1">
+            <action>
+                <on causes="1">
+                    <cause type="301" param="0.3" param2="0" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="3" param2="1" />
+                </do>
+            </action>
+        </actions>
+    </move>
+    <move frames="1" angles="1" name="dead">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="10.1">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="0.191848" y="0.081674" scale_x="1" scale_y="1" angle="-2.84057" show="1" layer="3" />
+            <body x="-0.111662" y="-0.203583" scale_x="1" scale_y="1" angle="1.46095" show="1" layer="1" />
+            <body x="-0.406242" y="0.0588082" scale_x="1" scale_y="1" angle="3.14151" show="1" layer="2" />
+            <body x="0.53473" y="0.0772395" scale_x="1" scale_y="1" angle="2.50637" show="1" layer="4" />
+            <body x="0.519643" y="0.124928" scale_x="1" scale_y="1" angle="2.78509" show="0" layer="5" />
+            <body x="0.359158" y="0.0190278" scale_x="1" scale_y="1" angle="2.40966" show="1" layer="6" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="1">
+            <action>
+                <on causes="1">
+                    <cause type="301" param="10" param2="0" />
+                </on>
+                <do effects="2">
+                    <effect type="6" param="2" param2="1" />
+                    <effect type="2" param="3" param2="1" />
+                </do>
+            </action>
+        </actions>
+    </move>
+    <move frames="2" angles="1" name="attack">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.2">
+            <body x="0.620873" y="0.112016" scale_x="1" scale_y="1" angle="0.372254" show="1" layer="0" />
+            <body x="-0.181248" y="-0.0249988" scale_x="1" scale_y="1" angle="1.15785e-038" show="1" layer="3" />
+            <body x="-0.00937366" y="0.100001" scale_x="1" scale_y="1" angle="0" show="1" layer="1" />
+            <body x="0.406251" y="-0.0187488" scale_x="1" scale_y="1" angle="0" show="0" layer="2" />
+            <body x="-0.68125" y="0.0125" scale_x="1" scale_y="1" angle="0" show="1" layer="4" />
+            <body x="-0.640624" y="-0.0124987" scale_x="1" scale_y="1" angle="0" show="0" layer="5" />
+            <body x="-0.434373" y="0.112501" scale_x="1" scale_y="1" angle="0" show="1" layer="6" />
+            <hotspot x="-0.7625" y="0.0125" angle="0" show="1" />
+        </frame>
+        <frame length="0.25">
+            <body x="0.14632" y="0.0567835" scale_x="1" scale_y="1" angle="0.281594" show="0" layer="0" />
+            <body x="-0.668117" y="-0.0604217" scale_x="1" scale_y="1" angle="0.223973" show="1" layer="3" />
+            <body x="-0.279667" y="0.118712" scale_x="1" scale_y="1" angle="-2.35255" show="1" layer="1" />
+            <body x="-0.0374992" y="-0.0218739" scale_x="1" scale_y="1" angle="0" show="1" layer="2" />
+            <body x="-1.15412" y="-0.147028" scale_x="1" scale_y="1" angle="0.291897" show="0" layer="4" />
+            <body x="-1.125" y="-0.146874" scale_x="1" scale_y="1" angle="0" show="1" layer="5" />
+            <body x="-0.781384" y="0.0658199" scale_x="1" scale_y="1" angle="-1.95954" show="1" layer="6" />
+            <hotspot x="-1.31094" y="-0.154688" angle="1.08489e-041" show="1" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <hotspot x="0" y="0" angle="0" show="0" />
+        </angle>
+        <actions count="1">
+            <action>
+                <on causes="1">
+                    <cause type="301" param="0.4" param2="0" />
+                </on>
+                <do effects="1">
+                    <effect type="2" param="0" param2="1" />
+                </do>
+            </action>
+        </actions>
+    </move>
+    <resource width="1" height="0.1" x="0" y="-0.5" full_color="-65536" empty_color="-16777216" boost_color="-16777216" frame_color="-16777216" />
 </character>

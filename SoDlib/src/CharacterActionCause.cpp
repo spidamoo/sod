@@ -1,9 +1,10 @@
 #include "CharacterActionCause.h"
 
-CharacterActionCause::CharacterActionCause(int type, float param)
+CharacterActionCause::CharacterActionCause(int _type, float _param)
 {
-	this->type = type;
-	this->param = param;
+	type = _type;
+	param = _param;
+	param2 = 0.0f;
 }
 
 CharacterActionCause::CharacterActionCause(TiXmlElement* elem)
@@ -11,6 +12,7 @@ CharacterActionCause::CharacterActionCause(TiXmlElement* elem)
 	printf("cause\n");
 	type = atoi(elem->Attribute("type"));
 	param = atof(elem->Attribute("param"));
+	param2 = atof(elem->Attribute("param2"));
 }
 
 CharacterActionCause::~CharacterActionCause()
@@ -22,6 +24,7 @@ void CharacterActionCause::save(TiXmlElement* elem)
 {
 	elem->SetAttribute("type", type);
 	elem->SetDoubleAttribute("param", param);
+	elem->SetDoubleAttribute("param2", param2);
 }
 
 bool CharacterActionCause::test(Game* game, Character* character) {
@@ -57,7 +60,14 @@ bool CharacterActionCause::test(Game* game, Character* character) {
         case ACTIONCAUSE_TYPE_ANIM_TIME_IS:
             return ( character->getAnimTime() == param );
             break;
+        case ACTIONCAUSE_TYPE_ANGLE_MORE:
+            return ( character->getAngle() > param );
+            break;
+        case ACTIONCAUSE_TYPE_ANGLE_LESS:
+            return ( character->getAngle() < param );
+            break;
 	}
+	return false;
 }
 
 int CharacterActionCause::getType() {
@@ -66,9 +76,27 @@ int CharacterActionCause::getType() {
 float CharacterActionCause::getParam() {
     return param;
 }
+float CharacterActionCause::getParam(int index) {
+    switch (index) {
+        case 2:
+            return param2;
+        default:
+            return param;
+    }
+}
 void CharacterActionCause::setType(int _type) {
     type = _type;
 }
 void CharacterActionCause::setParam(float _param) {
     param = _param;
+}
+void CharacterActionCause::setParam(int index, float _param) {
+    switch (index) {
+        case 2:
+            param2 = _param;
+            break;
+        default:
+            param = _param;
+            break;
+    }
 }

@@ -87,6 +87,14 @@ void CharacterAction::prepareStatus(Character* character) {
 		}
 	}
 }
+void CharacterAction::prepareResource(Character* character) {
+	for (int i = 0; i < causesCount; i++) {
+		if (causes[i]->getType() == ACTIONCAUSE_TYPE_RESORCE_LESS) {
+            printf("cause %d: %.2f %.2f\n", i, causes[i]->getParam(), causes[i]->getParam(2));
+            character->setResourceLessAction(causes[i]->getParam(), causes[i]->getParam(2), this);
+		}
+	}
+}
 
 int CharacterAction::getEffectsCount() {
     return effectsCount;

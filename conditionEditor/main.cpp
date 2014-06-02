@@ -32,6 +32,7 @@ void interpretParam() {
         case CONDITION_TYPE_ADD_FULL_RESOURCE:
         case CONDITION_TYPE_BOOST_RESOURCE:
         case CONDITION_TYPE_REGEN_RESOURCE:
+        case CONDITION_TYPE_SET_RESOURCE:
             sprintf(
                 buffer,
                 "resource #%d: %s",
@@ -770,8 +771,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		conditionWindow->AddCtrl( new hgeGUIMenuItem(11, arial12, 50.0f, 80.0f, "resource add", conditionTypeClick) );
 		conditionWindow->AddCtrl( new hgeGUIMenuItem(12, arial12, 120.0f, 80.0f, "add full", conditionTypeClick) );
-		conditionWindow->AddCtrl( new hgeGUIMenuItem(13, arial12, 190.0f, 80.0f, "boost", conditionTypeClick) );
-		conditionWindow->AddCtrl( new hgeGUIMenuItem(14, arial12, 260.0f, 80.0f, "add regen", conditionTypeClick) );
+		conditionWindow->AddCtrl( new hgeGUIMenuItem(13, arial12, 170.0f, 80.0f, "boost", conditionTypeClick) );
+		conditionWindow->AddCtrl( new hgeGUIMenuItem(14, arial12, 230.0f, 80.0f, "add regen", conditionTypeClick) );
+		conditionWindow->AddCtrl( new hgeGUIMenuItem(19, arial12, 270.0f, 80.0f, "set", conditionTypeClick) );
 
 		conditionWindow->AddCtrl( new hgeGUIMenuItem(15, arial12, 50.0f, 100.0f, "add param", conditionTypeClick) );
 
