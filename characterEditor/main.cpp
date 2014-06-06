@@ -766,10 +766,14 @@ int getPointedBody(float x, float y) {
 
 			if (bb->TestPoint(x, y))
 				selected = i;
+
+            delete bb;
 		} else if (!animShow(i)) {
 			hgeRect* bb = new hgeRect();
 			if (animations[i]->GetBoundingBoxEx(1300 + animationX[i], 450 - 1000 * currentTab + animationY[i], animationAngle[i], 1, 1, bb)->TestPoint(x, y))
 				selected = i;
+
+            delete bb;
 		}
 	}
 
@@ -2341,10 +2345,14 @@ bool FrameFunc() {
                 if (selectedBody != -1) {
                     float newOffsetX = x - game->screenX(animX(selectedBody));
                     float newOffsetY = y - game->screenY(animY(selectedBody));
-                    setAnimScaleX(selectedBody, animScaleX(selectedBody) * newOffsetX / dragOffsetX);
-                    setAnimScaleY(selectedBody, animScaleY(selectedBody) * newOffsetY / dragOffsetY);
-                    dragOffsetX = newOffsetX;
-                    dragOffsetY = newOffsetY;
+                    float newScaleX = newOffsetX / dragOffsetX;
+                    float newScaleY = newOffsetY / dragOffsetY;
+                    if ( fabs(newScaleX) > 0.05f ) {
+                        setAnimScaleX(selectedBody, newScaleX);
+                    }
+                    if ( fabs(newScaleY) > 0.05f ) {
+                        setAnimScaleY(selectedBody, newScaleY);
+                    }
                 }
                 if (game->getHge()->Input_KeyUp(HGEK_LBUTTON) || game->getHge()->Input_KeyUp(HGEK_CTRL)) {
                     resetMode();
@@ -2683,6 +2691,7 @@ bool RenderFunc() {
                         animScaleY(i) * game->getScaleFactor(),
                         bb
                     );
+                    delete bb;
 
                     game->getHge()->Gfx_RenderLine(bb->x1, bb->y1, bb->x2, bb->y1, color);
                     game->getHge()->Gfx_RenderLine(bb->x2, bb->y1, bb->x2, bb->y2, color);
@@ -2918,6 +2927,7 @@ bool RenderFunc() {
 
                     hgeRect* bb = new hgeRect();
                     animations[i]->GetBoundingBoxEx(1300 + animationX[i], 450 - 1000 * currentTab + animationY[i], animationAngle[i], 1, 1, bb);
+                    delete bb;
 
                     game->drawRect(bb->x1, bb->y1, bb->x2, bb->y2, color, 0);
     //			}
