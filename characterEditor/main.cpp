@@ -1023,21 +1023,14 @@ bool loadCharacter(char* fn) {
 			float y = atof(element->Attribute("y"));
 			float angle = atof(element->Attribute("angle"));
 
-			char* animationName = (char*)element->Attribute("animation");
-			hgeAnimation* animation = game->loadAnimation(animationName);
+            animationNames[i] = copyString(element->Attribute("animation"));
+			hgeAnimation* animation = game->loadAnimation(animationNames[i]);
 			//animation->SetHotSpot(-game->getPixelsPerMeter() * atof(element->Attribute("x")), -game->getPixelsPerMeter() * atof(element->Attribute("y")));
 
 			animations[i] = animation;
 			animationX[i] = x;
 			animationY[i] = y;
 			animationAngle[i] = angle;
-
-			animationNames[i] = new char[64];
-			int c = 0;
-			for (c = 0; animationName[c] != '\0'; c++) {
-			    animationNames[i][c] = animationName[c];
-			}
-			animationNames[i][c] = '\0';
 
 			if (element->Attribute("name")) {
                 bodyNames[i] = copyString( element->Attribute("name") );
@@ -1855,6 +1848,8 @@ bool insertMoveButtonClick(hgeGUIObject* sender) {
 	moveNames[currentMove] = "<move>";
 	currentFrame = 0;
 	framesLengths[currentMove][0] = 0.5f;
+	actionsCounts[currentMove] = 0;
+	actions[currentMove] = new CharacterAction*[256];
 
 	for (int i = 0; i < bodiesCount; i++) {
 		frameAnimShow[currentMove][currentFrame][i] = false;
@@ -1911,6 +1906,8 @@ bool removeMoveClick(hgeGUIObject* sender) {
 bool duplicateMoveClick(hgeGUIObject* sender) {
 	framesCounts[movesCount] = framesCounts[currentMove];
 	angleCounts[movesCount]  = angleCounts[currentMove];
+	actionsCounts[movesCount] = 0;
+	actions[movesCount] = new CharacterAction*[256];
 
     delete moveNames[movesCount];
     moveNames[movesCount] = new char[256];
@@ -2034,10 +2031,16 @@ bool FrameFunc() {
 
 	if (mode < MODE_MOVES_INDEX) {
 
-        float layerHeight = 50;
-        if (bodiesCount > 16) {
-            layerHeight = 800 / bodiesCount;
+        int displayedBodiesCount = 0;
+        for (int i = 0; i < bodiesCount; i++) {
+            if (frameAnimShow[currentMove][currentFrame][i])
+                displayedBodiesCount++;
         }
+        float layerHeight = 50;
+        if (displayedBodiesCount > 16) {
+            layerHeight = 800 / displayedBodiesCount;
+        }
+        float layerY = 90 + layerHeight * displayedBodiesCount;
 
         if (game->getHge()->Input_KeyUp(HGEK_TAB)) {
             drawBoxes = !drawBoxes;
@@ -2050,9 +2053,20 @@ bool FrameFunc() {
         switch(mode) {
             case MODE_DEFAULT:
                 if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && !game->getHge()->Input_GetKeyState(HGEK_SHIFT) && !game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
-                    if (x < 50 && y > 110 && y < 110 + layerHeight * bodiesCount) {
-                        selectedLayer = floor((bodiesCount * layerHeight - (y - 110)) / layerHeight);
-                        mode = MODE_LAYER_DRAG;
+                    if (x < 50) {
+                        for (int index = 0; index < bodiesCount; index++) {
+                            int i = frameAnimLayer[currentMove][currentFrame][index];
+                            if (!frameAnimShow[currentMove][currentFrame][i]) {
+                                continue;
+                            }
+                            if (y > layerY - 0.5f * layerHeight && y < layerY + 0.5f * layerHeight) {
+                                selectedLayer = index;
+                                mode = MODE_LAYER_DRAG;
+                                break;
+                            }
+
+                            layerY -= layerHeight;
+                        }
                     }
                     if (y > 100 && x > 50) {
                         selectedBody = getPointedBody(x, y);
@@ -2142,7 +2156,7 @@ bool FrameFunc() {
                         mode = MODE_RESIZE_CHARACTER;
                     }
                 }
-                if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_SHIFT)) {
+                else if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_SHIFT)) {
                     selectedBody = getPointedBody(x, y);
                     selectedHotSpot = getPointedHotSpot(x, y);
                     if ( selectedBody != -1 && animShow(selectedBody) ) {
@@ -2160,7 +2174,7 @@ bool FrameFunc() {
                         mode = MODE_HOTSPOT_ROTATE;
                     }
                 }
-                if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
+                else if (game->getHge()->Input_KeyDown(HGEK_LBUTTON) && game->getHge()->Input_GetKeyState(HGEK_CTRL)) {
                     selectedBody = getPointedBody(x, y);
                     if ( selectedBody != -1 && animShow(selectedBody) ) {
                         //mainWindow->Hide();
@@ -2169,13 +2183,24 @@ bool FrameFunc() {
                         mode = MODE_ANIM_RESIZE;
                     }
                 }
-                if (game->getHge()->Input_KeyDown(HGEK_RBUTTON)) {
+                else if (game->getHge()->Input_KeyDown(HGEK_RBUTTON)) {
 
                     if (x < 50 && y > 110 && y < 110 + layerHeight * bodiesCount) {
-                        int layer = floor((bodiesCount * layerHeight - (y - 110)) / layerHeight);
-                        frameAnimHideLayer[currentMove][currentFrame][frameAnimLayer[currentMove][currentFrame][layer]]
-                            = !frameAnimHideLayer[currentMove][currentFrame][frameAnimLayer[currentMove][currentFrame][layer]];
-                        ;
+                        for (int index = 0; index < bodiesCount; index++) {
+                            int i = frameAnimLayer[currentMove][currentFrame][index];
+                            if (!frameAnimShow[currentMove][currentFrame][i]) {
+                                continue;
+                            }
+                            if (y > layerY - 0.5f * layerHeight && y < layerY + 0.5f * layerHeight) {
+                                frameAnimHideLayer[currentMove][currentFrame][i]
+                                    = !frameAnimHideLayer[currentMove][currentFrame][i];
+                                ;
+                                break;
+                            }
+
+                            layerY -= layerHeight;
+                        }
+
                     }
                     else if (y > 50 && y < 100 && x < 1300) {
                         if (editMode == EDIT_MODE_FRAMES) {
@@ -2348,17 +2373,21 @@ bool FrameFunc() {
                 }
                 break;
             case MODE_LAYER_DRAG:
-                if (bodiesCount * layerHeight - (y - 110) > 0 && bodiesCount * layerHeight - (y - 110) < selectedLayer * layerHeight) {
-                    int oldAnimNum = frameAnimLayer[currentMove][currentFrame][selectedLayer];
-                    frameAnimLayer[currentMove][currentFrame][selectedLayer] = frameAnimLayer[currentMove][currentFrame][selectedLayer - 1];
-                    frameAnimLayer[currentMove][currentFrame][selectedLayer - 1] = oldAnimNum;
-                    selectedLayer -= 1;
-                }
-                if (bodiesCount * layerHeight - (y - 110) < bodiesCount * layerHeight && bodiesCount * layerHeight - (y - 110) > selectedLayer * layerHeight + layerHeight) {
-                    int oldAnimNum = frameAnimLayer[currentMove][currentFrame][selectedLayer];
-                    frameAnimLayer[currentMove][currentFrame][selectedLayer] = frameAnimLayer[currentMove][currentFrame][selectedLayer + 1];
-                    frameAnimLayer[currentMove][currentFrame][selectedLayer + 1] = oldAnimNum;
-                    selectedLayer += 1;
+
+                for (int index = 0; index < bodiesCount; index++) {
+                    int i = frameAnimLayer[currentMove][currentFrame][index];
+                    if (!frameAnimShow[currentMove][currentFrame][i]) {
+                        continue;
+                    }
+                    if (y > layerY - 0.5f * layerHeight && y < layerY + 0.5f * layerHeight) {
+                        int oldLayer = frameAnimLayer[currentMove][currentFrame][selectedLayer];
+                        frameAnimLayer[currentMove][currentFrame][selectedLayer] = i;
+                        frameAnimLayer[currentMove][currentFrame][index] = oldLayer;
+                        selectedLayer = index;
+                        break;
+                    }
+
+                    layerY -= layerHeight;
                 }
                 if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)) {
                     resetMode();
@@ -2804,14 +2833,24 @@ bool RenderFunc() {
             delete arrow;
         }
 
-        float layerHeight = 50;
-        if (bodiesCount > 16) {
-            layerHeight = 800 / bodiesCount;
-        }
 
         arial12->SetColor(0xFF000000);
+
+        int displayedBodiesCount = 0;
+        for (int i = 0; i < bodiesCount; i++) {
+            if (frameAnimShow[currentMove][currentFrame][i])
+                displayedBodiesCount++;
+        }
+        float layerHeight = 50;
+        if (displayedBodiesCount > 16) {
+            layerHeight = 800 / displayedBodiesCount;
+        }
+        float layerY = 90 + layerHeight * displayedBodiesCount;
         for (int index = 0; index < bodiesCount; index++) {
             int i = frameAnimLayer[currentMove][currentFrame][index];
+            if (!frameAnimShow[currentMove][currentFrame][i]) {
+                continue;
+            }
             if (index != selectedLayer) {
                 DWORD color = 0xFF000000;
                 if (i == selectedBody) {
@@ -2824,16 +2863,18 @@ bool RenderFunc() {
                 if (frameAnimHideLayer[currentMove][currentFrame][i]) {
                     bgcolor = 0xFFAA0000;
                 }
-                game->drawRect(1, 60 + layerHeight * (bodiesCount - index), 50, 109 + layerHeight * (bodiesCount - index), color, bgcolor);
+                game->drawRect(1, layerY - 0.5f * layerHeight, 50, layerY + 0.5f * layerHeight, color, bgcolor);
                 animations[i]->RenderEx(
                     25,
-                    85 + layerHeight * (bodiesCount - index),
+                    layerY,
                     frameAnimAngle[currentMove][currentFrame][i],
                     miniatureScale / game->getPixelsPerMeter(),
                     miniatureScale / game->getPixelsPerMeter()
                 );
-                arial12->Render(52, 77 + layerHeight * (bodiesCount - index), HGETEXT_LEFT, bodyNames[i]);
+                arial12->Render(52, layerY - 8, HGETEXT_LEFT, bodyNames[i]);
             }
+
+            layerY -= layerHeight;
         }
 
         if (selectedLayer > -1) {
@@ -2844,7 +2885,11 @@ bool RenderFunc() {
             if (selectedLayerY > (110 + bodiesCount * layerHeight)) {
                 selectedLayerY = 110 + bodiesCount * layerHeight;
             }
-            game->drawRect(layerHeight, selectedLayerY - layerHeight * 0.5, 100, selectedLayerY + layerHeight * 0.5, 0xFF000000, 0xFFFFFFFF);
+            DWORD bgcolor = 0xFFFFFFFF;
+            if (frameAnimHideLayer[currentMove][currentFrame][ frameAnimLayer[currentMove][currentFrame][selectedLayer] ]) {
+                bgcolor = 0xFFAA0000;
+            }
+            game->drawRect(layerHeight, selectedLayerY - layerHeight * 0.5, 100, selectedLayerY + layerHeight * 0.5, 0xFF000000, bgcolor);
             animations[frameAnimLayer[currentMove][currentFrame][selectedLayer]]->RenderEx(
                 75,
                 selectedLayerY,
@@ -3150,7 +3195,6 @@ bool RenderFunc() {
 	game->endDraw();
 	return false;
 }
-
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     icon = MAKEINTRESOURCE(CE_ICON);
@@ -3484,7 +3528,5 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	return 0;
 }
-
-
 
 //}

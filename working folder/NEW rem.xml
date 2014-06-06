@@ -1,0 +1,498 @@
+<?xml version="1.0" ?>
+<character bodies="43" hotspots="0" height="2" width="0.5" moves="2">
+    <body animation="NEW REM\body back.png.xml" name="body back.png" x="68" y="120" angle="2.75781e-040" />
+    <body animation="NEW REM\body front.png.xml" name="body front.png" x="86" y="35" angle="2.86728e-040" />
+    <body animation="NEW REM\body halfside.png.xml" name="body halfside.png" x="111" y="99" angle="0" />
+    <body animation="NEW REM\body side.png.xml" name="body side.png" x="162" y="103" angle="0" />
+    <body animation="NEW REM\body sidecrouch.png.xml" name="body sidecrouch.png" x="172" y="113" angle="0" />
+    <body animation="NEW REM\coal w.png.xml" name="coal w.png" x="2" y="173" angle="0" />
+    <body animation="NEW REM\coal.png.xml" name="coal.png" x="148" y="200" angle="0" />
+    <body animation="NEW REM\damagedhead.png.xml" name="damagedhead.png" x="45" y="56" angle="0" />
+    <body animation="NEW REM\front leg A.png.xml" name="front leg A.png" x="34" y="186" angle="-0.386876" />
+    <body animation="NEW REM\front leg B.png.xml" name="front leg B.png" x="123" y="316" angle="0" />
+    <body animation="NEW REM\hand A.png.xml" name="hand A.png" x="0" y="79" angle="0" />
+    <body animation="NEW REM\handB.png.xml" name="handB.png" x="0" y="77" angle="0" />
+    <body animation="NEW REM\Knee Font.png.xml" name="Knee Font.png" x="120" y="240" angle="0" />
+    <body animation="NEW REM\Knee Side A.png.xml" name="Knee Side A.png" x="2" y="225" angle="0" />
+    <body animation="NEW REM\Knee side B.png.xml" name="Knee side B.png" x="0" y="253" angle="0" />
+    <body animation="NEW REM\normalhead.png.xml" name="normalhead.png" x="0" y="12" angle="0" />
+    <body animation="NEW REM\Paw front.png.xml" name="Paw front.png" x="47" y="312" angle="0" />
+    <body animation="NEW REM\paw half side A.png.xml" name="paw half side A.png" x="99" y="281" angle="0" />
+    <body animation="NEW REM\paw half side B.png.xml" name="paw half side B.png" x="89" y="312" angle="0" />
+    <body animation="NEW REM\Paw side A.png.xml" name="Paw side A.png" x="3" y="250" angle="0" />
+    <body animation="NEW REM\Paw sidecrouch A.png.xml" name="Paw sidecrouch A.png" x="37" y="222" angle="0" />
+    <body animation="NEW REM\Paw sidecrouch B.png.xml" name="Paw sidecrouch B.png" x="34" y="254" angle="0" />
+    <body animation="NEW REM\sfist  halfside A.png.xml" name="sfist  halfside A.png" x="213" y="192" angle="0" />
+    <body animation="NEW REM\sfist  halfside B.png.xml" name="sfist  halfside B.png" x="181" y="191" angle="0" />
+    <body animation="NEW REM\sfist backA.png.xml" name="sfist backA.png" x="23" y="133" angle="0" />
+    <body animation="NEW REM\sfist backB.png.xml" name="sfist backB.png" x="0" y="159" angle="0" />
+    <body animation="NEW REM\sfist fornt B.png.xml" name="sfist fornt B.png" x="179" y="248" angle="0" />
+    <body animation="NEW REM\sfist front A.png.xml" name="sfist front A.png" x="215" y="250" angle="0" />
+    <body animation="NEW REM\Sfist half side front.png.xml" name="Sfist half side front.png" x="217" y="273" angle="0" />
+    <body animation="NEW REM\sfist side.png.xml" name="sfist side.png" x="3" y="167" angle="-0.132433" />
+    <body animation="NEW REM\Shoulder B.png.xml" name="Shoulder B.png" x="175" y="44" angle="0" />
+    <body animation="NEW REM\Shoulder front.png.xml" name="Shoulder front.png" x="222" y="64" angle="0" />
+    <body animation="NEW REM\Shoulder frontB.png.xml" name="Shoulder frontB.png" x="199" y="63" angle="0" />
+    <body animation="NEW REM\Shoulder Side A.png.xml" name="Shoulder Side A.png" x="1" y="71" angle="0" />
+    <body animation="NEW REM\Shoulder side B.png.xml" name="Shoulder side B.png" x="116" y="20" angle="0" />
+    <body animation="NEW REM\side leg A.png.xml" name="side leg A.png" x="1" y="193" angle="-0.605545" />
+    <body animation="NEW REM\side leg B.png.xml" name="side leg B.png" x="1" y="200" angle="0" />
+    <body animation="NEW REM\sidehead.png.xml" name="sidehead.png" x="137" y="50" angle="0" />
+    <body animation="NEW REM\smirkhead.png.xml" name="smirkhead.png" x="46" y="87" angle="0" />
+    <body animation="NEW REM\tail C.png.xml" name="tail C.png" x="120" y="150" angle="0.884311" />
+    <body animation="NEW REM\tail.png.xml" name="tail.png" x="2" y="149" angle="-0.524796" />
+    <body animation="NEW REM\Paw side B.png.xml" name="Paw side B.png" x="2" y="250" angle="0" />
+    <body animation="NEW REM\Shoulder side B.png.xml" name="Shoulder side B.png" x="0" y="17" angle="0" />
+    <move frames="2" angles="1" name="title">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.3">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="-0.05" y="-0.46875" scale_x="1" scale_y="1" angle="2.86728e-040" show="1" layer="41" />
+            <body x="0.03125" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="8" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="5" />
+            <body x="-0.03125" y="0.15625" scale_x="1" scale_y="1" angle="0" show="1" layer="19" />
+            <body x="1348" y="496" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.14375" y="0.18125" scale_x="1" scale_y="1" angle="0" show="1" layer="35" />
+            <body x="1340" y="718" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="0.265625" y="-0.503125" scale_x="-1" scale_y="1" angle="-0.959592" show="1" layer="36" />
+            <body x="-0.4125" y="-0.475" scale_x="1" scale_y="1" angle="1.0657" show="1" layer="17" />
+            <body x="0.3625" y="0.475" scale_x="1" scale_y="1" angle="0" show="1" layer="12" />
+            <body x="-0.346875" y="0.575" scale_x="1" scale_y="1" angle="0" show="0" layer="14" />
+            <body x="-0.425" y="0.50625" scale_x="1" scale_y="1" angle="0" show="1" layer="34" />
+            <body x="-0.1125" y="-0.86875" scale_x="1" scale_y="1" angle="0" show="1" layer="25" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.625" y="0.825" scale_x="1" scale_y="1" angle="0" show="1" layer="11" />
+            <body x="1367" y="782" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="1351" y="709" scale_x="1" scale_y="1" angle="0" show="0" layer="13" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="0.60625" y="-0.23125" scale_x="1" scale_y="1" angle="-0.0252273" show="1" layer="40" />
+            <body x="-0.78125" y="-0.221875" scale_x="1" scale_y="1" angle="0.192594" show="1" layer="24" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="1519" y="703" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="0.10625" y="-0.01875" scale_x="1" scale_y="1" angle="-0.132433" show="0" layer="6" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.24375" y="-0.56875" scale_x="1" scale_y="1" angle="0" show="0" layer="2" />
+            <body x="-0.384375" y="-0.65" scale_x="1" scale_y="1" angle="0" show="1" layer="42" />
+            <body x="-0.26875" y="0.215625" scale_x="1" scale_y="1" angle="0" show="0" layer="10" />
+            <body x="-0.325" y="0.14375" scale_x="1" scale_y="1" angle="0" show="1" layer="33" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="-0.059375" y="-0.821875" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0.3625" y="0.04375" scale_x="1" scale_y="1" angle="0.884311" show="0" layer="39" />
+            <body x="0.39375" y="0.10625" scale_x="1" scale_y="1" angle="0" show="1" layer="1" />
+            <body x="-0.4625" y="0.825" scale_x="1" scale_y="1" angle="0" show="1" layer="15" />
+            <body x="0.271875" y="-0.634375" scale_x="-1" scale_y="1" angle="0" show="1" layer="29" />
+        </frame>
+        <frame length="0.3">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="-0.0375" y="-0.3875" scale_x="1" scale_y="1" angle="2.86728e-040" show="1" layer="39" />
+            <body x="0.03125" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="41" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="4" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="5" />
+            <body x="-0.0375" y="0.2375" scale_x="1" scale_y="1" angle="0" show="1" layer="19" />
+            <body x="1348" y="496" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.175" y="0.2625" scale_x="1" scale_y="1" angle="0" show="1" layer="35" />
+            <body x="1340" y="718" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="0.2375" y="-0.4375" scale_x="-1" scale_y="1" angle="-0.959592" show="1" layer="8" />
+            <body x="-0.36875" y="-0.41875" scale_x="1" scale_y="1" angle="1.0657" show="1" layer="36" />
+            <body x="0.4125" y="0.5625" scale_x="1" scale_y="1" angle="0" show="1" layer="17" />
+            <body x="-0.346875" y="0.575" scale_x="1" scale_y="1" angle="0" show="0" layer="12" />
+            <body x="-0.38125" y="0.575" scale_x="1" scale_y="1" angle="0" show="1" layer="14" />
+            <body x="-0.08125" y="-0.8" scale_x="1" scale_y="1" angle="0" show="1" layer="34" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.625" y="0.825" scale_x="1" scale_y="1" angle="0" show="1" layer="25" />
+            <body x="1367" y="782" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="1351" y="709" scale_x="1" scale_y="1" angle="0" show="0" layer="13" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="0.5625" y="-0.15625" scale_x="1" scale_y="1" angle="-0.0252273" show="1" layer="11" />
+            <body x="-0.71875" y="-0.15" scale_x="1" scale_y="1" angle="0.192594" show="1" layer="40" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="1519" y="703" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="0.10625" y="-0.01875" scale_x="1" scale_y="1" angle="-0.132433" show="0" layer="24" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.24375" y="-0.56875" scale_x="1" scale_y="1" angle="0" show="0" layer="2" />
+            <body x="-0.3375" y="-0.615625" scale_x="1" scale_y="1" angle="0" show="1" layer="6" />
+            <body x="-0.26875" y="0.215625" scale_x="1" scale_y="1" angle="0" show="0" layer="42" />
+            <body x="-0.33125" y="0.21875" scale_x="1" scale_y="1" angle="0" show="1" layer="33" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="-0.059375" y="-0.821875" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0.3125" y="-0.225" scale_x="1" scale_y="1" angle="0" show="1" layer="10" />
+            <body x="0.36875" y="-0.05" scale_x="1" scale_y="1" angle="-0.524796" show="0" layer="1" />
+            <body x="-0.4625" y="0.825" scale_x="1" scale_y="1" angle="0" show="1" layer="15" />
+            <body x="0.25" y="-0.609375" scale_x="-1" scale_y="1" angle="0" show="1" layer="29" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="0" />
+    </move>
+    <move frames="4" angles="1" name="move">
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <body rotating="0" />
+        <frame length="0.5">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="1302" y="505" scale_x="1" scale_y="1" angle="0" show="0" layer="1" />
+            <body x="0.05" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="40" />
+            <body x="-0.08125" y="-0.54375" scale_x="1" scale_y="1" angle="0" show="0" layer="25" />
+            <body x="-0.10625" y="-0.53125" scale_x="1" scale_y="1" angle="0" show="1" layer="41" />
+            <body x="0.1125" y="0.0625" scale_x="1" scale_y="1" angle="0" show="1" layer="36" />
+            <body x="-0.09375" y="0.18125" scale_x="1" scale_y="1" angle="0" show="0" layer="14" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.10625" y="0.2" scale_x="1" scale_y="1" angle="-0.386876" show="0" layer="8" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="-0.1125" y="-0.475" scale_x="1" scale_y="1" angle="1.23731" show="1" layer="19" />
+            <body x="0.14375" y="-0.625" scale_x="1" scale_y="1" angle="-1.22974" show="1" layer="17" />
+            <body x="0.325" y="0.55" scale_x="1" scale_y="1" angle="0" show="0" layer="12" />
+            <body x="0.4625" y="0.43125" scale_x="1" scale_y="1" angle="-0.814019" show="1" layer="35" />
+            <body x="-0.54375" y="0.3" scale_x="1" scale_y="1" angle="-0.633276" show="1" layer="13" />
+            <body x="-0.2" y="-0.9" scale_x="1" scale_y="1" angle="0" show="1" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.56875" y="0.8125" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="0.84375" y="0.54375" scale_x="1" scale_y="1" angle="-2.06564" show="1" layer="42" />
+            <body x="0.86875" y="1.1125" scale_x="1" scale_y="1" angle="0" show="0" layer="11" />
+            <body x="1.025" y="1.0625" scale_x="1" scale_y="1" angle="0" show="0" layer="5" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="1301" y="587" scale_x="1" scale_y="1" angle="0" show="0" layer="24" />
+            <body x="0.56875" y="-0.54375" scale_x="1" scale_y="1" angle="-2.17929" show="1" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="-0.525" y="-0.36875" scale_x="1" scale_y="1" angle="0.765028" show="1" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.03125" y="-0.64375" scale_x="1" scale_y="1" angle="0.756835" show="1" layer="4" />
+            <body x="1302" y="493" scale_x="1" scale_y="1" angle="0" show="0" layer="34" />
+            <body x="0.15625" y="0.13125" scale_x="1" scale_y="1" angle="-1.16845" show="1" layer="6" />
+            <body x="-0.475" y="0.05" scale_x="1" scale_y="1" angle="0.641698" show="1" layer="10" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="39" />
+            <body x="0.4375" y="-0.0125" scale_x="1" scale_y="1" angle="-0.0274527" show="1" layer="33" />
+            <body x="-0.4625" y="0.5125" scale_x="1" scale_y="1" angle="-0.305051" show="1" layer="29" />
+            <body x="-0.1" y="-0.68125" scale_x="1" scale_y="1" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.5">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="1302" y="505" scale_x="1" scale_y="1" angle="0" show="0" layer="1" />
+            <body x="0.05" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="40" />
+            <body x="-0.0375" y="-0.39375" scale_x="1" scale_y="1" angle="0" show="1" layer="25" />
+            <body x="-0.13125" y="-0.3625" scale_x="1" scale_y="1" angle="0" show="0" layer="41" />
+            <body x="0.11875" y="0.24375" scale_x="1" scale_y="1" angle="0" show="1" layer="36" />
+            <body x="-0.09375" y="0.18125" scale_x="1" scale_y="1" angle="0" show="0" layer="14" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.10625" y="0.2" scale_x="1" scale_y="1" angle="-0.386876" show="0" layer="8" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="0.09375" y="-0.4" scale_x="1" scale_y="1" angle="0.471594" show="1" layer="19" />
+            <body x="-0.0875" y="-0.40625" scale_x="1" scale_y="1" angle="0.462724" show="1" layer="17" />
+            <body x="0.325" y="0.55" scale_x="1" scale_y="1" angle="0" show="0" layer="12" />
+            <body x="-0.3625" y="0.38125" scale_x="1" scale_y="1" angle="-0.814019" show="1" layer="35" />
+            <body x="-0.14375" y="0.5375" scale_x="1" scale_y="1" angle="-0.0248157" show="1" layer="13" />
+            <body x="-0.2375" y="-0.74375" scale_x="1" scale_y="1" angle="0" show="1" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.56875" y="0.8125" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="-0.075" y="0.58125" scale_x="1" scale_y="1" angle="-1.5566" show="1" layer="5" />
+            <body x="0.86875" y="1.1125" scale_x="1" scale_y="1" angle="0" show="0" layer="42" />
+            <body x="1.025" y="1.0625" scale_x="1" scale_y="1" angle="0" show="0" layer="11" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="1301" y="587" scale_x="1" scale_y="1" angle="0" show="0" layer="24" />
+            <body x="-0.20625" y="0.08125" scale_x="1" scale_y="1" angle="-0.726299" show="1" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="-0.1" y="-0.05625" scale_x="1" scale_y="1" angle="-0.0493476" show="1" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.10625" y="-0.60625" scale_x="1" scale_y="1" angle="0.106355" show="1" layer="4" />
+            <body x="1302" y="493" scale_x="1" scale_y="1" angle="0" show="0" layer="34" />
+            <body x="-0.28125" y="0.11875" scale_x="1" scale_y="1" angle="0.635035" show="1" layer="6" />
+            <body x="-0.14375" y="0.15" scale_x="1" scale_y="1" angle="0.0238321" show="1" layer="10" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="39" />
+            <body x="0.375" y="0.175" scale_x="1" scale_y="1" angle="-0.0274527" show="1" layer="33" />
+            <body x="-0.174382" y="0.824277" scale_x="1" scale_y="1" angle="-0.0353805" show="1" layer="29" />
+            <body x="-0.1625" y="-0.56875" scale_x="1" scale_y="1" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.5">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="1302" y="505" scale_x="1" scale_y="1" angle="0" show="0" layer="1" />
+            <body x="0.05" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="40" />
+            <body x="-0.00625" y="-0.58125" scale_x="1" scale_y="1" angle="0" show="0" layer="25" />
+            <body x="-0.05625" y="-0.5625" scale_x="1" scale_y="1" angle="0" show="1" layer="41" />
+            <body x="0.1875" y="0.0375" scale_x="1" scale_y="1" angle="0" show="1" layer="36" />
+            <body x="-0.09375" y="0.18125" scale_x="1" scale_y="1" angle="0" show="0" layer="14" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.10625" y="0.2" scale_x="1" scale_y="1" angle="-0.386876" show="0" layer="8" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="0.2375" y="-0.6125" scale_x="1" scale_y="1" angle="-0.826351" show="1" layer="19" />
+            <body x="-0.3375" y="-0.51875" scale_x="1" scale_y="1" angle="1.32549" show="1" layer="17" />
+            <body x="0.325" y="0.55" scale_x="1" scale_y="1" angle="0" show="0" layer="12" />
+            <body x="-0.6375" y="0.14375" scale_x="1" scale_y="1" angle="0.236841" show="1" layer="35" />
+            <body x="0.275" y="0.43125" scale_x="1" scale_y="1" angle="-0.932114" show="1" layer="13" />
+            <body x="-0.1875" y="-0.94375" scale_x="1" scale_y="1" angle="0" show="1" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.56875" y="0.8125" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="-0.725" y="0.4125" scale_x="1" scale_y="1" angle="0.408905" show="1" layer="5" />
+            <body x="0.86875" y="1.1125" scale_x="1" scale_y="1" angle="0" show="0" layer="42" />
+            <body x="1.025" y="1.0625" scale_x="1" scale_y="1" angle="0" show="0" layer="11" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="1301" y="587" scale_x="1" scale_y="1" angle="0" show="0" layer="24" />
+            <body x="-0.7" y="-0.5875" scale_x="1" scale_y="1" angle="1.16857" show="1" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="0.59375" y="-0.3875" scale_x="1" scale_y="1" angle="-1.92469" show="1" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.0875" y="-0.7375" scale_x="1" scale_y="1" angle="-0.438745" show="1" layer="4" />
+            <body x="1302" y="493" scale_x="1" scale_y="1" angle="0" show="0" layer="34" />
+            <body x="-0.41875" y="-0.06875" scale_x="1" scale_y="1" angle="1.06958" show="1" layer="6" />
+            <body x="-0.05625" y="0.15625" scale_x="1" scale_y="1" angle="-1.10431" show="1" layer="10" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="39" />
+            <body x="0.5125" y="-0.0625" scale_x="1" scale_y="1" angle="-0.0274527" show="1" layer="33" />
+            <body x="0.59375" y="0.60625" scale_x="1" scale_y="1" angle="-1.70761" show="1" layer="29" />
+            <body x="-0.23125" y="-0.69375" scale_x="1" scale_y="1" angle="0" show="1" layer="15" />
+        </frame>
+        <frame length="0.5">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="0" />
+            <body x="1302" y="505" scale_x="1" scale_y="1" angle="0" show="0" layer="1" />
+            <body x="0.05" y="-0.41875" scale_x="1" scale_y="1" angle="0" show="0" layer="40" />
+            <body x="-0.04375" y="-0.49375" scale_x="1" scale_y="1" angle="0" show="1" layer="25" />
+            <body x="-0.1" y="-0.51875" scale_x="1" scale_y="1" angle="0" show="0" layer="11" />
+            <body x="0.1375" y="0.10625" scale_x="1" scale_y="1" angle="0" show="1" layer="41" />
+            <body x="-0.09375" y="0.18125" scale_x="1" scale_y="1" angle="0" show="0" layer="36" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="7" />
+            <body x="0.10625" y="0.2" scale_x="1" scale_y="1" angle="-0.386876" show="0" layer="8" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="9" />
+            <body x="0.10625" y="-0.4375" scale_x="1" scale_y="1" angle="0.862747" show="1" layer="14" />
+            <body x="-0.2" y="-0.4875" scale_x="1" scale_y="1" angle="0.668044" show="1" layer="17" />
+            <body x="0.325" y="0.55" scale_x="1" scale_y="1" angle="0" show="0" layer="12" />
+            <body x="-0.08125" y="0.6125" scale_x="1" scale_y="1" angle="-0.481989" show="1" layer="19" />
+            <body x="-0.4375" y="0.425" scale_x="1" scale_y="1" angle="-0.932114" show="1" layer="35" />
+            <body x="-0.20625" y="-0.85625" scale_x="1" scale_y="1" angle="0" show="1" layer="21" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="16" />
+            <body x="0.56875" y="0.8125" scale_x="1" scale_y="1" angle="0" show="0" layer="20" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="18" />
+            <body x="-0.075" y="0.8125" scale_x="1" scale_y="1" angle="-0.0248547" show="1" layer="13" />
+            <body x="0.86875" y="1.1125" scale_x="1" scale_y="1" angle="0" show="0" layer="5" />
+            <body x="1.025" y="1.0625" scale_x="1" scale_y="1" angle="0" show="0" layer="3" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="22" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="23" />
+            <body x="1301" y="587" scale_x="1" scale_y="1" angle="0" show="0" layer="24" />
+            <body x="-0.44375" y="-0.18125" scale_x="1" scale_y="1" angle="0.140819" show="1" layer="4" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="26" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="27" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="28" />
+            <body x="-0.1375" y="-0.125" scale_x="1" scale_y="1" angle="-0.0605385" show="1" layer="2" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="30" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="31" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="32" />
+            <body x="0.0875" y="-0.6625" scale_x="1" scale_y="1" angle="-0.104325" show="1" layer="10" />
+            <body x="1302" y="493" scale_x="1" scale_y="1" angle="0" show="0" layer="34" />
+            <body x="-0.2" y="0.25625" scale_x="1" scale_y="1" angle="-0.459095" show="1" layer="6" />
+            <body x="-0.34375" y="0.1625" scale_x="1" scale_y="1" angle="0.527572" show="1" layer="33" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="37" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="38" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" layer="39" />
+            <body x="0.475" y="0.1375" scale_x="1" scale_y="1" angle="-0.0274527" show="1" layer="29" />
+            <body x="-0.13125" y="0.56875" scale_x="1" scale_y="1" angle="-1.70761" show="1" layer="15" />
+            <body x="1304" y="450" scale_x="1" scale_y="1" angle="0" show="0" layer="42" />
+        </frame>
+        <angle value="0">
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+            <body x="0" y="0" scale_x="1" scale_y="1" angle="0" show="0" />
+        </angle>
+        <actions count="0" />
+    </move>
+</character>

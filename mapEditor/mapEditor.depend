@@ -860,7 +860,7 @@
 1353419913 d:\work\git\sod\sodlib\include\hgeguimenuitem.h
 	<SoDlib.h>
 
-1401655391 source:d:\work\my\sod\mapeditor\main.cpp
+1401918927 source:d:\work\my\sod\mapeditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1206,7 +1206,7 @@
 	<stdio.h>
 	<string.h>
 
-1401448798 d:\work\my\sod\sodlib\include\game.h
+1401917326 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
 1401396126 d:\work\my\sod\sodlib\include\conditionprototype.h

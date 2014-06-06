@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
-<map animations="1887" ground_lines="8" platforms="0" layers="4" width="60" height="30">
+<map animations="1921" ground_lines="24" platforms="0" layers="4" width="60" height="30" bgcolor="-4144960">
     <layer order="0" ratio="1" />
-    <layer order="-7" ratio="0.99" />
-    <layer order="-8" ratio="0.99" />
+    <layer order="-7" ratio="0.95" />
+    <layer order="-8" ratio="0.95" />
     <layer order="0" ratio="1" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\side.png.xml" x="-29" y="13" scale_x="1" scale_y="1" angle="0" layer="1" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\side.png.xml" x="-29" y="12" scale_x="1" scale_y="1" angle="0" layer="1" />
@@ -127,10 +127,10 @@
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart4.png.xml" x="-8.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart4.png.xml" x="7.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart4.png.xml" x="16.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart5.png.xml" x="21" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="18.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart5.png.xml" x="20.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="28" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="18" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="19.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="19" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="-27" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="-24" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="-10" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
@@ -159,19 +159,19 @@
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="9" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="10" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart5.png.xml" x="11.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart5.png.xml" x="29" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="27.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="26.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="25.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="24.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="23.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="22.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart5.png.xml" x="29.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="27" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart6.png.xml" x="26" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="25" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="24" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="23" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="22" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floorpart4.png.xml" x="14.5" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\floor part3.png.xml" x="13" y="15" scale_x="1" scale_y="1" angle="0" layer="0" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-29" y="15" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="23" y="8" scale_x="1" scale_y="1" angle="0" layer="2" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-11" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-17" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-10" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-16" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="16" y="9" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="13" y="10" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\back wall1.png.xml" x="-2" y="10" scale_x="1" scale_y="1" angle="0" layer="2" />
@@ -338,7 +338,7 @@
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-8" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-7" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-13" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-16" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-15" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-19" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-18" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbase.png.xml" x="-21" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
@@ -1802,7 +1802,7 @@
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-11" y="8" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-10" y="9" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-10" y="10" scale_x="1" scale_y="1" angle="0" layer="2" />
-    <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-10" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-12" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-11" y="10" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-9" y="11" scale_x="1" scale_y="1" angle="0" layer="2" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\backwallbaserusted.png.xml" x="-8" y="8" scale_x="1" scale_y="1" angle="0" layer="2" />
@@ -1891,12 +1891,62 @@
     <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelred.png.xml" x="29.6" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelred.png.xml" x="28.8" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
     <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelred.png.xml" x="29.2" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="26.8" y="14.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="27.4" y="14.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelredrust.png.xml" x="27.6" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelredrust.png.xml" x="26.8" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelredrust.png.xml" x="27.2" y="13.4" scale_x="-1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25" y="14.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25.8" y="14.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="25.8" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="25" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelred.png.xml" x="25.4" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelblue baseR.png.xml" x="24.1" y="14.1" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelblue baseR.png.xml" x="24.1" y="13.3" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="24.6" y="12.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="25.2" y="12.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="25.8" y="12.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="26.4" y="12.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="26.3" y="13.4" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelblue.png.xml" x="27" y="12.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25" y="12.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25.6" y="12.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="26.2" y="12.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelblue baseR.png.xml" x="27" y="12" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelblue baseR.png.xml" x="27" y="11.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="28.8" y="12.5" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="29.2" y="12.5" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="28.9" y="11.6" scale_x="-1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelredrust.png.xml" x="25.5" y="11.5" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelredrust.png.xml" x="26.2" y="11.5" scale_x="-1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelgreenrusted.png.xml" x="25.2" y="10.2" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\greenbarrelred.png.xml" x="24.9" y="11.5" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelblue.png.xml" x="25.4" y="9.7" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25.2" y="10.8" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\fallen barrelbluerusted.png.xml" x="25.8" y="10.8" scale_x="1" scale_y="1" angle="0" layer="3" />
+    <animation file="D:\work\my\sod\working folder\bgs\underground1\barrelblue baseR.png.xml" x="25.9" y="10.1" scale_x="1" scale_y="1" angle="0" layer="3" />
     <ground_line x1="-30" y1="14.6" x2="30" y2="14.6" />
     <ground_line x1="-29.4" y1="14.6" x2="-29.3999" y2="-14.2" />
-    <ground_line x1="-29.4" y1="-14.2" x2="29.4" y2="-14.2" />
+    <ground_line x1="-6.7" y1="13.6" x2="-6.1" y2="13.6" />
     <ground_line x1="29.4" y1="-14.2" x2="29.4001" y2="14.6" />
     <ground_line x1="22.6" y1="13.2" x2="23.4" y2="13.2" />
-    <ground_line x1="22" y1="13.8" x2="23" y2="13.8" />
+    <ground_line x1="23.8" y1="13" x2="24.4" y2="13" />
     <ground_line x1="28.6" y1="13" x2="29.8" y2="13" />
     <ground_line x1="28.4" y1="13.95" x2="29.8" y2="13.95" />
+    <ground_line x1="24.6" y1="14" x2="26.2" y2="14" />
+    <ground_line x1="26.4" y1="14" x2="27.8" y2="14" />
+    <ground_line x1="24.8" y1="13" x2="27.5" y2="13" />
+    <ground_line x1="27.5" y1="13" x2="27.9" y2="12.9" />
+    <ground_line x1="28.5" y1="12.1" x2="29.5" y2="12.1" />
+    <ground_line x1="28.6" y1="11.2" x2="29.2" y2="11.2" />
+    <ground_line x1="24.2" y1="12.5" x2="27.4" y2="12.5" />
+    <ground_line x1="24.7" y1="12" x2="26.7" y2="12" />
+    <ground_line x1="26.7" y1="11.7" x2="27.3" y2="11.7" />
+    <ground_line x1="26.7" y1="10.9" x2="27.3" y2="10.9" />
+    <ground_line x1="24.8" y1="10.6" x2="25.6" y2="10.6" />
+    <ground_line x1="25.6" y1="9.8" x2="26.2" y2="9.8" />
+    <ground_line x1="25" y1="9.5" x2="25.8" y2="9.5" />
+    <ground_line x1="22.1" y1="13.7" x2="22.9" y2="13.7" />
+    <ground_line x1="22.9" y1="13.6" x2="23.5" y2="13.6" />
+    <ground_line x1="-21" y1="13.6" x2="-20.6" y2="13.6" />
 </map>

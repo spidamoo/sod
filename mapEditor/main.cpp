@@ -22,9 +22,6 @@ hgeFont* fnt;
 hgeFont* arial12;
 hgeAnimation* disabledIcon;
 
-hgeAnimation* beingInsertedAnim;
-char* beingInsertedAnimName;
-
 const int MODE_DEFAULT              = 0;
 const int MODE_SELECT_ANIM          = 1;
 const int MODE_INSERT_ANIM          = 2;
@@ -35,6 +32,7 @@ const int MODE_ANIM_ROTATE          = 6;
 const int MODE_ANIM_SCALE           = 7;
 const int MODE_INSERT_GL_STEP1      = 8;
 const int MODE_INSERT_GL_STEP2      = 9;
+const int MODE_ANIM_PALETTE         = 10;
 
 const int MODE_SELECT_PLATFORM         = 110;
 const int MODE_NEW_PLATFORM            = 111;
@@ -49,6 +47,7 @@ const int MAX_ANIMATIONS = 10000;
 int mode = MODE_DEFAULT;
 
 float width = 60.0f; float height = 30.0f;
+DWORD bgcolor = 0xFF7fc7ff;
 float halfWidth = width * 0.5f; float halfHeight = height * 0.5f;
 int animationsCount = 0; char** animationNames = new char*[MAX_ANIMATIONS]; hgeAnimation** animations = new hgeAnimation*[MAX_ANIMATIONS];
 float* animationX = new float[MAX_ANIMATIONS]; float* animationY = new float[MAX_ANIMATIONS];
@@ -62,7 +61,10 @@ int* platformSpotsCounts = new int[256]; float** platformSpotX = new float*[256]
 float** platformSpotsTimes = new float*[256];
 int selectedPlatform = -1; int selectedPlatformSpot = -1;
 
+hgeAnimation* beingInsertedAnim;
+char* beingInsertedAnimName;
 float dragOffsetX; float dragOffsetY; float dragOffsetAngle;
+float beingInsertedScaleX = 1.0f; float beingInsertedScaleY = 1.0f;
 int selectedAnim = -1; int selectedGroundLine = -1;
 float currentTime = 0;
 
@@ -266,6 +268,7 @@ bool saveMap(char* fn) {
 	root->SetAttribute("layers", layersCount);
 	root->SetDoubleAttribute("width", width);
 	root->SetDoubleAttribute("height", height);
+	root->SetAttribute("bgcolor", bgcolor);
 
     for (int i = 0; i < layersCount; i++) {
         TiXmlElement* element = new TiXmlElement( "layer" );
@@ -347,6 +350,9 @@ bool loadMap(char* fn) {
     	if (root->Attribute("height")) {
 			height = atof(root->Attribute("height"));
 		}
+		if ( root->Attribute("bgcolor") ) {
+            bgcolor = atoi( root->Attribute("bgcolor") );
+		}
 
 		TiXmlElement* element = root->FirstChildElement("layer");
         int i = 0;
@@ -366,8 +372,9 @@ bool loadMap(char* fn) {
 			float y = atof(element->Attribute("y"));
 			float angle = atof(element->Attribute("angle"));
 
-			char* animationName = (char*)element->Attribute("file");
-			hgeAnimation* animation = game->loadAnimation(animationName);
+			animationNames[i] = copyString( element->Attribute("file") );
+			hgeAnimation* animation = game->loadAnimation(animationNames[i]);
+			printf("animation loaded\n");
 			//animation->SetHotSpot(-game->getPixelsPerMeter() * atof(element->Attribute("x")), -game->getPixelsPerMeter() * atof(element->Attribute("y")));
 
 			animations[i] = animation;
@@ -394,13 +401,7 @@ bool loadMap(char* fn) {
 			else {
                 animationLayer[i] = 0;
 			}
-
-			animationNames[i] = new char[64];
-			int c = 0;
-			for (c = 0; animationName[c] != '\0'; c++) {
-			    animationNames[i][c] = animationName[c];
-			}
-			animationNames[i][c] = '\0';
+			printf("attribs applied\n");
 
 			i++;
             element = element->NextSiblingElement("animation");
@@ -460,6 +461,7 @@ bool loadMap(char* fn) {
     } else {
         printf("failed\n");
     }
+    printf("map loaded\n");
 	resetMode();
 	selectLayer(0);
 }
@@ -510,6 +512,12 @@ bool insertAnimButtonClick(hgeGUIObject* sender) {
         beingInsertedAnimName = copyString(szFile);
 //        game->getHge()->Input_SetMousePos(1450, 600);
         mode = MODE_INSERT_ANIM;
+        dragOffsetAngle = 0.0f;
+        beingInsertedScaleX = 1.0f;
+        beingInsertedScaleY = 1.0f;
+    }
+    else {
+        resetMode();
     }
 }
 bool animButtonClick(hgeGUIObject* sender) {
@@ -582,7 +590,7 @@ bool FrameFunc() {
 		case MODE_DEFAULT:
 			selectedAnim = getPointedAnim(x, y);
 			selectedGroundLine = getPointedGroundLine(x, y);
-		    if (y < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
+		    if (x < 1300 && game->getHge()->Input_KeyDown(HGEK_LBUTTON)) {
                 if (selectedAnim != -1) {
                     dragOffsetX = worldX - animationX[selectedAnim];
                     dragOffsetY = worldY - animationY[selectedAnim];
@@ -634,6 +642,10 @@ bool FrameFunc() {
                     }
                 }
             }
+
+            if (y > 880) {
+                mode = MODE_ANIM_PALETTE;
+            }
 			break;
 		case MODE_CAMERA_MOVE:
 			game->moveScreen(b2Vec2(dragOffsetX - x, dragOffsetY - y));
@@ -644,6 +656,24 @@ bool FrameFunc() {
 			}
 			break;
 		case MODE_INSERT_ANIM:
+		    if ( game->getHge()->Input_KeyDown(HGEK_E) ) {
+                dragOffsetAngle -= M_PI_2;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_Q) ) {
+                dragOffsetAngle += M_PI_2;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_W) ) {
+                beingInsertedScaleY += 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_S) ) {
+                beingInsertedScaleY -= 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_D) ) {
+                beingInsertedScaleX += 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_A) ) {
+                beingInsertedScaleX -= 1.0f;
+		    }
 			if (game->getHge()->Input_KeyDown(HGEK_LBUTTON)
                 && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
             ) {
@@ -660,6 +690,24 @@ bool FrameFunc() {
 
 			break;
         case MODE_INSERTING_MULTI_ANIM:
+            if ( game->getHge()->Input_KeyDown(HGEK_E) ) {
+                dragOffsetAngle -= M_PI_2;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_Q) ) {
+                dragOffsetAngle += M_PI_2;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_W) ) {
+                beingInsertedScaleY += 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_S) ) {
+                beingInsertedScaleY -= 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_D) ) {
+                beingInsertedScaleX += 1.0f;
+		    }
+		    if ( game->getHge()->Input_KeyDown(HGEK_A) ) {
+                beingInsertedScaleX -= 1.0f;
+		    }
             if (game->getHge()->Input_KeyUp(HGEK_LBUTTON)
                 && insertX >= -halfWidth && insertX <= halfWidth && insertY >= -halfHeight && insertY <= halfHeight
             ) {
@@ -667,8 +715,8 @@ bool FrameFunc() {
                     for (float y = dragOffsetY; y <= insertY; y += gridSizes[currentGridSize]) {
                         animationX[animationsCount] = x;
                         animationY[animationsCount] = y;
-                        animationScaleX[animationsCount] = 1.0f;
-                        animationScaleY[animationsCount] = 1.0f;
+                        animationScaleX[animationsCount] = beingInsertedScaleX;
+                        animationScaleY[animationsCount] = beingInsertedScaleY;
                         animationAngle[animationsCount] = 0.0f;
                         animationLayer[animationsCount] = currentLayer;
 
@@ -757,8 +805,7 @@ bool FrameFunc() {
 				dragOffsetX = insertX;
 				dragOffsetY = insertY;
 			}
-			if (game->getHge()->Input_KeyUp(HGEK_RBUTTON)
-                && worldX > 0 && worldX < width && worldY > 0 && worldY < height) {
+			if ( game->getHge()->Input_KeyUp(HGEK_RBUTTON) ) {
 //				groundLines[groundLinesCount] = new GroundLine(game, dragOffsetX, dragOffsetY, worldX, worldY);
 //				groundLinesCount++;
 				resetMode();
@@ -952,6 +999,45 @@ bool FrameFunc() {
 				mode = MODE_EDIT_PLATFORM;
 			}
 			break;
+        case MODE_ANIM_PALETTE:
+            if ( y < 380 ) {
+                resetMode();
+            }
+            for (int i = 0; i < game->getAnimationsCount() - 1; i++) {
+                float ax = 25.0f + 50.0f * (i % 26);
+                float ay = 425.0f + 50.0f * floorf(i / 26);
+
+                if (game->getHge()->Input_KeyUp(HGEK_LBUTTON) && x > ax - 25.0f && x < ax + 25.0f && y > ay - 25.0f && y < ay + 25.0f) {
+                    mode = MODE_INSERT_ANIM;
+                    beingInsertedAnimName = copyString( game->getAnimationName(i + 1) );
+                    beingInsertedAnim = game->loadAnimation(beingInsertedAnimName);
+                }
+            }
+            if (game->getHge()->Input_KeyUp(HGEK_LBUTTON) && x > 200.0f && x < 212.0f && y > 384.0f && y < 396.0f) {
+                    CHOOSECOLOR cc;                 // common dialog box structure
+                    static COLORREF acrCustClr[16]; // array of custom colors
+
+                    DWORD red   = (bgcolor & 0xFF0000) >> 16;
+                    DWORD green = (bgcolor & 0xFF00)   >> 8;
+                    DWORD blue  = (bgcolor & 0xFF);
+
+                    // Initialize CHOOSECOLOR
+                    ZeroMemory(&cc, sizeof(cc));
+                    cc.lStructSize = sizeof(cc);
+                    cc.hwndOwner = game->getHge()->System_GetState(HGE_HWND);
+                    cc.lpCustColors = (LPDWORD) acrCustClr;
+
+                    cc.rgbResult = red + (green << 8) + (blue << 16);
+                    cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+
+                    if ( ChooseColor(&cc) ) {
+                        red   =  cc.rgbResult & 0xFF;
+                        green = (cc.rgbResult & 0xFF00)   >> 8;
+                        blue  = (cc.rgbResult & 0xFF0000) >> 16;
+
+                        bgcolor = 0xFF000000 + (red << 16) + (green << 8) + blue;
+                    }
+            }
 	}
 
 	return game->update(false);
@@ -972,6 +1058,7 @@ bool RenderFunc() {
 
 	// RenderFunc should always return false
 	game->startDraw();
+	game->getHge()->Gfx_Clear(bgcolor);
 
 	int orderedLayers[layersCount];
 	int minOrder = 100;
@@ -1222,13 +1309,19 @@ bool RenderFunc() {
                 disabledIcon->Render(x, y);
             }
             else {
-                beingInsertedAnim->RenderEx(insertX, insertY, 0, game->getScaleFactor(), game->getScaleFactor());
+                beingInsertedAnim->RenderEx(insertX, insertY, dragOffsetAngle, game->getScaleFactor() * beingInsertedScaleX, game->getScaleFactor() * beingInsertedScaleY);
             }
             break;
         case MODE_INSERTING_MULTI_ANIM:
             for (float x = dragOffsetX; x <= worldInsertX; x += gridSizes[currentGridSize]) {
                 for (float y = dragOffsetY; y <= worldInsertY; y += gridSizes[currentGridSize]) {
-                    beingInsertedAnim->RenderEx(game->screenX(x, layerRatios[currentLayer]), game->screenY(y, layerRatios[currentLayer]), 0, game->getScaleFactor(), game->getScaleFactor());
+                    beingInsertedAnim->RenderEx(
+                        game->screenX(x, layerRatios[currentLayer]),
+                        game->screenY(y, layerRatios[currentLayer]),
+                        dragOffsetAngle,
+                        game->getScaleFactor() * beingInsertedScaleX,
+                        game->getScaleFactor() * beingInsertedScaleY
+                    );
                 }
             }
             break;
@@ -1322,9 +1415,31 @@ bool RenderFunc() {
     arial12->SetColor(color);
 	arial12->printf(1590, 422 + layersCount * 16.0f, HGETEXT_LEFT, "+");
 
-	game->drawRect(0.0f, 880.0f, 1300.0f, 900.0f, 0, 0xAACCCCCC);
-	arial12->SetColor(0xFF000000);
-	arial12->printf(10.0f, 882.0f, HGETEXT_LEFT, "zoom: %.1f%% grid: %.2f m", game->getScaleFactor() * 100.0f, gridSizes[currentGridSize]);
+    float infoY = 880.0f;
+    if (mode == MODE_ANIM_PALETTE) {
+        infoY = 380.0f;
+        game->drawRect(0.0f, 380.0f, 1300.0f, 900.0f, 0, 0xAACCCCCC);
+
+        game->drawLine(0.0f, 399.0f, 1300.0f, 399.0f, 0xFF000000);
+
+        for (int i = 0; i < game->getAnimationsCount() - 1; i++) {
+            float ax = 25.0f + 50.0f * (i % 26);
+            float ay = 425.0f + 50.0f * floorf(i / 26);
+            float size = min(1.0f, 45.0f / max(game->getAnimation(i + 1)->GetWidth(), game->getAnimation(i + 1)->GetHeight()) );
+            game->getAnimation(i + 1)->RenderEx(ax, ay, 0.0f, size);
+
+            if (x > ax - 25.0f && x < ax + 25.0f && y > ay - 25.0f && y < ay + 25.0f) {
+                game->drawRect(ax - 25.0f, ay - 25.0f, ax + 25.0f, ay + 25.0f, 0xFFFF0000, 0);
+            }
+        }
+    }
+    else {
+        game->drawRect(0.0f, 880.0f, 1300.0f, 900.0f, 0, 0xAACCCCCC);
+    }
+    arial12->SetColor(0xFF000000);
+    arial12->printf(10.0f, infoY + 2.0f, HGETEXT_LEFT, "zoom: %.1f%% grid: %.2f m", game->getScaleFactor() * 100.0f, gridSizes[currentGridSize]);
+
+    game->drawRect(200.0f, infoY + 4.0f, 212.0f, infoY + 16.0f, 0xFF000000, bgcolor);
 
 	game->endDraw();
 	return false;

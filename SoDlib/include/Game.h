@@ -92,6 +92,7 @@ class Game
 		void 	DrawTransform (const b2Transform &xf);
 
 		hgeAnimation* loadAnimation(char * fn); hgeAnimation* cloneAnimation(hgeAnimation* source);
+		int getAnimationsCount(); hgeAnimation* getAnimation(int index); char* getAnimationName(int index);
 		HTEXTURE      loadTexture(char* fn);
 		Character*    loadPlayerCharacter(char * fn, b2Vec2 origin);
 		Character*    loadNonPlayerCharacter(char * fn, b2Vec2 origin);
@@ -199,7 +200,7 @@ class Game
 		int32 positionIterations;
 
 		int screenWidth, screenHeight; float viewportWidth, viewportHeight, halfViewportWidth, halfViewportHeight;
-		float mapWidth, mapHeight, halfMapWidth, halfMapHeight;
+		float mapWidth, mapHeight, halfMapWidth, halfMapHeight; DWORD bgcolor;
 
 		b2Vec2 cameraPos;
 		float mouseX, mouseY;

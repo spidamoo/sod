@@ -32,6 +32,8 @@ Game::Game(HGE * hge) {
 
 	mapWidth = 10; mapHeight = 10;
 	halfMapWidth = mapWidth * 0.5f; halfMapHeight = mapHeight * 0.5f;
+	bgcolor = 0x7fc7ff;
+
 	counters = new float[COUNTERS_COUNT];
 	displayedCounters = new float[COUNTERS_COUNT];
 
@@ -214,8 +216,7 @@ bool Game::updateControls() {
 void Game::startDraw() {
 	hge->Gfx_BeginScene();
 
-	/// Clear screen with skyblue color
-	DWORD color = 0x7fc7ff;
+	DWORD color = bgcolor;
 	if (schematicDrawMode) {
 		color = 0;
 	}
@@ -596,7 +597,6 @@ hgeAnimation* Game::loadAnimation(char * fn) {
 		animationNames[animationsCount] = copyString(fn);
 		animations[animationsCount] = anim;
 		animationsCount++;
-		printf("animation loaded\n");
 
 		hgeAnimation* newAnim = new hgeAnimation(*anim);
         return newAnim;
@@ -606,6 +606,15 @@ hgeAnimation* Game::loadAnimation(char * fn) {
         Exception * e = new Exception(error);
         throw e;
     }
+}
+int Game::getAnimationsCount() {
+    return animationsCount;
+}
+hgeAnimation* Game::getAnimation(int index) {
+    return animations[index];
+}
+char* Game::getAnimationName(int index) {
+    return animationNames[index];
 }
 
 HTEXTURE Game::loadTexture(char* fn) {
@@ -1165,17 +1174,17 @@ float Game::worldY(float screenY) {
 }
 
 float Game::screenX(float worldX) {
-    return roundf( (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
+    return floorf( (worldX - cameraPos.x) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
 }
 float Game::screenY(float worldY) {
-    return roundf( (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
+    return floorf( (worldY - cameraPos.y) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
 }
 
 float Game::screenX(float worldX, float ratio) {
-    return roundf( (worldX - cameraPos.x * ratio) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
+    return floorf( (worldX - cameraPos.x * ratio) * (pixelsPerMeter * scaleFactor) + getScreenWidth() * 0.5f );
 }
 float Game::screenY(float worldY, float ratio) {
-    return roundf( (worldY - cameraPos.y * ratio) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
+    return floorf( (worldY - cameraPos.y * ratio) * (pixelsPerMeter * scaleFactor) + getScreenHeight() * 0.5f );
 }
 //b2Vec2 Game::screenPos(b2Vec2 worldPos) {
 //    return b2Vec2(this->screenX(worldPos.x), this->screenY(worldPos.y));
@@ -1284,6 +1293,9 @@ void Game::loadMap(char* fn) {
 			mapHeight = atof(root->Attribute("height"));
 		}
 		halfMapWidth = mapWidth * 0.5f; halfMapHeight = mapHeight * 0.5f;
+		if (root->Attribute("bgcolor")) {
+			bgcolor = atoi(root->Attribute("bgcolor"));
+		}
 
 		mapAnimationsCount = atoi(root->Attribute("animations"));
 		mapAnimations = new MapAnimation*[mapAnimationsCount];
