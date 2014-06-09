@@ -468,12 +468,12 @@ void Game::drawText(float x, float y, char* text) {
 }
 
 void Game::DrawPolygon (const b2Vec2 *vertices, int32 vertexCount, DWORD color, DWORD bgcolor) {
-	b2Vec2 first = getPixelsPerMeter() * getScaleFactor() * (vertices[0] - cameraPos);
+	b2Vec2 first( screenX(vertices[0].x), screenY(vertices[0].y) );
 	b2Vec2 prev = first;
 	whiteTriple.v[0].col = bgcolor; whiteTriple.v[1].col = bgcolor; whiteTriple.v[2].col = bgcolor;
 	whiteTriple.v[0].x = prev.x;  whiteTriple.v[0].y = prev.y;
 	for (int i = 1; i < vertexCount; i++) {
-		b2Vec2 current = getPixelsPerMeter() * getScaleFactor() * (vertices[i] - cameraPos);
+		b2Vec2 current( screenX(vertices[i].x), screenY(vertices[i].y) );
 		if (i > 0) {
 			whiteTriple.v[1].x = prev.x   ;  whiteTriple.v[1].y = prev.y;
 			whiteTriple.v[2].x = current.x;  whiteTriple.v[2].y = current.y;
@@ -526,7 +526,7 @@ void Game::DrawPolygonScreen (const b2Vec2 *vertices, int32 vertexCount, DWORD c
 	);
 }
 void Game::DrawCircle (const b2Vec2 &center, float32 radius, DWORD color, DWORD bgcolor) {
-	b2Vec2 screenCenter = getPixelsPerMeter() * getScaleFactor() * (center - cameraPos);
+	b2Vec2 screenCenter( screenX(center.x), screenY(center.y) );
 	drawCircle(screenCenter.x, screenCenter.y, getPixelsPerMeter() * getScaleFactor() * radius, color, bgcolor);
 }
 void Game::DrawSegment (const b2Vec2 &p1, const b2Vec2 &p2, DWORD color) {

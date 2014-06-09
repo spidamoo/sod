@@ -1,36 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Release" />
 	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="66408" topLine="225" />
+			<Cursor1 position="123607" topLine="2332" />
 		</Cursor>
 		<Folding>
 			<Collapse line="188" />
-			<Collapse line="729" />
-			<Collapse line="1224" />
-			<Collapse line="1325" />
-			<Collapse line="1454" />
-			<Collapse line="1648" />
-			<Collapse line="1652" />
-			<Collapse line="1700" />
-			<Collapse line="1715" />
-			<Collapse line="1738" />
-			<Collapse line="1754" />
-			<Collapse line="1805" />
-			<Collapse line="1963" />
-			<Collapse line="1966" />
-			<Collapse line="1973" />
-			<Collapse line="1977" />
-			<Collapse line="1982" />
-			<Collapse line="2011" />
 			<Collapse line="2044" />
 			<Collapse line="2097" />
-			<Collapse line="2102" />
-			<Collapse line="2105" />
-			<Collapse line="2109" />
-			<Collapse line="2135" />
-			<Collapse line="2747" />
 		</Folding>
 	</File>
 	<File name="resource.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
