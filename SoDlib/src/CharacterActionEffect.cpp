@@ -32,7 +32,7 @@ void CharacterActionEffect::perform(Game* game, Character* character) {
 			character->turn();
 			break;
 		case ACTIONEFFECT_TYPE_CHANGEMOVE:
-			character->setMove(param);
+			character->setMove((int)param);
 			break;
 		case ACTIONEFFECT_TYPE_RUN:
 			character->run(param);
@@ -41,7 +41,7 @@ void CharacterActionEffect::perform(Game* game, Character* character) {
 			character->jump(b2Vec2(param2, -param));
 			break;
         case ACTIONEFFECT_TYPE_SPAWN_EFFECT:
-            game->addEffect( game->getEffectPrototype(param)->spawnEffect(character) );
+            game->addEffect( game->getEffectPrototype(param)->spawnEffect(character), game->getEffectPrototype(param)->getList() );
             //printf("effect spawn\n");
             break;
         case ACTIONEFFECT_TYPE_ADD_CONDITION:

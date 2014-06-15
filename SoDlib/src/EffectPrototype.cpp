@@ -51,6 +51,7 @@ EffectPrototype::EffectPrototype(Game* game) {
     actionsCount = 0;
     actions = new EffectAction*[actionsCount];
 
+    effectsList = EFFECT_LIST_NORMAL;
 }
 
 EffectPrototype::~EffectPrototype() {
@@ -109,24 +110,21 @@ void EffectPrototype::loadFromXml(TiXmlElement* xml) {
 
 	if (xml->Attribute("position_type")) {
         positionType = atoi(xml->Attribute("position_type"));
-	} else {
-	    positionType = EFFECT_POSITION_TYPE_STATIC;
 	}
 	if (xml->Attribute("area_type")) {
         areaType = atoi(xml->Attribute("area_type"));
-	} else {
-	    areaType = EFFECT_AREA_TYPE_POINT;
 	}
 	if (xml->Attribute("hot_spot_name")) {
+        delete hotSpotName;
         hotSpotName = copyString(xml->Attribute("hot_spot_name"));
-	} else {
-	    hotSpotName = "";
 	}
 
 	if (xml->Attribute("blend_mode")) {
         blendMode = atoi(xml->Attribute("blend_mode"));
-	} else {
-	    blendMode = BLEND_DEFAULT;
+	}
+
+	if (xml->Attribute("list")) {
+        effectsList = atoi(xml->Attribute("list"));
 	}
 
     if (xml->Attribute("animations_count")) {
@@ -194,6 +192,7 @@ void EffectPrototype::saveToXml(TiXmlElement* xml) {
     xml->SetAttribute("hot_spot_name", hotSpotName);
     xml->SetAttribute("blend_mode", blendMode);
     xml->SetAttribute("animations_count", animationsCount);
+    xml->SetAttribute("list", effectsList);
     for (int i = 0; i < animationsCount; i++) {
         TiXmlElement* element = new TiXmlElement( "animation" );
         element->SetAttribute("file", animations[i]);
@@ -213,7 +212,7 @@ Effect* EffectPrototype::spawnEffect(Character* character) {
 
     int hsi = character->getHotSpotIndex(hotSpotName);
     newObject->setHotSpotIndex( hsi );
-    newObject->setPosition( b2Vec2(character->getHotSpotX(hsi), character->getHotSpotY(hsi)) );
+    newObject->setPosition( b2Vec2(character->getHotSpotX(hsi), character->getHotSpotY(hsi)), character->getHotSpotAngle(hsi) );
 
     return newObject;
 }
@@ -356,4 +355,11 @@ int EffectPrototype::getBlendMode() {
 }
 void EffectPrototype::setBlendMode(int mode) {
     blendMode = mode;
+}
+
+int EffectPrototype::getList() {
+    return effectsList;
+}
+void EffectPrototype::setList(int _list) {
+    effectsList = _list;
 }

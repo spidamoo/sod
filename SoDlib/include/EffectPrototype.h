@@ -99,6 +99,8 @@ class EffectPrototype
 		void addAnimation(const char* filename), removeAnimation(int index);
 
 		int getBlendMode(); void setBlendMode(int mode);
+
+		int getList(); void setList(int list);
 	protected:
 	    Game* game;
 
@@ -115,6 +117,7 @@ class EffectPrototype
 
 		EffectAction** actions; int actionsCount;
 		char** animations; int animationsCount; int blendMode;
+		int effectsList;
 	private:
 };
 #endif // EFFECTPROTOTYPE_H

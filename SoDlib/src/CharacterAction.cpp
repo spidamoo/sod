@@ -80,6 +80,14 @@ void CharacterAction::perform(Game* game, Character* character) {
         effects[i]->perform(game, character);
     }
 }
+
+void CharacterAction::prepare(Character* character) {
+    prepareResource(character);
+    prepareStatus(character);
+    for (int i = 0; i < causesCount; i++) {
+		causes[i]->setUsed(false);
+	}
+}
 void CharacterAction::prepareStatus(Character* character) {
 	for (int i = 0; i < causesCount; i++) {
 		if (causes[i]->getType() == ACTIONCAUSE_TYPE_HAVE_STATUS) {

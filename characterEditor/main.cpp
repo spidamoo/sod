@@ -1484,6 +1484,7 @@ void resetActioncauseWindow() {
             game->getGUI()->GetCtrl(313)->selected = false;
             game->getGUI()->GetCtrl(314)->selected = false;
             game->getGUI()->GetCtrl(315)->selected = false;
+            game->getGUI()->GetCtrl(316)->selected = false;
             switch ((int)actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getParam()) {
                 case CHARACTER_KEY_FORTH:
                     game->getGUI()->GetCtrl(311)->selected = true;
@@ -1499,6 +1500,9 @@ void resetActioncauseWindow() {
                     break;
                 case CHARACTER_KEY_SATTACK:
                     game->getGUI()->GetCtrl(315)->selected = true;
+                    break;
+                case CHARACTER_KEY_SIT:
+                    game->getGUI()->GetCtrl(316)->selected = true;
                     break;
             }
             break;
@@ -1537,6 +1541,7 @@ void resetActioncauseWindow() {
     game->getGUI()->GetCtrl(261)->selected = false;
     game->getGUI()->GetCtrl(262)->selected = false;
     game->getGUI()->GetCtrl(263)->selected = false;
+    game->getGUI()->GetCtrl(264)->selected = false;
 
     switch (actions[currentMove][selectedAction]->getCause(selectedActionCoE)->getType()) {
         case ACTIONCAUSE_TYPE_NONE:
@@ -1557,8 +1562,11 @@ void resetActioncauseWindow() {
         case ACTIONCAUSE_TYPE_ANIM_TIME_PASSED:
             game->getGUI()->GetCtrl(256)->selected = true;
             break;
-        case ACTIONCAUSE_TYPE_ANIM_TIME_IS:
+        case ACTIONCAUSE_TYPE_ANIM_TIME_LESS:
             game->getGUI()->GetCtrl(257)->selected = true;
+            break;
+        case ACTIONCAUSE_TYPE_ANIM_TIME_IS:
+            game->getGUI()->GetCtrl(264)->selected = true;
             break;
         case ACTIONCAUSE_TYPE_NPC_TARGETSIDE:
             game->getGUI()->GetCtrl(258)->selected = true;
@@ -1672,6 +1680,9 @@ bool setActionCauseClick(hgeGUIObject* sender) {
             type = ACTIONCAUSE_TYPE_ANIM_TIME_PASSED;
             break;
         case 257:
+            type = ACTIONCAUSE_TYPE_ANIM_TIME_LESS;
+            break;
+        case 264:
             type = ACTIONCAUSE_TYPE_ANIM_TIME_IS;
             break;
         case 258:
@@ -1730,6 +1741,9 @@ bool setActionParamKeyClick(hgeGUIObject* sender) {
             break;
         case 315:
             key = CHARACTER_KEY_SATTACK;
+            break;
+        case 316:
+            key = CHARACTER_KEY_SIT;
             break;
     }
     actions[currentMove][selectedAction]->getCause(selectedActionCoE)->setParam( key );
@@ -3444,6 +3458,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     actionCauses[ACTIONCAUSE_TYPE_ANGLE_LESS] = "angle < ";
 
     actionCauses[ACTIONCAUSE_TYPE_ANIM_TIME_PASSED] = "time passed";
+    actionCauses[ACTIONCAUSE_TYPE_ANIM_TIME_LESS] = "time less";
     actionCauses[ACTIONCAUSE_TYPE_ANIM_TIME_IS] = "time is";
 
     actionEffects[ACTIONEFFECT_TYPE_TURN] = "turn";
@@ -3458,6 +3473,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     keyNames[CHARACTER_KEY_JUMP] = "jump";
     keyNames[CHARACTER_KEY_ATTACK] = "attack";
     keyNames[CHARACTER_KEY_SATTACK] = "s attack";
+    keyNames[CHARACTER_KEY_SIT] = "sit";
 
 	if (game->preload()) {
 		//bgTex = game->getHge()->Texture_Load("box.png");
@@ -3577,7 +3593,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		game->getGUI()->AddCtrl(actionCauseContextWindow);
 		actionCauseContextWindow->AddCtrl(new hgeGUIMenuItem(243, arial12, 230, 0, "close", closeActioncauseWindowClick));
 
-		actionCauseTypeWindow = new GUIWindow(game, 250, 0, 20, 125, 200);
+		actionCauseTypeWindow = new GUIWindow(game, 250, 0, 20, 125, 220);
 		actionCauseContextWindow->AddCtrl(actionCauseTypeWindow);
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(251, arial12, 62, 5, "none", setActionCauseClick));
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(252, arial12, 62, 20, "key hit", setActionCauseClick));
@@ -3587,11 +3603,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(262, arial12, 62, 80, "angle >", setActionCauseClick));
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(263, arial12, 62, 95, "angle <", setActionCauseClick));
 		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(256, arial12, 62, 110, "time passed", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(257, arial12, 62, 125, "time is", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(258, arial12, 62, 140, "npc: target at", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(259, arial12, 62, 155, "npc: target farther", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(260, arial12, 62, 170, "npc: target closer", setActionCauseClick));
-		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(261, arial12, 62, 185, "resource less", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(257, arial12, 62, 125, "time less", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(264, arial12, 62, 140, "time is", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(258, arial12, 62, 155, "npc: target at", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(259, arial12, 62, 170, "npc: target farther", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(260, arial12, 62, 185, "npc: target closer", setActionCauseClick));
+		actionCauseTypeWindow->AddCtrl(new hgeGUIMenuItem(261, arial12, 62, 200, "resource less", setActionCauseClick));
 
 		actionCauseParamWindowInput = new GUIWindow(game, 300, 125, 20, 125, 50);
 		actionCauseContextWindow->AddCtrl(actionCauseParamWindowInput);
@@ -3613,7 +3630,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(312, arial12, 62, 20, "back", setActionParamKeyClick));
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(313, arial12, 62, 35, "attack", setActionParamKeyClick));
 		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(314, arial12, 62, 50, "jump", setActionParamKeyClick));
-		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(315, arial12, 62, 65, "jump", setActionParamKeyClick));
+		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(315, arial12, 62, 65, "s attack", setActionParamKeyClick));
+		actionCauseParamWindowKey->AddCtrl(new hgeGUIMenuItem(316, arial12, 62, 80, "sit", setActionParamKeyClick));
 
 		actionCauseParamWindowSide = new GUIWindow(game, 330, 125, 20, 125, 20);
 		actionCauseContextWindow->AddCtrl(actionCauseParamWindowSide);

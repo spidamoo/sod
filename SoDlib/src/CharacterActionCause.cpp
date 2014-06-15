@@ -30,7 +30,7 @@ void CharacterActionCause::save(TiXmlElement* elem)
 bool CharacterActionCause::test(Game* game, Character* character) {
 	switch (type) {
 		case ACTIONCAUSE_TYPE_KEYHIT:
-			return ((PlayerCharacter*)character)->isKeyHit(param);
+			return ((PlayerCharacter*)character)->wasKeyHit(param);
 			break;
 		case ACTIONCAUSE_TYPE_KEYRELEASED:
 			return !((PlayerCharacter*)character)->isKeyDown(param);
@@ -57,8 +57,15 @@ bool CharacterActionCause::test(Game* game, Character* character) {
         case ACTIONCAUSE_TYPE_ANIM_TIME_PASSED:
             return ( character->getAnimTime() >= param );
             break;
+        case ACTIONCAUSE_TYPE_ANIM_TIME_LESS:
+            return ( character->getAnimTime() <= param );
+            break;
         case ACTIONCAUSE_TYPE_ANIM_TIME_IS:
-            return ( character->getAnimTime() == param );
+            if (!used && character->getAnimTime() >= param) {
+                used = true;
+                return true;
+            }
+            return false;
             break;
         case ACTIONCAUSE_TYPE_ANGLE_MORE:
             return ( character->getAngle() > param );
@@ -99,4 +106,8 @@ void CharacterActionCause::setParam(int index, float _param) {
             param = _param;
             break;
     }
+}
+
+void CharacterActionCause::setUsed(bool _used) {
+    used = _used;
 }

@@ -573,7 +573,6 @@ void Character::update(float dt) {
         resources[i]->regen(dt);
 	}
 
-	control(dt);
 }
 
 void Character::updateParams(Condition* condition) {
@@ -669,8 +668,7 @@ void Character::setMove(int move) {
 //	printf("move set to #%d\n", move);
 
 	for (int i = 0; i< actionsCounts[currentMove]; i++) {
-        actions[currentMove][i]->prepareStatus(this);
-        actions[currentMove][i]->prepareResource(this);
+        actions[currentMove][i]->prepare(this);
 	}
 }
 
@@ -729,6 +727,12 @@ float Character::getHotSpotY(int index) {
         return position.y;
     }
     return position.y + animatedValue( frameHotSpotY[currentMove][currentFrame][index], frameHotSpotY[currentMove][nextFrame][index] );
+}
+float Character::getHotSpotAngle(int index) {
+    if (index < 0 || index > hotSpotsCount) {
+        return position.y;
+    }
+    return turnedRight ? -animatedValue( frameHotSpotAngle[currentMove][currentFrame][index], frameHotSpotAngle[currentMove][nextFrame][index] ) : animatedValue( frameHotSpotAngle[currentMove][currentFrame][index], frameHotSpotAngle[currentMove][nextFrame][index] );
 }
 int Character::getHotSpotIndex(char* name) {
     for (int i = 0; i < hotSpotsCount; i++) {

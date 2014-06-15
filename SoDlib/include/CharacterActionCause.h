@@ -16,8 +16,9 @@ const int ACTIONCAUSE_TYPE_ONGROUND    = 201;
 const int ACTIONCAUSE_TYPE_ANGLE_MORE  = 202;
 const int ACTIONCAUSE_TYPE_ANGLE_LESS  = 203;
 
-const int ACTIONCAUSE_TYPE_ANIM_TIME_PASSED    = 301;
-const int ACTIONCAUSE_TYPE_ANIM_TIME_IS    = 302;
+const int ACTIONCAUSE_TYPE_ANIM_TIME_PASSED  = 301;
+const int ACTIONCAUSE_TYPE_ANIM_TIME_LESS    = 302;
+const int ACTIONCAUSE_TYPE_ANIM_TIME_IS      = 303;
 
 const int ACTIONCAUSE_TYPE_HAVE_STATUS    = 401;
 
@@ -40,9 +41,11 @@ class CharacterActionCause
 		void  setType(int type);
 		float getParam(), getParam(int index);
 		void  setParam(float param), setParam(int index, float param);
+		void setUsed(bool used);
 	protected:
 		int type;
 		float param; float param2;
+		bool used;
 	private:
 };
 

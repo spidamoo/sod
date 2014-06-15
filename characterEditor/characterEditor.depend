@@ -1234,7 +1234,7 @@
 1384979514 d:\work\sod\sodlib\include\mapanimation.h
 	<SoDlib.h>
 
-1402273929 source:d:\work\my\sod\charactereditor\main.cpp
+1402598440 source:d:\work\my\sod\charactereditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1590,28 +1590,28 @@
 1401639856 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
-1401639711 d:\work\my\sod\sodlib\include\effect.h
+1402602807 d:\work\my\sod\sodlib\include\effect.h
 	<SoDlib.h>
 
-1401438433 d:\work\my\sod\sodlib\include\characteractioncause.h
+1402598153 d:\work\my\sod\sodlib\include\characteractioncause.h
 	<SoDlib.h>
 
 1401396817 d:\work\my\sod\sodlib\include\characteractioneffect.h
 	<SoDlib.h>
 
-1401394016 d:\work\my\sod\sodlib\include\characteraction.h
+1402597977 d:\work\my\sod\sodlib\include\characteraction.h
 	<SoDlib.h>
 
 1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1401435713 d:\work\my\sod\sodlib\include\character.h
+1402602605 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
 	<SoDlib.h>
 
-1401640534 d:\work\my\sod\sodlib\include\playercharacter.h
+1402589092 d:\work\my\sod\sodlib\include\playercharacter.h
 	<SoDlib.h>
 
 1396800264 d:\work\my\sod\sodlib\include\groundline.h

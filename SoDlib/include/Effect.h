@@ -15,7 +15,7 @@ class Effect
 		void update(float dt), draw(bool schematicMode);
 
 		float getTime();
-		void setPosition(b2Vec2 position); b2Vec2 getPosition();
+		void setPosition(b2Vec2 position); void setPosition(b2Vec2 position, float angle); b2Vec2 getPosition();
 		void setHotSpotIndex(int index);
 
 		void setAnimation(hgeAnimation* animation, int blendMode);

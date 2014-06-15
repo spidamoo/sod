@@ -11,8 +11,12 @@ Game::Game(HGE * hge) {
 	characters = new Character*[100];
 	charactersCount = 0;
 
-	effects = new Effect*[SETTING_MAX_EFFECTS];
-	effectsCount = 0;
+    effects = new Effect**[2];
+	effects[EFFECT_LIST_NORMAL]     = new Effect*[SETTING_MAX_EFFECTS];
+	effects[EFFECT_LIST_BACKGROUND] = new Effect*[SETTING_MAX_EFFECTS];
+	effectsCount = new int[2];
+	effectsCount[EFFECT_LIST_NORMAL]     = 0;
+	effectsCount[EFFECT_LIST_BACKGROUND] = 0;
 
 	effectPrototypesCount = 0;
 
@@ -164,22 +168,25 @@ void Game::updateWorld(float dt) {
 	for (int i = 0; i < platformsCount; i++) {
         platforms[i]->update(dt);
 	}
-	int* effectsToRemove = new int[effectsCount];
-	int effectsToRemoveCount = 0;
-    clock_t eus = clock();
-	for (int i = 0; i < effectsCount; i++) {
-        effects[i]->update(dt);
-        if ( effects[i]->getTime() < 0 ) {
-            effectsToRemove[effectsToRemoveCount] = i;
-            effectsToRemoveCount++;
+
+	clock_t eus = clock();
+	for (int i = 0; i < 2; i++) {
+        int effectsToRemove[ effectsCount[i] ];
+        int effectsToRemoveCount = 0;
+        for (int j = 0; j < effectsCount[i]; j++) {
+            effects[i][j]->update(dt);
+            if ( effects[i][j]->getTime() < 0 ) {
+                effectsToRemove[effectsToRemoveCount] = j;
+                effectsToRemoveCount++;
+            }
+        }
+        for (int j = effectsToRemoveCount - 1; j >= 0 ; j--) {
+            removeEffect( effectsToRemove[j], i );
         }
 	}
-	for (int i = effectsToRemoveCount - 1; i >= 0 ; i--) {
-	    removeEffect( effectsToRemove[i] );
-	}
-	delete effectsToRemove;
 	clock_t eue = clock();
 	counters[COUNTER_EFFECTS_UPDATE] += (float)(eue - eus);
+
 	if (charactersCount > 0) {
         cameraPos = characters[0]->getPosition();
         if (cameraPos.x - halfViewportWidth < -halfMapWidth) {
@@ -251,6 +258,13 @@ void Game::drawGame() {
 	et = clock();
 	float map_t = et - st;
 
+    st = clock();
+	for (int i = 0; i < effectsCount[EFFECT_LIST_BACKGROUND]; i++) {
+        effects[EFFECT_LIST_BACKGROUND][i]->draw(schematicDrawMode);
+	}
+	et = clock();
+	float effects_t = et - st;
+
 	st = clock();
 	for (int i = 0; i < charactersCount; i++) {
 		characters[i]->draw(schematicDrawMode);
@@ -261,11 +275,11 @@ void Game::drawGame() {
 	updateCounter(COUNTER_DRAW_CHARACTERS, et - st);
 
 	st = clock();
-	for (int i = 0; i < effectsCount; i++) {
-        effects[i]->draw(schematicDrawMode);
+	for (int i = 0; i < effectsCount[EFFECT_LIST_NORMAL]; i++) {
+        effects[EFFECT_LIST_NORMAL][i]->draw(schematicDrawMode);
 	}
 	et = clock();
-	updateCounter(COUNTER_DRAW_EFFECTS, et - st);
+	updateCounter(COUNTER_DRAW_EFFECTS, effects_t + et - st);
 
 
 	st = clock();
@@ -326,16 +340,16 @@ void Game::drawGame() {
         defaultFont->printf(200, 0, HGETEXT_LEFT, "dt: %f fps: %f busy/total time: %f/%f=%02.0f%%", dt, fps, displayedCounters[COUNTER_TOTAL] / CLOCKS_PER_SEC, fullTime, 100 * (displayedCounters[COUNTER_TOTAL] / CLOCKS_PER_SEC) / fullTime );
         defaultFont->SetColor(0xFFFFFFFF);
         i++;
-        if (effectsCount < 200) {
+        if (effectsCount[0] + effectsCount[1] < 200) {
             defaultFont->SetColor(0xFFFFFFFF);
-        } else if (effectsCount < 500) {
-            defaultFont->SetColor(0xFF00FF00 + ( ( ( effectsCount - 200 ) * 255 / 300 ) << 16 ) );
-        } else if (effectsCount < 800) {
-            defaultFont->SetColor(0xFFFF0000 + ( ( ( 800 - effectsCount ) * 255 / 300 ) << 8 ) );
+        } else if (effectsCount[0] + effectsCount[1] < 500) {
+            defaultFont->SetColor(0xFF00FF00 + ( ( ( effectsCount[0] + effectsCount[1] - 200 ) * 255 / 300 ) << 16 ) );
+        } else if (effectsCount[0] + effectsCount[1] < 800) {
+            defaultFont->SetColor(0xFFFF0000 + ( ( ( 800 - effectsCount[0] + effectsCount[1] ) * 255 / 300 ) << 8 ) );
         } else {
             defaultFont->SetColor(0xFFFF0000);
         }
-        defaultFont->printf(200, 20, HGETEXT_LEFT, "effects: %d", effectsCount);
+        defaultFont->printf(200, 20, HGETEXT_LEFT, "effects: %d", effectsCount[0] + effectsCount[1]);
 	}
 	et = clock();
 	updateCounter(COUNTER_DRAW_PERFORMANCE_INFO, et - st);
@@ -729,22 +743,22 @@ void Game::addPlatform(Platform* newPlatform) {
 	platforms[platformsCount] = newPlatform;
 	platformsCount++;
 }
-void Game::addEffect(Effect* newEffect) {
+void Game::addEffect(Effect* newEffect, int listIndex) {
     newEffect->initialize();
-	effects[effectsCount] = newEffect;
-	effectsCount++;
+	effects[listIndex][ effectsCount[listIndex] ] = newEffect;
+	effectsCount[listIndex]++;
 }
 
-void Game::removeEffect(int index) {
-    if (index == effectsCount - 1) {
-        delete effects[index];
+void Game::removeEffect(int index, int listIndex) {
+    if (index == effectsCount[listIndex] - 1) {
+        delete effects[listIndex][index];
         //effects[index] = NULL;
-        effectsCount--;
+        effectsCount[listIndex]--;
     } else {
-        delete effects[index];
-        effects[index] = effects[effectsCount - 1];
+        delete effects[listIndex][index];
+        effects[listIndex][index] = effects[listIndex][effectsCount[listIndex] - 1];
         //effects[effectsCount - 1] = NULL;
-        effectsCount--;
+        effectsCount[listIndex]--;
     }
 }
 

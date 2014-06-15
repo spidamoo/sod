@@ -13,7 +13,7 @@ class CharacterAction
 		void save(TiXmlElement* elem);
 
 		bool take(Game* game, Character* character); void perform(Game* game, Character* character);
-		void prepareStatus(Character* character), prepareResource(Character* character);
+		void prepare(Character* character); void prepareStatus(Character* character), prepareResource(Character* character);
 
 		int getEffectsCount();
 		CharacterActionEffect* getEffect(int index);

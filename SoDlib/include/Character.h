@@ -18,8 +18,7 @@ class Character
         bool loadFromXml(TiXmlElement* xml, b2Vec2 origin);
 
 		void draw(bool schematicMode);
-		virtual void control(float dt)=0;
-		void update(float dt);
+		virtual void update(float dt);
 		void updateParams(Condition* condition); void updateStatus();
 
 		void turn();
@@ -27,7 +26,7 @@ class Character
 		void jump(b2Vec2 speed);
 		void move(float dx, float dy);
 
-		void setMove(int anim);
+		virtual void setMove(int anim);
 
 		b2Vec2 getPosition();
 		void setPosition(b2Vec2 newPos);
@@ -39,7 +38,7 @@ class Character
 		int getDirection();
 		float getAngle();
 
-		float getHotSpotX(int index), getHotSpotY(int index); int getHotSpotIndex(char* name);
+		float getHotSpotX(int index), getHotSpotY(int index), getHotSpotAngle(int index); int getHotSpotIndex(char* name);
 
 		float getAnimTime();
 

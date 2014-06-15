@@ -35,11 +35,23 @@ Effect::Effect(Game* game, EffectPrototype* prototype) {
     owner = NULL;
 
     width = 1.0f;
+
+    position = b2Vec2_zero;
+    angle = 0;
 }
 
 Effect::~Effect() {
 	delete animation;
 	delete actionTimes;
+
+	for ( int i = 0; i < prototype->getActionsCount(); i++ ) {
+	    switch ( prototype->getAction(i)->getType() ) {
+            case EFFECTACTION_TYPE_INFLICT_CONDITION:
+                delete actionInteractions[i];
+                break;
+        }
+	}
+	delete actionInteractions;
 }
 
 void Effect::setOwner(Character* owner) {
@@ -61,21 +73,27 @@ void Effect::initialize() {
 
     time = prototype->evalStartExpression(EFFECT_FUNCTION_TIME);
     prototype->setParam(EFFECT_PARAM_TIME, time);
-    angle = prototype->evalStartExpression(EFFECT_FUNCTION_ANGLE);
+    angle += prototype->evalStartExpression(EFFECT_FUNCTION_ANGLE);
     prototype->setParam(EFFECT_PARAM_ANGLE, angle);
 
     componentSpeed.x = prototype->evalStartExpression(EFFECT_FUNCTION_XSPEED);
     componentSpeed.y = prototype->evalStartExpression(EFFECT_FUNCTION_YSPEED);
 
-    r = prototype->evalStartExpression(EFFECT_FUNCTION_R);
-    g = prototype->evalStartExpression(EFFECT_FUNCTION_G);
-    b = prototype->evalStartExpression(EFFECT_FUNCTION_B);
-    a = prototype->evalStartExpression(EFFECT_FUNCTION_A);
+    if (animation) {
+        r = prototype->evalStartExpression(EFFECT_FUNCTION_R);
+        g = prototype->evalStartExpression(EFFECT_FUNCTION_G);
+        b = prototype->evalStartExpression(EFFECT_FUNCTION_B);
+        a = prototype->evalStartExpression(EFFECT_FUNCTION_A);
+        animation->SetColor( (a << 24) + (r << 16) + (g << 8) + b  );
+    }
 
     scale = prototype->evalStartExpression(EFFECT_FUNCTION_SCALE);
 
     width = prototype->evalStartExpression(EFFECT_FUNCTION_WIDTH);
     height = prototype->evalStartExpression(EFFECT_FUNCTION_HEIGHT);
+
+    position.x += prototype->evalStartExpression(EFFECT_FUNCTION_X);
+    position.y += prototype->evalStartExpression(EFFECT_FUNCTION_Y);
 }
 
 void Effect::draw(bool schematicMode) {
@@ -267,7 +285,7 @@ void Effect::update(float dt) {
                         break;
                     case EFFECTACTION_TYPE_SPAWN_EFFECT:
                         //printf("effect spawns effect\n");
-                        game->addEffect( game->getEffectPrototype( action->getParam() )->spawnEffect(this) );
+                        game->addEffect( game->getEffectPrototype( action->getParam() )->spawnEffect(this), game->getEffectPrototype( action->getParam() )->getList() );
                         break;
                     case EFFECTACTION_TYPE_INFLICT_CONDITION:
                         //printf("trying to apply condition\n");
@@ -310,6 +328,10 @@ float Effect::getTime() {
 
 void Effect::setPosition(b2Vec2 position) {
     this->position = position;
+}
+void Effect::setPosition(b2Vec2 _position, float _angle) {
+    position = _position;
+    angle = _angle;
 }
 b2Vec2 Effect::getPosition() {
     return position;

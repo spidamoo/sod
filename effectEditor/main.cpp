@@ -58,6 +58,9 @@ void setSelectedEffect(int selected) {
     game->getGUI()->GetCtrl(93)->selected = game->getEffectPrototype(selectedEffect)->getBlendMode() & BLEND_ZWRITE;
 
     ( (hgeGUIEditableLabel*)game->getGUI()->GetCtrl(95) )->setTitle(game->getEffectPrototype(selectedEffect)->getHotSpotName());
+
+    game->getGUI()->GetCtrl(96)->selected = game->getEffectPrototype(selectedEffect)->getList() == EFFECT_LIST_NORMAL;
+    game->getGUI()->GetCtrl(97)->selected = game->getEffectPrototype(selectedEffect)->getList() == EFFECT_LIST_BACKGROUND;
 }
 void setSelectedAction(int selected) {
     selectedAction = selected;
@@ -188,11 +191,17 @@ bool effectBlendModeClick(hgeGUIObject* sender) {
 bool hotSpotNameChange(hgeGUIObject* sender) {
     game->getEffectPrototype(selectedEffect)->setHotSpotName( ( (hgeGUIEditableLabel*)(sender) )->getTitle() );
 }
+bool effectListClick(hgeGUIObject* sender) {
+    game->getGUI()->GetCtrl(96)->selected = false;
+    game->getGUI()->GetCtrl(97)->selected = false;
+    game->getEffectPrototype(selectedEffect)->setList( sender->id - 96);
+    sender->selected = true;
+}
 
 bool testEffectClick(hgeGUIObject* sender) {
     Effect* newObject = new Effect(game, game->getEffectPrototype(selectedEffect));
     newObject->setPosition(b2Vec2_zero);
-    game->addEffect( newObject );
+    game->addEffect( newObject, game->getEffectPrototype(selectedEffect)->getList() );
     printf("foo");
 }
 
@@ -520,6 +529,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         hgeGUIEditableLabel* hotSpotNameInput = new hgeGUIEditableLabel(game, 95, arial12, 350.0f, 490.0f, 100.0f, 19.0f, "");
         hotSpotNameInput->setOnChange(hotSpotNameChange);
         effectDetailsWindow->AddCtrl( hotSpotNameInput );
+
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(96, arial12, 560.0f, 490.0f, "normal", effectListClick) );
+        effectDetailsWindow->AddCtrl( new hgeGUIMenuItem(97, arial12, 640.0f, 490.0f, "background", effectListClick) );
 
         actionDetailsWindow = new GUIWindow(game, 190, 1100, 50, 200.0f, 180.0f);
         game->getGUI()->AddCtrl(actionDetailsWindow);

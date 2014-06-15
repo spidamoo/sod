@@ -20,6 +20,9 @@ const int COUNTER_DRAW_END   = 13;
 
 const int COUNTERS_COUNT = 14;
 
+const int EFFECT_LIST_NORMAL     = 0;
+const int EFFECT_LIST_BACKGROUND = 1;
+
 static const char* COUNTER_NAMES[COUNTERS_COUNT] = {
     "total",
     " update",
@@ -101,7 +104,7 @@ class Game
         void loadMap(char* fn);
 		void addGroundLine(GroundLine* newGL); void addMapAnimation(MapAnimation* newMA); void addPlatform(Platform* newPlatform);
 
-		void removeEffect(int index);
+		void removeEffect(int index, int listIndex);
 
 
 		bool loadEffectPrototypes(char* fn); int getEffectPrototypesCount(); EffectPrototype* getEffectPrototype(int index);
@@ -122,7 +125,7 @@ class Game
         bool loadCharacterMoveTypes(char* fn); int getCharacterMoveTypesCount(); CharacterMoveType* getCharacterMoveType(int index);
         void addCharacterMoveType(), removeCharacterMoveType(int index);
 
-		void addEffect(Effect* newEffect);
+		void addEffect(Effect* newEffect, int listIndex);
 
 		int getCharactersCount();
 		Character* getCharacter(int index);
@@ -184,7 +187,7 @@ class Game
 
 		Platform** platforms; int platformsCount;
 		Character** characters; int charactersCount;
-		Effect** effects; int effectsCount;
+		Effect*** effects; int* effectsCount;
 		EffectPrototype** effectPrototypes; int effectPrototypesCount;
 		ConditionPrototype** conditionPrototypes; int conditionPrototypesCount;
 		CharacterParamPrototype** characterParamPrototypes; int characterParamPrototypesCount;
