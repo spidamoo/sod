@@ -170,6 +170,7 @@ int currentTab = 0;
 float currentTime = 0;
 float frameProgress = 0;
 bool drawBoxes = true;
+float movesShift = 0.0f;
 
 HTEXTURE bgTex;
 hgeFont* fnt;
@@ -2148,16 +2149,27 @@ bool insertAngleButtonClick(hgeGUIObject* sender) {
 /// Глобальные функции
 //{
 bool FrameFunc() {
+    float dt = game->getHge()->Timer_GetDelta();
 	float x, y;
 	game->getHge()->Input_GetMousePos(&x, &y);
 	float worldX = game->worldX(x);
 	float worldY = game->worldY(y);
 
 	if (game->getHge()->Input_GetMouseWheel() > 0) {
-		game->setScale(game->getScaleFactor() * 2);
+        if (y < 50) {
+            movesShift -= dt * 10000.0f;
+        }
+        else {
+            game->setScale(game->getScaleFactor() * 2);
+        }
 	}
 	if (game->getHge()->Input_GetMouseWheel() < 0) {
-		game->setScale(game->getScaleFactor() * 0.5);
+        if (y < 50) {
+            movesShift += dt * 10000.0f;
+        }
+        else {
+            game->setScale(game->getScaleFactor() * 0.5);
+        }
 	}
 
 	if (mode < MODE_MOVES_INDEX) {
@@ -2239,7 +2251,7 @@ bool FrameFunc() {
                         }
                     }
                     if (y < 50 && x < 1300) {
-                        int anim = floor(x / 50);
+                        int anim = floor( (x + movesShift) / 50);
                         if (anim < movesCount)
                             setMove(anim);
                         if (anim == movesCount) {
@@ -2877,12 +2889,12 @@ bool RenderFunc() {
             DWORD color = 0xFF000000;
             if (i == currentMove)
                 color = 0xFFFF0000;
-            game->drawRect(1 + 50 * i, 1, 50 + 50 * i, 49, color, 0);
+            game->drawRect(1 + 50 * i - movesShift, 1, 50 + 50 * i - movesShift, 49, color, 0);
             for (int index = 0; index < bodiesCount; index++) {
                 int j = frameAnimLayer[i][0][index];
                 if (frameAnimShow[i][0][j]) {
                     animations[j]->RenderEx(
-                        25 + i * 50 + frameAnimX[i][0][j] * miniatureScale,
+                        25 + i * 50 + frameAnimX[i][0][j] * miniatureScale - movesShift,
                         25 + frameAnimY[i][0][j] * miniatureScale,
                         frameAnimAngle[i][0][j],
                         frameAnimScaleX[i][0][j] * miniatureScale / game->getPixelsPerMeter(),
@@ -2893,9 +2905,9 @@ bool RenderFunc() {
             }
         }
 
-        game->drawRect(1 + movesCount * 50, 1, 50 + movesCount * 50, 49, 0xFF00AA00, 0xFFFFFFFF);
-        game->drawRect(6 + movesCount * 50, 23, 44 + movesCount * 50, 27, 0xFF00AA00, 0xFF00AA00);
-        game->drawRect(23 + movesCount * 50, 6, 27 + movesCount * 50, 44, 0xFF00AA00, 0xFF00AA00);
+        game->drawRect(1 + movesCount * 50 - movesShift, 1, 50 + movesCount * 50 - movesShift, 49, 0xFF00AA00, 0xFFFFFFFF);
+        game->drawRect(6 + movesCount * 50 - movesShift, 23, 44 + movesCount * 50 - movesShift, 27, 0xFF00AA00, 0xFF00AA00);
+        game->drawRect(23 + movesCount * 50 - movesShift, 6, 27 + movesCount * 50 - movesShift, 44, 0xFF00AA00, 0xFF00AA00);
 
         game->drawRect(0, 50, 1300, 100, 0xFF000000, 0xFFFFFFFF);
 
@@ -3121,19 +3133,6 @@ bool RenderFunc() {
                             actionCauses[actions[currentMove][i]->getCause(j)->getType()],
                             keyNames[(int)actions[currentMove][i]->getCause(j)->getParam()]
                         );
-                        break;
-                    case ACTIONCAUSE_TYPE_NPC_TARGETSIDE:
-                        switch ((int)actions[currentMove][i]->getCause(j)->getParam()) {
-                            case TARGETSIDE_INFRONT:
-                                sprintf(text, "target in front");
-                                break;
-                            case TARGETSIDE_BEHIND:
-                                sprintf(text, "target behind");
-                                break;
-                            case TARGETSIDE_UNDEFINED:
-                                sprintf(text, "target side undefined");
-                                break;
-                        }
                         break;
                     case ACTIONCAUSE_TYPE_RESORCE_LESS:
                         if ( game->getCharacterResourcePrototype((int)actions[currentMove][i]->getCause(j)->getParam()) ) {

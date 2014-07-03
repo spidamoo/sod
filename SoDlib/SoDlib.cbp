@@ -50,6 +50,7 @@
 		<Unit filename="hgeguictrls.cpp" />
 		<Unit filename="hgerect.cpp" />
 		<Unit filename="hgesprite.cpp" />
+		<Unit filename="include/AiPattern.h" />
 		<Unit filename="include/Animation.h" />
 		<Unit filename="include/Character.h" />
 		<Unit filename="include/CharacterAction.h" />
@@ -97,6 +98,7 @@
 		<Unit filename="include/muParserTokenReader.h" />
 		<Unit filename="include/tinystr.h" />
 		<Unit filename="include/tinyxml.h" />
+		<Unit filename="src/AiPattern.cpp" />
 		<Unit filename="src/Animation.cpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/CharacterAction.cpp" />

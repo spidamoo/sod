@@ -4,27 +4,32 @@
 #ifndef NONPLAYERCHARACTER_H
 #define NONPLAYERCHARACTER_H
 
-const int ANIMATION_OPERATION_IDLE    = 0;
-const int ANIMATION_OPERATION_ASSAULT = 1;
+const int NPC_OPERATION_IDLE     = 0;
+const int NPC_OPERATION_TRAVERSE = 1;
+const int NPC_OPERATION_DOMOVE   = 2;
 
-const int TARGETSIDE_INFRONT = 0;
-const int TARGETSIDE_BEHIND = 1;
-const int TARGETSIDE_UNDEFINED = 2;
+const int MOVE_TYPE_IDLE     = 0;
+const int MOVE_TYPE_TRAVERSE = 1;
+const int MOVE_TYPE_ATTACK   = 2;
 
-class NonPlayerCharacter : public Character
-{
+class NonPlayerCharacter : public Character {
+    friend class AiPattern;
 	public:
 		NonPlayerCharacter(TiXmlElement* xml, Game * game, b2Vec2 origin);
 		virtual ~NonPlayerCharacter();
 
+		bool loadFromXml(TiXmlElement* xml, b2Vec2 origin);
+
 		inline int getType() {return CHARACTER_TYPE_NONPLAYER;};
 
-		void control(float dt);
+		void update(float dt);
 
-		int getTargetSide();
-		float getTargetDistance();
 	protected:
+		int* aiPatterns; int aiPatternsCount;
+		int traverseMove;
+
 		int targetCharacter;
+		b2Vec2 targetPosition;
 	private:
 };
 

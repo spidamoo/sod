@@ -53,12 +53,12 @@ Character::~Character() {
 }
 
 bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin) {
-	if (xml->Attribute("height")) {
-		height = atof(xml->Attribute("height"));
+	if ( xml->Attribute("height") ) {
+		height = atof( xml->Attribute("height") );
 		halfHeight = height * 0.5f;
 	}
-	if (xml->Attribute("width")) {
-		width = atof(xml->Attribute("width"));
+	if ( xml->Attribute("width") ) {
+		width = atof( xml->Attribute("width") );
 		halfWidth = width * 0.5f;
 	}
 
@@ -132,6 +132,7 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin) {
 	animRotating = new bool*[movesCount];
 
 	movePriorities = new float[movesCount];
+	moveNames = new char*[movesCount];
 	i = 0;
 	while (animationElem) {
 		printf("move\n");
@@ -169,6 +170,13 @@ bool Character::loadFromXml(TiXmlElement* xml, b2Vec2 origin) {
 		}
 		else {
             movePriorities[i] = 0.0f;
+		}
+
+		if (animationElem->Attribute("name")) {
+            moveNames[i] = copyString(animationElem->Attribute("name"));
+		}
+		else {
+            moveNames[i] = "";
 		}
 
 

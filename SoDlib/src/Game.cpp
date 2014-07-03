@@ -76,7 +76,7 @@ bool Game::preload() {
     //printf("foo");
     try
     {
-    	if(hge->System_Initiate()) {
+    	if( hge->System_Initiate() ) {
 			hge->Random_Seed();
 
 	//		loadConstruction("box.xml", b2Vec2(10, 0));
@@ -1168,6 +1168,68 @@ void Game::removeCharacterMoveType(int index) {
             characterMoveTypes[i] = characterMoveTypes[i + 1];
         }
         characterMoveTypesCount--;
+    }
+}
+
+//}
+/// ai patterns
+//{
+bool Game::loadAiPatterns(char* fileName) {
+	printf("loading ai patterns %s ... \n", fileName);
+    TiXmlDocument doc(fileName);
+    bool loadOkay = doc.LoadFile();
+    if (loadOkay) {
+    	TiXmlElement* root = doc.FirstChildElement("ai_patterns");
+
+		aiPatternsCount = atoi(root->Attribute("count"));
+		aiPatterns = new AiPattern*[aiPatternsCount];
+
+        TiXmlElement* element = root->FirstChildElement("pattern");
+        int i = 0;
+        while (element) {
+			AiPattern* newObject = new AiPattern(this);
+            newObject->loadFromXml(element);
+            aiPatterns[i] = newObject;
+
+			i++;
+            element = element->NextSiblingElement("pattern");
+        }
+        aiPatternsCount = i;
+		return true;
+    } else {
+        printf("failed\n");
+        return false;
+    }
+}
+int Game::getAiPatternsCount() {
+	return aiPatternsCount;
+}
+AiPattern* Game::getAiPattern(int index) {
+	if (index > -1 && index < aiPatternsCount) {
+		return aiPatterns[index];
+	}
+	else {
+		return NULL;
+	}
+}
+void Game::addAiPattern() {
+    AiPattern** _characterMoveTypes = new AiPattern*[aiPatternsCount + 1];
+    for (int i = 0; i < aiPatternsCount; i++) {
+        _characterMoveTypes[i] = aiPatterns[i];
+    }
+    _characterMoveTypes[aiPatternsCount] = new AiPattern(this);
+
+    delete aiPatterns;
+    aiPatterns = _characterMoveTypes;
+    aiPatternsCount++;
+}
+void Game::removeAiPattern(int index) {
+    if (index > -1 && index < aiPatternsCount) {
+        delete aiPatterns[index];
+        for (int i = index; i < aiPatternsCount - 1; i++) {
+            aiPatterns[i] = aiPatterns[i + 1];
+        }
+        aiPatternsCount--;
     }
 }
 

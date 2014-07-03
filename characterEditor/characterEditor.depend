@@ -1234,7 +1234,7 @@
 1384979514 d:\work\sod\sodlib\include\mapanimation.h
 	<SoDlib.h>
 
-1402598440 source:d:\work\my\sod\charactereditor\main.cpp
+1403038626 source:d:\work\my\sod\charactereditor\main.cpp
 	<stdio.h>
 	<hge.h>
 	<hgefont.h>
@@ -1421,7 +1421,7 @@
 1396800261 d:\work\my\sod\box2d\dynamics\joints\b2weldjoint.h
 	<Box2D/Dynamics/Joints/b2Joint.h>
 
-1401448792 d:\work\my\sod\sodlib\include\sodlib.h
+1403038746 d:\work\my\sod\sodlib\include\sodlib.h
 	<string>
 	<time.h>
 	<hge.h>
@@ -1449,6 +1449,7 @@
 	<CharacterActionEffect.h>
 	<CharacterAction.h>
 	<CharacterHotSpot.h>
+	<AiPattern.h>
 	<Character.h>
 	<NonPlayerCharacter.h>
 	<PlayerCharacter.h>
@@ -1575,7 +1576,7 @@
 	<stdio.h>
 	<string.h>
 
-1401917326 d:\work\my\sod\sodlib\include\game.h
+1402862176 d:\work\my\sod\sodlib\include\game.h
 	<SoDlib.h>
 
 1401396126 d:\work\my\sod\sodlib\include\conditionprototype.h
@@ -1587,7 +1588,7 @@
 1399327188 d:\work\my\sod\sodlib\include\effectaction.h
 	<SoDlib.h>
 
-1401639856 d:\work\my\sod\sodlib\include\effectprototype.h
+1402608975 d:\work\my\sod\sodlib\include\effectprototype.h
 	<SoDlib.h>
 
 1402602807 d:\work\my\sod\sodlib\include\effect.h
@@ -1605,10 +1606,10 @@
 1400535025 d:\work\my\sod\sodlib\include\characterhotspot.h
 	<SoDlib.h>
 
-1402602605 d:\work\my\sod\sodlib\include\character.h
+1402873869 d:\work\my\sod\sodlib\include\character.h
 	<SoDlib.h>
 
-1396800264 d:\work\my\sod\sodlib\include\nonplayercharacter.h
+1402958223 d:\work\my\sod\sodlib\include\nonplayercharacter.h
 	<SoDlib.h>
 
 1402589092 d:\work\my\sod\sodlib\include\playercharacter.h
@@ -1662,5 +1663,8 @@
 	<SoDlib.h>
 
 1401396236 d:\work\my\sod\sodlib\include\characterresource.h
+	<SoDlib.h>
+
+1403038803 d:\work\my\sod\sodlib\include\aipattern.h
 	<SoDlib.h>
 

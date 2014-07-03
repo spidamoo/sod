@@ -1,40 +1,63 @@
 #include "NonPlayerCharacter.h"
 
 NonPlayerCharacter::NonPlayerCharacter(TiXmlElement* xml, Game * game, b2Vec2 origin) : Character(xml, game, origin) {
+    loadFromXml(xml, origin);
+
 	targetCharacter = -1;
+
+	aiPatternsCount = 0;
+	aiPatterns = new int[10];
+
+    traverseMove = 0;
+
+	for (int i = 0; i < movesCount; i++) {
+        if ( compareStrings(moveNames[i], "traverse") ) {
+            traverseMove = i;
+            break;
+        }
+	}
 }
 
 NonPlayerCharacter::~NonPlayerCharacter() {
 }
 
-void NonPlayerCharacter::control(float dt)
-{
-	if (targetCharacter == -1) {
-		for (int i = 0; i < game->getCharactersCount(); i++) {
-			if (game->getCharacter(i)->getType() == CHARACTER_TYPE_PLAYER) {
-				targetCharacter = i;
-				break;
-			}
-		}
-	}
+bool NonPlayerCharacter::loadFromXml(TiXmlElement* xml, b2Vec2 origin) {
+    TiXmlElement* aiRoot = xml->FirstChildElement("ai");
+    if (aiRoot) {
+        TiXmlElement* element = aiRoot->FirstChildElement("pattern");
+        aiPatternsCount = 0;
+        while (element) {
+            aiPatterns[aiPatternsCount] = atoi( element->Attribute("index") );
+            aiPatternsCount++;
+            element = element->NextSiblingElement("pattern");
+        }
+    }
 }
 
-int NonPlayerCharacter::getTargetSide()
-{
-	if (targetCharacter != -1) {
-		if (game->getCharacter(targetCharacter)->getPosition().x > getPosition().x) {
-			return turnedRight ? TARGETSIDE_INFRONT : TARGETSIDE_BEHIND;
-		} else {
-			return turnedRight ? TARGETSIDE_BEHIND : TARGETSIDE_INFRONT;
-		}
-	}
-	return TARGETSIDE_UNDEFINED;
-}
+void NonPlayerCharacter::update(float dt) {
+    Character::update(dt);
 
-float NonPlayerCharacter::getTargetDistance()
-{
-	if (targetCharacter != -1) {
-		return fabs(game->getCharacter(targetCharacter)->getPosition().x - getPosition().x) - game->getCharacter(targetCharacter)->getHalfWidth() - halfWidth;
+	int priority = 0;
+	int bestPattern = -1;
+	for (int i = 0; i < aiPatternsCount; i++) {
+        int p = game->getAiPattern( aiPatterns[i] )->calculatePriority(this);
+        if ( p > priority ) {
+            priority = p;
+            bestPattern = i;
+        }
 	}
-	return 0.0f;
+
+	if (bestPattern > -1) {
+        switch ( game->getAiPattern( aiPatterns[bestPattern] )->calculateOperation(this) ) {
+            case NPC_OPERATION_TRAVERSE:
+                targetPosition = game->getAiPattern( aiPatterns[bestPattern] )->calculateTargetPosition(this);
+                if ( (targetPosition.x > position.x && !turnedRight) || (targetPosition.x < position.x && turnedRight) ) {
+                    turn();
+                }
+                setMove(traverseMove);
+                break;
+            case NPC_OPERATION_DOMOVE:
+                break;
+        }
+	}
 }

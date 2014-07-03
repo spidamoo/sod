@@ -7,8 +7,7 @@ const int CHARACTER_TYPE_PLAYER = 1;
 const int CHARACTER_TYPE_NONPLAYER = 2;
 
 
-class Character
-{
+class Character {
     public:
         Character(TiXmlElement* xml, Game * game, b2Vec2 origin);
         virtual ~Character();
@@ -64,8 +63,8 @@ class Character
 		float*** frameAnimX;
 		float*** frameAnimY;
 		float*** frameAnimAngle;
-		float*** frameAnimScaleX = new float**[256];
-        float*** frameAnimScaleY = new float**[256];
+		float*** frameAnimScaleX;
+        float*** frameAnimScaleY;
 		int*** frameAnimLayer;
 		bool*** frameAnimShow;
 
@@ -85,6 +84,7 @@ class Character
 		int* framesCounts;
 		float** framesLengths;
 		float* movePriorities;
+		char** moveNames;
 		int currentFrame, nextFrame;
 		int movesCount;
 		int currentMove;

@@ -6,6 +6,7 @@ class CharacterActionCause;
 class CharacterActionEffect;
 class CharacterAction;
 class CharacterHotSpot;
+class AiPattern;
 class Character;
 class PlayerCharacter;
 class NonPlayerCharacter;
@@ -64,6 +65,7 @@ typedef bool (*guiCallback)(hgeGUIObject* sender);
 #include <CharacterActionEffect.h>
 #include <CharacterAction.h>
 #include <CharacterHotSpot.h>
+#include <AiPattern.h>
 #include <Character.h>
 #include <NonPlayerCharacter.h>
 #include <PlayerCharacter.h>

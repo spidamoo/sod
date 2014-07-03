@@ -125,6 +125,9 @@ class Game
         bool loadCharacterMoveTypes(char* fn); int getCharacterMoveTypesCount(); CharacterMoveType* getCharacterMoveType(int index);
         void addCharacterMoveType(), removeCharacterMoveType(int index);
 
+        bool loadAiPatterns(char* fn); int getAiPatternsCount(); AiPattern* getAiPattern(int index);
+        void addAiPattern(), removeAiPattern(int index);
+
 		void addEffect(Effect* newEffect, int listIndex);
 
 		int getCharactersCount();
@@ -194,6 +197,7 @@ class Game
 		CharacterResourcePrototype** characterResourcePrototypes; int characterResourcePrototypesCount;
 		CharacterStatusPrototype** characterStatusPrototypes; int characterStatusPrototypesCount;
 		CharacterMoveType** characterMoveTypes; int characterMoveTypesCount;
+		AiPattern** aiPatterns; int aiPatternsCount;
 
 		hgeAnimation** animations; char** animationNames; int animationsCount;
 		HTEXTURE* textures; char** textureNames; int texturesCount;

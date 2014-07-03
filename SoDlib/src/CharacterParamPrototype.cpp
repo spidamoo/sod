@@ -1,13 +1,11 @@
 #include "CharacterParamPrototype.h"
 
-CharacterParamPrototype::CharacterParamPrototype()
-{
+CharacterParamPrototype::CharacterParamPrototype() {
     name = "<character param>";
     defaultNormalValue = 1.0f;
 }
 
-CharacterParamPrototype::~CharacterParamPrototype()
-{
+CharacterParamPrototype::~CharacterParamPrototype() {
     delete name;
 }
 
